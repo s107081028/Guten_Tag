@@ -1,2 +1,2 @@
-# Tim Tim's fantasy world
+# README
 guten tag
