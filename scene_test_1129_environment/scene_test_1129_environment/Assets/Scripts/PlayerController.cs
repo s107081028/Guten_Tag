@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+using Cinemachine;
+
 public class PlayerController : MonoBehaviourPun
 {
     private Rigidbody rb;
     public float speed;
+    public float jumpSpeed = 5f;
     public bool TeleportAvailable;
     //public GameObject canva;
 
@@ -17,26 +20,34 @@ public class PlayerController : MonoBehaviourPun
 
     bool end;
 
+    
+
     private Animator m_animator;
 
+    /*
     void Awake(){
         m_animator = gameObject.GetComponent<Animator>();
         
-    }
+    }*/
     void Start()
     {
         //Debug.Log("hi");
-        rb = GetComponent<Rigidbody>();
-        m_animator = gameObject.GetComponent<Animator>(); 
+
         playerCamera = GameObject.Find("Main Camera");
         TeleportAvailable = false;
         can_jump = true;
         end = false;
 
-        //if (photonView.IsMine) {
-        //    Camera.main.GetComponent<CameraCtrl>().player = this.gameObject;
-        //    Camera.main.GetComponent<CameraCtrl>().setCameraOffset();
-        //}
+        if (photonView.IsMine) {
+            //Camera.main.GetComponent<CameraCtrl>().player = this.gameObject;
+            //Camera.main.GetComponent<CameraCtrl>().setCameraOffset();
+            GameObject cine = GameObject.Find("CM FreeLook1");
+            cine.GetComponent<CinemachineFreeLook>().Follow = transform;
+            cine.GetComponent<CinemachineFreeLook>().LookAt = transform;
+            m_animator = gameObject.GetComponent<Animator>();
+            rb = GetComponent<Rigidbody>();
+
+        }
     }
 
     // Update is called once per frame
@@ -53,9 +64,22 @@ public class PlayerController : MonoBehaviourPun
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
         
-        if(Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        if (can_jump)
         {
-            rb.velocity = new Vector3(playerCamera.transform.forward.x*z+playerCamera.transform.right.x*x
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                m_animator.SetBool("rush", true);
+                speed *= 2;
+            }else if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                m_animator.SetBool("rush", false);
+                speed /= 2;
+            }
+        }
+        
+        if( x != 0 || z != 0)
+        {
+            rb.velocity = new Vector3(playerCamera.transform.forward.x*z + playerCamera.transform.right.x*x
             , 0f, playerCamera.transform.forward.z*z+playerCamera.transform.right.z*x).normalized * speed 
             + Vector3.up * rb.velocity.y;
         }
@@ -66,10 +90,10 @@ public class PlayerController : MonoBehaviourPun
 
         Vector3 rbv = rb.velocity;
         if(Input.GetKey(KeyCode.Space) && can_jump){
-            rbv.y = 5f;
+            rbv.y = jumpSpeed;
             rb.velocity = rbv;
             can_jump = false;
-            //m_animator.SetBool("jump", true);
+            m_animator.SetBool("jump", true);
         }else{
             // if(can_jump){
             //     rbvy = -6;
@@ -79,7 +103,9 @@ public class PlayerController : MonoBehaviourPun
             // rb.velocity = rbv;
         }
 
-        if (Mathf.Abs(rb.velocity.x)<=0.1 && Mathf.Abs(rb.velocity.z) <= 0.1f)
+
+        
+        if (Mathf.Abs(rb.velocity.x)<=1f && Mathf.Abs(rb.velocity.z) <= 1f)
         {           
             m_animator.SetFloat("Speed", 0.0f);
         }
@@ -103,7 +129,7 @@ public class PlayerController : MonoBehaviourPun
         if(photonView.IsMine){
             if(CollisionObject.collider.gameObject.tag=="Plane"){
                 can_jump = true;
-                //m_animator.SetBool("jump", false);
+                m_animator.SetBool("jump", false);
             }
 
             // if(CollisionObject.collider.gameObject.name=="Sphere" && end==false){
@@ -124,7 +150,7 @@ public class PlayerController : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (CollisionObject.collider.gameObject.name == "Plane")
+            //if (CollisionObject.collider.gameObject.name == "Plane")
             {
                 can_jump = true;
                 m_animator.SetBool("jump", false);
