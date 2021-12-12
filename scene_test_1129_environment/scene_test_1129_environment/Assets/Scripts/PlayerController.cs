@@ -69,11 +69,11 @@ public class PlayerController : MonoBehaviourPun
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 m_animator.SetBool("rush", true);
-                speed *= 2;
+                speed = 10;
             }else if (Input.GetKeyUp(KeyCode.LeftShift))
             {
                 m_animator.SetBool("rush", false);
-                speed /= 2;
+                speed = 5;
             }
         }
         
@@ -168,6 +168,17 @@ public class PlayerController : MonoBehaviourPun
         }
 
         //print(CollisionObject.collider.gameObject.name);
+    }
+
+    void OnCollisionExit(Collision CollisionObject)
+    {
+        if(photonView.IsMine){
+            if(CollisionObject.gameObject.tag == "plane")
+            {
+                can_jump = false;
+                m_animator.SetBool("jump", false);
+            }
+        }
     }
 
     public void SetEnd(){

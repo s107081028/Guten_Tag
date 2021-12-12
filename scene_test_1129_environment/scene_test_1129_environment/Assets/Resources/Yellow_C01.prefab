@@ -9530,7 +9530,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  jumpSpeed: 5
+  jumpSpeed: 3
   TeleportAvailable: 0
   playerCamera: {fileID: 0}
 --- !u!114 &-6853303269965452869
