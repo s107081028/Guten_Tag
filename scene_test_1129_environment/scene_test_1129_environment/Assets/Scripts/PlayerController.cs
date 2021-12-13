@@ -4,7 +4,6 @@ using UnityEngine;
 using Photon.Pun;
 
 using Cinemachine;
-
 public class PlayerController : MonoBehaviourPun
 {
     private Rigidbody rb;
@@ -20,7 +19,8 @@ public class PlayerController : MonoBehaviourPun
 
     bool end;
 
-    
+    public float speedFactor = 1f;
+    public float directionFactor = 1f;
 
     private Animator m_animator;
 
@@ -61,8 +61,8 @@ public class PlayerController : MonoBehaviourPun
     }
     void TakeInput()
     {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        float x = Input.GetAxis("Horizontal") * directionFactor;
+        float z = Input.GetAxis("Vertical") * directionFactor;
         
         if (can_jump)
         {
@@ -80,8 +80,9 @@ public class PlayerController : MonoBehaviourPun
         if( x != 0 || z != 0)
         {
             rb.velocity = new Vector3(playerCamera.transform.forward.x*z + playerCamera.transform.right.x*x
-            , 0f, playerCamera.transform.forward.z*z+playerCamera.transform.right.z*x).normalized * speed 
+            , 0f, playerCamera.transform.forward.z*z+playerCamera.transform.right.z*x).normalized * speed
             + Vector3.up * rb.velocity.y;
+            rb.velocity *= speedFactor;
         }
         if(Mathf.Abs(x) > 0.1 || Mathf.Abs(z) > 0.1)
         {
