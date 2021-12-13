@@ -32,15 +32,4 @@ public class ConveyorController : MonoBehaviour
         gameObject.GetComponent<Rigidbody>().velocity = (speed * velocity);
 
     }
-
-    void OnCollisionEnter(Collision Collision)
-    {
-        if(Collision.gameObject.tag == "Player")
-            Collision.gameObject.GetComponent<Rigidbody>().velocity += gameObject.GetComponent<Rigidbody>().velocity;
-    }
-    void OnCollisionExit(Collision Collision)
-    {
-        if(Collision.gameObject.tag != "Player")
-            Collision.gameObject.GetComponent<Rigidbody>().velocity -= gameObject.GetComponent<Rigidbody>().velocity;
-    }
 }

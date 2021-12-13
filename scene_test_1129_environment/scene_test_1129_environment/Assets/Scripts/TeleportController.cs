@@ -7,6 +7,7 @@ public class TeleportController : MonoBehaviour
     public GameObject AnotherTeleport;
     public float lastEnterTime;
     public float coolTime;
+    public Dictionary<string , float> dict = new Dictionary<string,  float>();
     // Start is called before the first frame update
     void Start()
     {
@@ -19,14 +20,21 @@ public class TeleportController : MonoBehaviour
         
     }
 
-    void OnCollisionEnter(Collision Collision)
-    {
-        print(Time.time - lastEnterTime);
-        if(Collision.gameObject.tag == "Player" && (Time.time - lastEnterTime) >= coolTime)
+    void OnTriggerEnter(Collider Collision)
+    {   
+        if(Collision.gameObject.tag == "Player")
         {
-            AnotherTeleport.GetComponent<TeleportController>().lastEnterTime = Time.time;
-            lastEnterTime = Time.time;
-            Collision.transform.position = AnotherTeleport.transform.position;
+            if (!dict.ContainsKey(Collision.gameObject.name)) {
+                dict.Add(Collision.gameObject.name, Time.time);
+                AnotherTeleport.GetComponent<TeleportController>().dict.Add(Collision.gameObject.name, Time.time);
+                Collision.transform.position = AnotherTeleport.transform.position;
+            }
+            else if (Time.time - dict[Collision.gameObject.name] >= coolTime)
+            {
+                dict[Collision.gameObject.name] = Time.time;
+                AnotherTeleport.GetComponent<TeleportController>().dict[Collision.gameObject.name] = Time.time;
+                Collision.transform.position = AnotherTeleport.transform.position;
+            }      
         }
     }
 
