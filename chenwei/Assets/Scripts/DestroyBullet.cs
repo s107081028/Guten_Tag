@@ -9,11 +9,6 @@ public class DestroyBullet : MonoBehaviour
         Destroy(gameObject, 5);
     }
 
-    void Update()
-    {
-
-    }
-
     void OnCollisionEnter(Collision col)
     {
         Destroy(gameObject);
