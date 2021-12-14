@@ -22,8 +22,12 @@ public class PlayerController : MonoBehaviourPun
     public float speedFactor = 1f;
     public float directionFactor = 1f;
 
-    private Animator m_animator;
+    public bool aiming = false;
+    GameObject cine1;
+    GameObject cine2;
+    public Texture2D cursorTexture;
 
+    private Animator m_animator;
     /*
     void Awake(){
         m_animator = gameObject.GetComponent<Animator>();
@@ -38,12 +42,19 @@ public class PlayerController : MonoBehaviourPun
         can_jump = true;
         end = false;
 
+
+
         if (photonView.IsMine) {
+            SetCusor();
             //Camera.main.GetComponent<CameraCtrl>().player = this.gameObject;
             //Camera.main.GetComponent<CameraCtrl>().setCameraOffset();
-            GameObject cine = GameObject.Find("CM FreeLook1");
-            cine.GetComponent<CinemachineFreeLook>().Follow = transform;
-            cine.GetComponent<CinemachineFreeLook>().LookAt = transform;
+            cine1 = GameObject.Find("CM FreeLook1");
+            cine2 = GameObject.Find("CM FreeLook2");
+            cine1.GetComponent<CinemachineFreeLook>().Follow = transform;
+            cine1.GetComponent<CinemachineFreeLook>().LookAt = transform;
+            cine2.GetComponent<CinemachineFreeLook>().Follow = transform.Find("target");
+            cine2.GetComponent<CinemachineFreeLook>().LookAt = transform.Find("target");
+            cine2.SetActive(false);
             m_animator = gameObject.GetComponent<Animator>();
             rb = GetComponent<Rigidbody>();
 
@@ -63,7 +74,34 @@ public class PlayerController : MonoBehaviourPun
     {
         float x = Input.GetAxis("Horizontal") * directionFactor;
         float z = Input.GetAxis("Vertical") * directionFactor;
-        
+
+        //
+        if (Input.GetMouseButtonDown(1))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            //SetCusor();
+            aiming = true;
+            cine2.SetActive(true);
+            cine1.SetActive(false);
+        }
+        else if (Input.GetMouseButtonUp(1))
+        {
+            Cursor.lockState = CursorLockMode.None;
+
+            aiming = false;
+            cine1.SetActive(true);
+            cine2.SetActive(false);
+        }
+
+        if (aiming)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, (playerCamera.transform.rotation), 
+                Time.fixedDeltaTime * 2);
+        }
+
+        //and transform turn
+
+        //
         if (can_jump)
         {
             if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -84,7 +122,7 @@ public class PlayerController : MonoBehaviourPun
             + Vector3.up * rb.velocity.y;
             rb.velocity *= speedFactor;
         }
-        if(Mathf.Abs(x) > 0.1 || Mathf.Abs(z) > 0.1)
+        if((Mathf.Abs(x) > 0.1 || Mathf.Abs(z) > 0.1) && !aiming)
         {
             this.transform.eulerAngles = new Vector3(0, Mathf.Rad2Deg * Mathf.Atan2(rb.velocity.x , rb.velocity.z),0);
         }
@@ -114,13 +152,13 @@ public class PlayerController : MonoBehaviourPun
         {            
             m_animator.SetFloat("Speed", 0.5f);
         }
-
+        /*
         Quaternion rt = playerCamera.transform.rotation;
         Vector3 goback = playerCamera.transform.forward*10f;
         goback.y = 0f;
         playerCamera.GetComponent<Transform>().position = new Vector3(transform.position.x, 6.5f, transform.position.z) 
             - goback;
-        playerCamera.transform.rotation = rt;
+        playerCamera.transform.rotation = rt;*/
 
 
         rb.angularVelocity = Vector3.zero;
@@ -184,5 +222,11 @@ public class PlayerController : MonoBehaviourPun
 
     public void SetEnd(){
         end = false;
+    }
+    /*Set cursor*/
+    void SetCusor() {
+        
+        Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
+
     }
 }
