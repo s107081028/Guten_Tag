@@ -33,7 +33,7 @@ public class SkillController : MonoBehaviourPun
     GameObject prefab;
     GameObject prefab2;
     GameObject prefab3;
-    GameObject dizzyprefab;
+    public GameObject dizzyprefab;
 
     private bool debuff;
     public GameObject bullet;
@@ -211,7 +211,10 @@ public class SkillController : MonoBehaviourPun
         }
 
         if (col.gameObject.tag == "Skill2") {
-            if(!debuff) Skill2();
+            if(!debuff){
+                Skill2();
+                print("Skill2");
+            }
         }
 
         if (col.gameObject.tag == "Skill3") {
@@ -239,9 +242,9 @@ public class SkillController : MonoBehaviourPun
     {
         playerController.speedFactor = 0f;
         debuff = true;
-        StartCoroutine(DoResetSkill2Factor(skill2Delay));
         dizzyprefab = PhotonNetwork.Instantiate(dizzyeffect.name, transform.position + transform.up * 1.5f, new Quaternion(0, 90, 90, 0));
         m_animator.SetBool("dizzy", true);
+        StartCoroutine(DoResetSkill2Factor(skill2Delay));
     }
 
     IEnumerator DoResetSkill2Factor(float delay)
@@ -250,7 +253,7 @@ public class SkillController : MonoBehaviourPun
         playerController.speedFactor = 1f;
         debuff = false;
         m_animator.SetBool("dizzy", false);
-        Destroy(dizzyprefab);
+        PhotonNetwork.Destroy(dizzyprefab);
     }
 
     // HIT BY SKILL3 : CHAOS
