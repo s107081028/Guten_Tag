@@ -96,9 +96,10 @@ public class SkillController : MonoBehaviourPun
 
 
         // CALCULATE SKILL COOL DOWN
+        //prefabPosition = transform.Find("target").position;
         prefabPosition = transform.position + transform.up * 0.5f + transform.forward * 1.0f;
         // prefabPosition = transform.position + controller.center + transform.forward * 1f;
-        
+
         skill1Cooldown -= Time.deltaTime;
         skill2Cooldown -= Time.deltaTime;
         skill3Cooldown -= Time.deltaTime;
@@ -121,11 +122,21 @@ public class SkillController : MonoBehaviourPun
     void FixedUpdate()
     {
         if(photonView.IsMine){
+            GameObject playerCamera = GameObject.Find("Main Camera");
             // SKILL1 : SLOW
             if (Input.GetKey(KeyCode.E) && skill1Cooldown <= 0f) {
-                prefab = PhotonNetwork.Instantiate(bullet.name, prefabPosition, Quaternion.identity);
-                prefab.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
-                skill1Cooldown = skill1Speed;
+                if (playerController.aiming)
+                {
+                    prefab = PhotonNetwork.Instantiate(bullet.name, transform.Find("target").position, Quaternion.identity);
+                    prefab.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 800f);
+                    skill1Cooldown = skill1Speed;
+                }
+                else
+                {
+                    prefab = PhotonNetwork.Instantiate(bullet.name, prefabPosition, Quaternion.identity);
+                    prefab.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
+                    skill1Cooldown = skill1Speed;
+                }
 
                 // SKILL ANIMAITON
                 // p_animator.SetTrigger("Attack1");
@@ -133,16 +144,33 @@ public class SkillController : MonoBehaviourPun
 
             // SKILL2 : FREEZE
             if (Input.GetKey(KeyCode.R) && skill2Cooldown <= 0f) {
-                prefab2 = PhotonNetwork.Instantiate(bullet2.name, prefabPosition, Quaternion.identity);
-                prefab2.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
-                skill2Cooldown = skill2Speed;
+                if (playerController.aiming)
+                {
+                    prefab2 = PhotonNetwork.Instantiate(bullet2.name, transform.Find("target").position, Quaternion.identity);
+                    prefab2.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 800f);
+                    skill2Cooldown = skill2Speed;
+                }
+                else
+                {
+                    prefab2 = PhotonNetwork.Instantiate(bullet2.name, prefabPosition, Quaternion.identity);
+                    prefab2.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
+                    skill2Cooldown = skill2Speed;
+                }
             }
 
             // SKILL3 : CHAOS
             if (Input.GetKey(KeyCode.T) && skill3Cooldown <= 0f) {
-                prefab3 = PhotonNetwork.Instantiate(bullet3.name, prefabPosition, Quaternion.identity);
-                prefab3.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
-                skill3Cooldown = skill3Speed;
+                if (playerController.aiming)
+                {
+                    prefab3 = PhotonNetwork.Instantiate(bullet3.name, transform.Find("target").position, Quaternion.identity);
+                    prefab3.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 800f);
+                    skill3Cooldown = skill3Speed;
+                } else
+                {
+                    prefab3 = PhotonNetwork.Instantiate(bullet3.name, prefabPosition, Quaternion.identity);
+                    prefab3.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
+                    skill3Cooldown = skill3Speed;
+                }
             }
         }
 
