@@ -9652,6 +9652,8 @@ MonoBehaviour:
   skill4Delay: 5
   sprintPower: 30
   sprintMaxPower: 30
+  dizzyeffect: {fileID: 1602570454501873233, guid: 3de54866d5a659146bfeffb5950bb3a4,
+    type: 3}
   bullet: {fileID: 4888407158879785820, guid: f31aeaa01acdb334ca6c77a3cddbaf98, type: 3}
   bullet2: {fileID: 5811727931541511605, guid: 8e2705bebbae54841a9c258736038cbb, type: 3}
   bullet3: {fileID: 224861255754747268, guid: 5e167d4de13544d4f973cb2e80a2e4df, type: 3}

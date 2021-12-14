@@ -27,11 +27,13 @@ public class SkillController : MonoBehaviourPun
     public float sprintPower = 30f;
     public float sprintMaxPower = 30f;
 
+    public GameObject dizzyeffect;
 
     // OTHER GAMEOBJECTS
     GameObject prefab;
     GameObject prefab2;
     GameObject prefab3;
+    GameObject dizzyprefab;
 
     public GameObject bullet;
     public GameObject bullet2;
@@ -45,11 +47,12 @@ public class SkillController : MonoBehaviourPun
     // public SkinnedMeshRenderer[] renderers;
 
     public PlayerController playerController;
+    private Animator m_animator;
 
     void Start()
     {
         playerController = GetComponent<PlayerController>();
-        
+        m_animator = gameObject.GetComponent<Animator>();
     }
 
     void Update()
@@ -232,12 +235,16 @@ public class SkillController : MonoBehaviourPun
     {
         playerController.speedFactor = 0f;
         StartCoroutine(DoResetSkill2Factor(skill2Delay));
+        dizzyprefab = PhotonNetwork.Instantiate(dizzyeffect.name, transform.position + transform.up * 1.5f, new Quaternion(0, 90, 90, 0));
+        m_animator.SetBool("dizzy", true);
     }
 
     IEnumerator DoResetSkill2Factor(float delay)
     {
         yield return new WaitForSeconds(delay);
         playerController.speedFactor = 1f;
+        m_animator.SetBool("dizzy", false);
+        Destroy(dizzyprefab);
     }
 
     // HIT BY SKILL3 : CHAOS
