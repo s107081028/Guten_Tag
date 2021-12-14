@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class DestroyBullet : MonoBehaviour
+using Photon.Pun;
+public class DestroyBullet : MonoBehaviourPun
 {
     void Start()
     {
@@ -11,6 +11,8 @@ public class DestroyBullet : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        Destroy(gameObject);
+        if(!photonView.IsMine) return;
+        print("bullethit");
+        PhotonNetwork.Destroy(gameObject);
     }
 }
