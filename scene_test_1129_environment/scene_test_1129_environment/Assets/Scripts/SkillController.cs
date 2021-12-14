@@ -242,7 +242,7 @@ public class SkillController : MonoBehaviourPun
     {
         playerController.speedFactor = 0f;
         debuff = true;
-        dizzyprefab = PhotonNetwork.Instantiate(dizzyeffect.name, transform.position + transform.up * 1.5f, new Quaternion(0, 90, 90, 0));
+        dizzyprefab = Instantiate(dizzyeffect, transform.position + transform.up * 1.5f, new Quaternion(0, 90, 90, 0));
         m_animator.SetBool("dizzy", true);
         StartCoroutine(DoResetSkill2Factor(skill2Delay));
     }
@@ -253,7 +253,7 @@ public class SkillController : MonoBehaviourPun
         playerController.speedFactor = 1f;
         debuff = false;
         m_animator.SetBool("dizzy", false);
-        PhotonNetwork.Destroy(dizzyprefab);
+        Destroy(dizzyprefab);
     }
 
     // HIT BY SKILL3 : CHAOS
