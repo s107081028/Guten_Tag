@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,7 +27,7 @@ public class FillAmountController : MonoBehaviour
     private Image sprintPowerImage;
     // public GameObject player;
     private SkillController skillController;
-
+    private PhotonView photonView;
     void Start()
     {
         skill1CoolDownImage = GameObject.Find("SkillAndSprintCanvas/SkillCoolDown/Skill1/Skill1CoolDown").GetComponent<Image>();
@@ -35,10 +36,12 @@ public class FillAmountController : MonoBehaviour
         skill4CoolDownImage = GameObject.Find("SkillAndSprintCanvas/SkillCoolDown/Skill4/Skill4CoolDown").GetComponent<Image>();
         sprintPowerImage = GameObject.Find("SkillAndSprintCanvas/SprintBar/SprintPower").GetComponent<Image>();
         skillController = gameObject.GetComponent<SkillController>();
+        photonView = GetComponent<PhotonView>();
     }
 
     void Update()
     {
+        if (!photonView.IsMine) return;
         skill1CoolDownImage.fillAmount = (1.0f) * skillController.skill1Cooldown / skillController.skill1Speed;
         skill2CoolDownImage.fillAmount = (1.0f) * skillController.skill2Cooldown / skillController.skill2Speed;
         skill3CoolDownImage.fillAmount = (1.0f) * skillController.skill3Cooldown / skillController.skill3Speed;
