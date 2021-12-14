@@ -35,6 +35,7 @@ public class SkillController : MonoBehaviourPun
     GameObject prefab3;
     GameObject dizzyprefab;
 
+    private bool debuff;
     public GameObject bullet;
     public GameObject bullet2;
     public GameObject bullet3;    
@@ -53,6 +54,7 @@ public class SkillController : MonoBehaviourPun
     {
         playerController = GetComponent<PlayerController>();
         m_animator = gameObject.GetComponent<Animator>();
+        debuff = false;
     }
 
     void Update()
@@ -205,15 +207,15 @@ public class SkillController : MonoBehaviourPun
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == "Skill1") {
-            Skill1();
+            if(!debuff) Skill1();
         }
 
         if (col.gameObject.tag == "Skill2") {
-            Skill2();
+            if(!debuff) Skill2();
         }
 
         if (col.gameObject.tag == "Skill3") {
-            Skill3();
+            if(!debuff) Skill3();
         }
     }
     
@@ -221,6 +223,7 @@ public class SkillController : MonoBehaviourPun
     public void Skill1()
     {
         playerController.speedFactor = 0.5f;
+        debuff = true;
         StartCoroutine(DoResetSkill1Factor(skill1Delay));
     }
 
@@ -228,12 +231,14 @@ public class SkillController : MonoBehaviourPun
     {
         yield return new WaitForSeconds(delay);
         playerController.speedFactor = 1f;
+        debuff = false;
     }
 
     // HIT BT SKILL2 : FREEZE    
     public void Skill2()
     {
         playerController.speedFactor = 0f;
+        debuff = true;
         StartCoroutine(DoResetSkill2Factor(skill2Delay));
         dizzyprefab = PhotonNetwork.Instantiate(dizzyeffect.name, transform.position + transform.up * 1.5f, new Quaternion(0, 90, 90, 0));
         m_animator.SetBool("dizzy", true);
@@ -243,6 +248,7 @@ public class SkillController : MonoBehaviourPun
     {
         yield return new WaitForSeconds(delay);
         playerController.speedFactor = 1f;
+        debuff = false;
         m_animator.SetBool("dizzy", false);
         Destroy(dizzyprefab);
     }
@@ -251,6 +257,7 @@ public class SkillController : MonoBehaviourPun
     public void Skill3()
     {
         playerController.directionFactor = -1;
+        debuff = true;
         StartCoroutine(DoResetSkill3Factor(skill3Delay));
     }
 
