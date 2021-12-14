@@ -9424,6 +9424,7 @@ GameObject:
   - component: {fileID: 3036720987594092797}
   - component: {fileID: -6853303269965452869}
   - component: {fileID: 2143524672451065824}
+  - component: {fileID: 1381201973935969296}
   m_Layer: 0
   m_Name: Yellow_C01
   m_TagString: Player
@@ -9564,10 +9565,27 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: -6853303269965452869}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1381201973935969296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6349257400965536255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69af6c7d8f864a042bc633c18abb1fcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 5772771377150825440}
+  - {fileID: 2775477271854109935}
+  - {fileID: 4309014093714190623}
 --- !u!1 &6364819808659153206
 GameObject:
   m_ObjectHideFlags: 0

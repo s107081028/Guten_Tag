@@ -54146,6 +54146,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 6349257400965536255, guid: c3c1e5858a9181442a0395d4fac36b45,
     type: 3}
   playerCamera: {fileID: 1448487742}
+  renderers: []
 --- !u!4 &2037504680
 Transform:
   m_ObjectHideFlags: 0
