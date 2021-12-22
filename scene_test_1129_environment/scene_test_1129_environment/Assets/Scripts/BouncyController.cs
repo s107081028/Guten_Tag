@@ -19,8 +19,11 @@ public class BouncyController : MonoBehaviour
 
     void OnTriggerEnter(Collider Collision)
     {
-        if(Collision.gameObject.tag != "Plane")
+        //if (Collision.gameObject.tag != "Plane")
+        if (Collision.gameObject.tag == "Player")
+        {
             Collision.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Collision.gameObject.GetComponent<Rigidbody>().velocity.x, 0, Collision.gameObject.GetComponent<Rigidbody>().velocity.z);
             Collision.gameObject.GetComponent<Rigidbody>().velocity += new Vector3(0, speed, 0);
+        }
     }
 }

@@ -36,6 +36,10 @@ MonoBehaviour:
   RpcList:
   - ClickRpc
   - DestroyRpc
+  - showText
+  - GhostWin
+  - HumanWin
+  - loadNextSync
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
