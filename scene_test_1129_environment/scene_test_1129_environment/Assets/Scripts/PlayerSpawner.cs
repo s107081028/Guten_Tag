@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace PhotonTutorial
@@ -13,6 +14,20 @@ namespace PhotonTutorial
         [SerializeField] private GameObject Teleport1 = null;
         [SerializeField] private GameObject Teleport2 = null;
         [SerializeField] private GameObject WinLoseCanvas = null;
+
+
+        //Character List
+        [SerializeField] private List<GameObject> characterList = new List<GameObject>();
+
+
+        //Identify ghost player actor number
+        private int ghostActorNum = 0;
+
+        //win lose diaply ui
+        private GameObject winText;
+        private GameObject loseText;
+
+
         public Transform spawnPoint1;
         public Transform spawnPoint2;
 
@@ -22,11 +37,21 @@ namespace PhotonTutorial
 
         private void Start()
         {
+
+            
+
+            loseText = WinLoseCanvas.transform.Find("LOSEText").gameObject;
+            winText = WinLoseCanvas.transform.Find("WINText").gameObject;
+
+            setGhostAndHuman();
+
             //var player = PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(-20f, 10f), 1f, Random.Range(5f, 10f)), Quaternion.identity);
             if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-                var player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint1.position, Quaternion.identity);
-            }else{ 
-                var player = PhotonNetwork.Instantiate(playerPrefab2.name, spawnPoint2.position, Quaternion.identity);
+
+                spawnPlayerByCharacterNum((int)PhotonNetwork.LocalPlayer.CustomProperties["CharacterNum"],spawnPoint1.position);
+                //var player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint1.position, Quaternion.identity);
+            }else{
+                spawnPlayerByCharacterNum((int)PhotonNetwork.LocalPlayer.CustomProperties["CharacterNum"], spawnPoint2.position);
             }
             
             
@@ -56,7 +81,22 @@ namespace PhotonTutorial
         public void GhostWin()
         {
 
-                WinLoseCanvas.SetActive(true);
+            WinLoseCanvas.SetActive(true);
+
+
+            //if this player is ghost
+            if (PhotonNetwork.LocalPlayer.ActorNumber == ghostActorNum)
+            {
+                showWinUI();
+
+            }
+            else {
+                showLoseUI();
+            }
+
+
+            /**
+
             if(PhotonNetwork.LocalPlayer.IsMasterClient && masterIsGhost)
             {
                 //show win
@@ -71,15 +111,40 @@ namespace PhotonTutorial
             else
             {
                 //show lose
-                WinLoseCanvas.transform.Find("WINText").gameObject.SetActive(false);
-            }
+                
+            }*/
+        }
+
+        void showWinUI() {
+            Debug.Log("You win!!!!!");
+            loseText.SetActive(false);
+            winText.SetActive(true);
+        }
+
+        void showLoseUI()
+        {
+            Debug.Log("You lose!!!");
+            loseText.SetActive(true);
+            winText.SetActive(false);
         }
 
         [PunRPC]
         public void HumanWin()
         {
 
-                WinLoseCanvas.SetActive(true);
+            WinLoseCanvas.SetActive(true);
+
+            if (PhotonNetwork.LocalPlayer.ActorNumber == ghostActorNum)
+            {
+                showLoseUI();
+
+            }
+            else {
+                showWinUI();
+            }
+
+            /*
+
             if (PhotonNetwork.LocalPlayer.IsMasterClient && masterIsGhost)
             {
                 //show lose
@@ -94,7 +159,7 @@ namespace PhotonTutorial
             {
                 //show win
                 WinLoseCanvas.transform.Find("LOSEText").gameObject.SetActive(false);
-            }
+            }*/
         }
 
         public void restart()
@@ -109,6 +174,36 @@ namespace PhotonTutorial
             PhotonNetwork.LoadLevel("Environment");
         }
 
+
+
+        void spawnPlayerByCharacterNum(int num, Vector3 pos) {
+
+            GameObject selectCharacter = characterList[num];
+            PhotonNetwork.Instantiate(selectCharacter.name,pos, Quaternion.identity);
+
+        }
+
+
+        //set ghost actor number
+        void setGhostAndHuman() {
+            if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["Ghost"])
+            {
+                if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                {
+                    ghostActorNum = PhotonNetwork.LocalPlayer.ActorNumber;
+
+                }
+                
+            }
+            else
+            {
+                if (!PhotonNetwork.LocalPlayer.IsMasterClient)
+                {
+                    ghostActorNum = PhotonNetwork.LocalPlayer.ActorNumber;
+                }
+
+            }
+        }
     }
 
 }

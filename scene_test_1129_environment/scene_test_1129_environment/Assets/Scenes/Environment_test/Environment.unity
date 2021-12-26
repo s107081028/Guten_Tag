@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.5786531, g: 0.6452941, b: 0.73113155, a: 1}
+  m_IndirectSpecularColor: {r: 0.57865286, g: 0.64529395, b: 0.7311305, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -57198,6 +57198,9 @@ MonoBehaviour:
   Teleport2: {fileID: 9186469169151961545, guid: e11e3ff61b93f9346a3a6e4925bf69f9,
     type: 3}
   WinLoseCanvas: {fileID: 1317486294}
+  characterList:
+  - {fileID: 6349257400965536255, guid: efba68ebb88f6ab4e8d12fbb2f0630f2, type: 3}
+  - {fileID: 6349257400965536255, guid: 913dee4c8b9ccdc428f5817748c08cb1, type: 3}
   spawnPoint1: {fileID: 109376232}
   spawnPoint2: {fileID: 876550637}
 --- !u!4 &2037504680
