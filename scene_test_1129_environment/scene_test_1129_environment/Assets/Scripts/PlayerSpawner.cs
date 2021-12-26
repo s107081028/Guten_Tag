@@ -1,5 +1,6 @@
 ﻿using Photon.Pun;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace PhotonTutorial
@@ -23,9 +24,19 @@ namespace PhotonTutorial
         //Identify ghost player actor number
         private int ghostActorNum = 0;
 
+
+        //ui data
+        private string humanName = "";
+        private string ghostName = "";
+
+        //Game play ui
+        private TextMeshProUGUI missionText;
+        
         //win lose diaply ui
-        private GameObject winText;
-        private GameObject loseText;
+        private GameObject winUI;
+        private GameObject loseUI;
+
+
 
 
         public Transform spawnPoint1;
@@ -40,10 +51,13 @@ namespace PhotonTutorial
 
             
 
-            loseText = WinLoseCanvas.transform.Find("LOSEText").gameObject;
-            winText = WinLoseCanvas.transform.Find("WINText").gameObject;
+            loseUI = WinLoseCanvas.transform.Find("Panel_LOSE").gameObject;
+            winUI = WinLoseCanvas.transform.Find("Panel_WIN").gameObject;
+            missionText = GameObject.Find("Mission_text").GetComponent<TextMeshProUGUI>();
 
             setGhostAndHuman();
+
+            setMissionText();
 
             //var player = PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(-20f, 10f), 1f, Random.Range(5f, 10f)), Quaternion.identity);
             if (PhotonNetwork.LocalPlayer.IsMasterClient) {
@@ -117,15 +131,15 @@ namespace PhotonTutorial
 
         void showWinUI() {
             Debug.Log("You win!!!!!");
-            loseText.SetActive(false);
-            winText.SetActive(true);
+            loseUI.SetActive(false);
+            winUI.SetActive(true);
         }
 
         void showLoseUI()
         {
             Debug.Log("You lose!!!");
-            loseText.SetActive(true);
-            winText.SetActive(false);
+            loseUI.SetActive(true);
+            winUI.SetActive(false);
         }
 
         [PunRPC]
@@ -184,24 +198,59 @@ namespace PhotonTutorial
         }
 
 
-        //set ghost actor number
+        //set ghost actor number and their nick name
         void setGhostAndHuman() {
             if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["Ghost"])
             {
+
                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
                 {
                     ghostActorNum = PhotonNetwork.LocalPlayer.ActorNumber;
 
+
                 }
+                else
+                {
+                    ghostActorNum = PhotonNetwork.PlayerListOthers[0].ActorNumber;
+                }
+
                 
             }
             else
             {
+                humanName = PhotonNetwork.MasterClient.NickName;
                 if (!PhotonNetwork.LocalPlayer.IsMasterClient)
                 {
                     ghostActorNum = PhotonNetwork.LocalPlayer.ActorNumber;
+
+                }
+                else
+                {
+                    ghostActorNum = PhotonNetwork.PlayerListOthers[0].ActorNumber;
                 }
 
+
+            }
+
+            //set name
+            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+                if (player.ActorNumber == ghostActorNum)
+                {
+                    ghostName = player.NickName;
+                }
+                else {
+                    humanName = player.NickName;
+                }
+            }
+        }
+
+        void setMissionText() {
+            if (PhotonNetwork.LocalPlayer.ActorNumber == ghostActorNum)
+            {
+                missionText.text = "Catch " + humanName + "!";
+            }
+            else {
+                missionText.text = "Don't get caught!";
             }
         }
     }

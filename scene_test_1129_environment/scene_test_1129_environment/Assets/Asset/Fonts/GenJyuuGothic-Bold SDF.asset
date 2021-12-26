@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: GenJyuuGothic-Bold SDF
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: -600570024
   material: {fileID: 8245396539864998568}
-  materialHashCode: 0
+  materialHashCode: 1819196883
   m_Version: 1.1.0
   m_SourceFontFileGUID: 486aeb085818aa441a4d0bffa8555dc6
   m_SourceFontFile_EditorRef: {fileID: 0}
