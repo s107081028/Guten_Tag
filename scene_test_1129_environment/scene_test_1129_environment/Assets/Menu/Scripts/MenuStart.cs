@@ -1,4 +1,5 @@
-﻿using ExitGames.Client.Photon;
+﻿using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -41,6 +42,7 @@ public class MenuStart : MonoBehaviourPunCallbacks
     private GameObject leftNameGhost;
     private GameObject rightNameGhost;
     private Button startButton;
+    private Button switchButton;
 
 
     private void Awake() => PhotonNetwork.AutomaticallySyncScene = true;
@@ -48,6 +50,7 @@ public class MenuStart : MonoBehaviourPunCallbacks
     private void Start()
     {
         startButton = GameObject.Find("StartButton").GetComponent<Button>();
+        switchButton = GameObject.Find("SwitchGhostButton").GetComponent<Button>();
         leftNameGhost = leftName.gameObject.transform.Find("GhostImg").gameObject;
         rightNameGhost = rightName.gameObject.transform.Find("GhostImg").gameObject;
         waitingStatusPanel.SetActive(true);
@@ -126,11 +129,16 @@ public class MenuStart : MonoBehaviourPunCallbacks
         Debug.Log("Client successfully joined a room");
 
 
-        /*TODO update master status*/
+
 
         Hashtable playerProp = PhotonNetwork.LocalPlayer.CustomProperties;
         playerProp.Add(playerCharacterSelectNum, 0);
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProp);
+
+
+        leftCharacter.SetActive(true);
+        leftSkillBox.SetActive(true);
+        leftName.gameObject.SetActive(true);
 
         int playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
 
@@ -139,11 +147,10 @@ public class MenuStart : MonoBehaviourPunCallbacks
             
             waitingStatusText.text = "Waiting For Opponent";
             Debug.Log("Client is waiting for an opponent");
-            waitingStatusPanel.SetActive(false);
-            leftName.gameObject.SetActive(true);
+            
+           
             leftName.text = PhotonNetwork.NickName;
-            leftCharacter.SetActive(true);
-            leftSkillBox.SetActive(true);
+
             leftButtons.SetActive(true);
         }
         else
@@ -151,16 +158,17 @@ public class MenuStart : MonoBehaviourPunCallbacks
             DisableButtonForMaster();
             waitingStatusText.text = "Opponent Found";
             Debug.Log("Match is ready to begin");
-            waitingStatusPanel.SetActive(false);
-            leftName.gameObject.SetActive(true);
+            
+            
             rightName.gameObject.SetActive(true);
             rightName.text = PhotonNetwork.NickName;
             leftName.text = PhotonNetwork.MasterClient.NickName;
             rightCharacter.SetActive(true);
-            leftCharacter.SetActive(true);
-            leftSkillBox.SetActive(true);
+
             rightSkillBox.SetActive(true);
             rightButtons.SetActive(true);
+            switchButton.interactable = true;
+            
         }
         waitingStatusPanel.SetActive(false);
 
@@ -178,12 +186,11 @@ public class MenuStart : MonoBehaviourPunCallbacks
 
             waitingStatusText.text = "Opponent Found";
             Debug.Log("Match is ready to begin");
-
-
-            waitingStatusPanel.SetActive(false);
+            switchButton.interactable = true;
 
 
         }
+        
     }
 
 
@@ -259,5 +266,13 @@ public class MenuStart : MonoBehaviourPunCallbacks
             return;
         startButton.interactable = false;
     }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        base.OnPlayerLeftRoom(otherPlayer);
+        //todo show other player gone on UI
+    }
+
+
 
 }
