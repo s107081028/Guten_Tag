@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviourPun
     GameObject cine1;
     GameObject cine2;
     public Texture2D cursorTexture;
+    bool punishing;
 
     private Animator m_animator;
     /*
@@ -41,7 +42,6 @@ public class PlayerController : MonoBehaviourPun
         TeleportAvailable = false;
         can_jump = true;
         end = false;
-
 
 
         if (photonView.IsMine) {
@@ -104,13 +104,15 @@ public class PlayerController : MonoBehaviourPun
         //
         if (can_jump)
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (Input.GetKeyDown(KeyCode.LeftShift) && gameObject.GetComponent<SkillController>().sprintPower > 0 && !gameObject.GetComponent<SkillController>().punishing)
             {
                 m_animator.SetBool("rush", true);
+                gameObject.GetComponent<SkillController>().sprint = true;
                 speed = 10;
             }else if (Input.GetKeyUp(KeyCode.LeftShift))
             {
                 m_animator.SetBool("rush", false);
+                gameObject.GetComponent<SkillController>().sprint = false;
                 speed = 5;
             }
         }

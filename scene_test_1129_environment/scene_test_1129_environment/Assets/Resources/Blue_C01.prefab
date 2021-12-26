@@ -9739,12 +9739,23 @@ MonoBehaviour:
   skill2Delay: 5
   skill3Delay: 5
   skill4Delay: 5
+  sprint: 0
   sprintPower: 30
   sprintMaxPower: 30
+  dizzyeffect: {fileID: 1602570454501873233, guid: 3de54866d5a659146bfeffb5950bb3a4,
+    type: 3}
+  dizzyprefab: {fileID: 0}
   bullet: {fileID: 4888407158879785820, guid: f31aeaa01acdb334ca6c77a3cddbaf98, type: 3}
   bullet2: {fileID: 5811727931541511605, guid: 8e2705bebbae54841a9c258736038cbb, type: 3}
   bullet3: {fileID: 224861255754747268, guid: 5e167d4de13544d4f973cb2e80a2e4df, type: 3}
   playerController: {fileID: 0}
+  ItemPrefab:
+  - {fileID: 4888407158879785820, guid: f31aeaa01acdb334ca6c77a3cddbaf98, type: 3}
+  - {fileID: 4888407158879785820, guid: f31aeaa01acdb334ca6c77a3cddbaf98, type: 3}
+  - {fileID: 5811727931541511605, guid: 8e2705bebbae54841a9c258736038cbb, type: 3}
+  - {fileID: 224861255754747268, guid: 5e167d4de13544d4f973cb2e80a2e4df, type: 3}
+  punishing: 0
+  punishing_end: 0
 --- !u!114 &9097566060779555976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9757,6 +9768,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0169e25fad6de734a86e2a2ee976f32e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletPicked:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &-6941454660390089604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9770,6 +9788,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerspawner: {fileID: 0}
+  dash_speed: 0.15
+  cnt_end: 50
 --- !u!1 &6381292169270501319
 GameObject:
   m_ObjectHideFlags: 0

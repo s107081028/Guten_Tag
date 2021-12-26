@@ -23,7 +23,7 @@ public class SkillController : MonoBehaviourPun
     public float skill3Delay = 5f;
     public float skill4Delay = 5f;
 
-    private bool sprint = false;
+    public bool sprint = false;
     public float sprintPower = 30f;
     public float sprintMaxPower = 30f;
 
@@ -33,6 +33,7 @@ public class SkillController : MonoBehaviourPun
     GameObject prefab;
     GameObject prefab2;
     GameObject prefab3;
+    GameObject prefab4;
     public GameObject dizzyprefab;
 
     private bool debuff;
@@ -49,12 +50,22 @@ public class SkillController : MonoBehaviourPun
 
     public PlayerController playerController;
     private Animator m_animator;
-
+    
+    private int item;
+    private int bulletNum;
+    public GameObject[] ItemPrefab;
+    public bool punishing;
+    public float punishing_end;
     void Start()
     {
         playerController = GetComponent<PlayerController>();
         m_animator = gameObject.GetComponent<Animator>();
         debuff = false;
+        item = -1;
+        bulletNum = 0;
+        punishing = false;
+        punishing_end = 15;
+        // gameObject.GetComponent<FillAmountController>().RefreshBulletNum(bulletNum);
     }
 
     void Update()
@@ -99,84 +110,118 @@ public class SkillController : MonoBehaviourPun
         }
 
 
-
         // CALCULATE SKILL COOL DOWN
         //prefabPosition = transform.Find("target").position;
         prefabPosition = transform.position + transform.up * 0.5f + transform.forward * 1.0f;
         // prefabPosition = transform.position + controller.center + transform.forward * 1f;
 
-        skill1Cooldown -= Time.deltaTime;
-        skill2Cooldown -= Time.deltaTime;
-        skill3Cooldown -= Time.deltaTime;
-        skill4Cooldown -= Time.deltaTime;
-        skill1Cooldown = Mathf.Clamp(skill1Cooldown, 0f, skill1Speed);
-        skill2Cooldown = Mathf.Clamp(skill2Cooldown, 0f, skill2Speed);
-        skill3Cooldown = Mathf.Clamp(skill3Cooldown, 0f, skill3Speed);
-        skill4Cooldown = Mathf.Clamp(skill4Cooldown, 0f, skill4Speed);
+        // skill1Cooldown -= Time.deltaTime;
+        // skill2Cooldown -= Time.deltaTime;
+        // skill3Cooldown -= Time.deltaTime;
+        // skill4Cooldown -= Time.deltaTime;
+        // skill1Cooldown = Mathf.Clamp(skill1Cooldown, 0f, skill1Speed);
+        // skill2Cooldown = Mathf.Clamp(skill2Cooldown, 0f, skill2Speed);
+        // skill3Cooldown = Mathf.Clamp(skill3Cooldown, 0f, skill3Speed);
+        // skill4Cooldown = Mathf.Clamp(skill4Cooldown, 0f, skill4Speed);
 
-        // SPRINT POWER CALCULATION
-        if (sprint) {
-            sprintPower -= (6.0f) * Time.deltaTime;      // RUN 5 SECONDS
-        }
-        else {
-            sprintPower += (3.0f) * Time.deltaTime;      // RECOVER 10 SECONDS
-        }
-        sprintPower = Mathf.Clamp(sprintPower, 0f, sprintMaxPower);
     }
 
     void FixedUpdate()
     {
         if(photonView.IsMine){
             GameObject playerCamera = GameObject.Find("Main Camera");
-            // SKILL1 : SLOW
-            if (Input.GetKey(KeyCode.E) && skill1Cooldown <= 0f) {
-                if (playerController.aiming)
-                {
-                    prefab = PhotonNetwork.Instantiate(bullet.name, transform.Find("target").position, Quaternion.identity);
-                    prefab.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 800f);
-                    skill1Cooldown = skill1Speed;
-                }
-                else
-                {
-                    prefab = PhotonNetwork.Instantiate(bullet.name, prefabPosition, Quaternion.identity);
-                    prefab.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
-                    skill1Cooldown = skill1Speed;
-                }
+            // // SKILL1 : SLOW
+            // if (Input.GetKey(KeyCode.E) && skill1Cooldown <= 0f) {
+            //     if (playerController.aiming)
+            //     {
+            //         prefab = PhotonNetwork.Instantiate(bullet.name, transform.Find("target").position, Quaternion.identity);
+            //         prefab.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 800f);
+            //         skill1Cooldown = skill1Speed;
+            //     }
+            //     else
+            //     {
+            //         prefab = PhotonNetwork.Instantiate(bullet.name, prefabPosition, Quaternion.identity);
+            //         prefab.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
+            //         skill1Cooldown = skill1Speed;
+            //     }
 
-                // SKILL ANIMAITON
-                // p_animator.SetTrigger("Attack1");
+            //     // SKILL ANIMAITON
+            //     // p_animator.SetTrigger("Attack1");
+            // }
+
+            // // SKILL2 : FREEZE
+            // if (Input.GetKey(KeyCode.R) && skill2Cooldown <= 0f) {
+            //     if (playerController.aiming)
+            //     {
+            //         prefab2 = PhotonNetwork.Instantiate(bullet2.name, transform.Find("target").position, Quaternion.identity);
+            //         prefab2.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 800f);
+            //         skill2Cooldown = skill2Speed;
+            //     }
+            //     else
+            //     {
+            //         prefab2 = PhotonNetwork.Instantiate(bullet2.name, prefabPosition, Quaternion.identity);
+            //         prefab2.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
+            //         skill2Cooldown = skill2Speed;
+            //     }
+            // }
+
+            // // SKILL3 : CHAOS
+            // if (Input.GetKey(KeyCode.T) && skill3Cooldown <= 0f) {
+            //     if (playerController.aiming)
+            //     {
+            //         prefab3 = PhotonNetwork.Instantiate(bullet3.name, transform.Find("target").position, Quaternion.identity);
+            //         prefab3.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 800f);
+            //         skill3Cooldown = skill3Speed;
+            //     } else
+            //     {
+            //         prefab3 = PhotonNetwork.Instantiate(bullet3.name, prefabPosition, Quaternion.identity);
+            //         prefab3.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
+            //         skill3Cooldown = skill3Speed;
+            //     }
+            // }
+
+            // SKILL Item
+            if (Input.GetKeyDown(KeyCode.Q)) {
+                print(item);
+                if(item != -1 && bulletNum > 0){
+                    if (playerController.aiming)
+                    {
+                        prefab4 = PhotonNetwork.Instantiate(ItemPrefab[item].name, transform.Find("target").position, Quaternion.identity);
+                        prefab4.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 2400f);
+                        // skill3Cooldown = skill3Speed;
+                    } else
+                    {
+                        prefab4 = PhotonNetwork.Instantiate(ItemPrefab[item].name, prefabPosition, Quaternion.identity);
+                        prefab4.GetComponent<Rigidbody>().AddForce(transform.forward * 2400);
+                        // skill3Cooldown = skill3Speed;
+                    }
+                    bulletNum -= 1;
+                    gameObject.GetComponent<FillAmountController>().RefreshBulletNum(bulletNum);
+                }
+            }
+            // SPRINT POWER CALCULATION
+            if (sprint) {
+                sprintPower -= (6.0f) * Time.deltaTime;      // RUN 5 SECONDS
+            }
+            else {
+                sprintPower += (3.0f) * Time.deltaTime;      // RECOVER 10 SECONDS
+            }
+            sprintPower = Mathf.Clamp(sprintPower, 0f, sprintMaxPower);
+
+            // Too Exhausted 
+            m_animator.SetBool("exhausted", false);
+            if(sprintPower >= 15.0f){
+                punishing = false;
+            } else if( sprintPower == 0f){
+                punishing = true;
+                m_animator.SetBool("exhausted", true);
             }
 
-            // SKILL2 : FREEZE
-            if (Input.GetKey(KeyCode.R) && skill2Cooldown <= 0f) {
-                if (playerController.aiming)
-                {
-                    prefab2 = PhotonNetwork.Instantiate(bullet2.name, transform.Find("target").position, Quaternion.identity);
-                    prefab2.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 800f);
-                    skill2Cooldown = skill2Speed;
-                }
-                else
-                {
-                    prefab2 = PhotonNetwork.Instantiate(bullet2.name, prefabPosition, Quaternion.identity);
-                    prefab2.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
-                    skill2Cooldown = skill2Speed;
-                }
-            }
+            if(punishing){
+                playerController.speedFactor = 0f;  
+            } else playerController.speedFactor = 1.0f;
 
-            // SKILL3 : CHAOS
-            if (Input.GetKey(KeyCode.T) && skill3Cooldown <= 0f) {
-                if (playerController.aiming)
-                {
-                    prefab3 = PhotonNetwork.Instantiate(bullet3.name, transform.Find("target").position, Quaternion.identity);
-                    prefab3.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 800f);
-                    skill3Cooldown = skill3Speed;
-                } else
-                {
-                    prefab3 = PhotonNetwork.Instantiate(bullet3.name, prefabPosition, Quaternion.identity);
-                    prefab3.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
-                    skill3Cooldown = skill3Speed;
-                }
-            }
+            if(bulletNum == 0) item = -1;
         }
 
         // // SKILL4 : STEALTH
@@ -242,7 +287,7 @@ public class SkillController : MonoBehaviourPun
     {
         playerController.speedFactor = 0f;
         debuff = true;
-        dizzyprefab = Instantiate(dizzyeffect, transform.position + transform.up * 1.5f, new Quaternion(0, 90, 90, 0));
+        if(photonView.IsMine) dizzyprefab = PhotonNetwork.Instantiate(dizzyeffect.name, transform.position + transform.up * 1.5f, new Quaternion(0, 90, 90, 0));
         m_animator.SetBool("dizzy", true);
         StartCoroutine(DoResetSkill2Factor(skill2Delay));
     }
@@ -253,7 +298,7 @@ public class SkillController : MonoBehaviourPun
         playerController.speedFactor = 1f;
         debuff = false;
         m_animator.SetBool("dizzy", false);
-        Destroy(dizzyprefab);
+        if(photonView.IsMine) PhotonNetwork.Destroy(dizzyprefab);
     }
 
     // HIT BY SKILL3 : CHAOS
@@ -268,6 +313,13 @@ public class SkillController : MonoBehaviourPun
     {
         yield return new WaitForSeconds(delay);
         playerController.directionFactor = 1;
+    }
+    
+    public void PickUpCoin(int i)
+    {
+        item = i;
+        bulletNum = 5;
+        gameObject.GetComponent<FillAmountController>().RefreshBulletNum(bulletNum);
     }
 
     // SKILL4 : STEALTH
