@@ -9750,10 +9750,10 @@ MonoBehaviour:
   bullet3: {fileID: 224861255754747268, guid: 5e167d4de13544d4f973cb2e80a2e4df, type: 3}
   playerController: {fileID: 0}
   ItemPrefab:
-  - {fileID: 4888407158879785820, guid: f31aeaa01acdb334ca6c77a3cddbaf98, type: 3}
-  - {fileID: 4888407158879785820, guid: f31aeaa01acdb334ca6c77a3cddbaf98, type: 3}
-  - {fileID: 5811727931541511605, guid: 8e2705bebbae54841a9c258736038cbb, type: 3}
-  - {fileID: 224861255754747268, guid: 5e167d4de13544d4f973cb2e80a2e4df, type: 3}
+  - {fileID: 1979048356021752, guid: d82846700d83cc34eb745126e8de58a6, type: 3}
+  - {fileID: 1117804056975720, guid: 118a754c0d3d1b842bce8ff4892b0ef9, type: 3}
+  - {fileID: 1439816204641800, guid: 3d873118a8346a74bb1ea9ec62d17fd7, type: 3}
+  - {fileID: 1568711714316788, guid: 2cdcb95f8ec1fd04cb092193585c854a, type: 3}
   punishing: 0
   punishing_end: 0
 --- !u!114 &9097566060779555976

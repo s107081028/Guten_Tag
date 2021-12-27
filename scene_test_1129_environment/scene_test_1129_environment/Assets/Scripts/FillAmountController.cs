@@ -1,10 +1,11 @@
 ﻿using Photon.Pun;
+using PhotonTutorial;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FillAmountController : MonoBehaviour
+public class FillAmountController : MonoBehaviourPun
 {
     // GAMEOBJECT
     // private Image skill1CoolDown;
@@ -43,14 +44,14 @@ public class FillAmountController : MonoBehaviour
         bulletPicked[3] = GameObject.Find("SkillAndSprintCanvas/Orange theme spritesheet 1_0 (3)").GetComponent<Image>();
         bulletPicked[4] = GameObject.Find("SkillAndSprintCanvas/Orange theme spritesheet 1_0 (4)").GetComponent<Image>();
 
-        RefreshBulletNum(0);
         skillController = gameObject.GetComponent<SkillController>();
         photonView = GetComponent<PhotonView>();
+        RefreshBulletNum(0);
     }
 
     void FixedUpdate()
     {
-        if (!photonView.IsMine) return;
+        if(!photonView.IsMine) return;
         // skill1CoolDownImage.fillAmount = (1.0f) * skillController.skill1Cooldown / skillController.skill1Speed;
         // skill2CoolDownImage.fillAmount = (1.0f) * skillController.skill2Cooldown / skillController.skill2Speed;
         // skill3CoolDownImage.fillAmount = (1.0f) * skillController.skill3Cooldown / skillController.skill3Speed;
@@ -59,7 +60,7 @@ public class FillAmountController : MonoBehaviour
     }
     
     public void RefreshBulletNum(int num) {
-        // if (!photonView.IsMine) return;
+        if (!photonView.IsMine) return;
         for(int i = 0; i < 5; i++) {
             if(i <= (num - 1)){
                 bulletPicked[i].enabled = true;

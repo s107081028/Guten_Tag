@@ -181,16 +181,19 @@ public class SkillController : MonoBehaviourPun
             // }
 
             // SKILL Item
+            m_animator.SetBool("attack", false);
             if (Input.GetKeyDown(KeyCode.Q)) {
                 print(item);
                 if(item != -1 && bulletNum > 0){
                     if (playerController.aiming)
                     {
-                        prefab4 = PhotonNetwork.Instantiate(ItemPrefab[item].name, transform.Find("target").position, Quaternion.identity);
+                        m_animator.SetBool("attack", true);
+                        prefab4 = PhotonNetwork.Instantiate(ItemPrefab[item].name, transform.Find("target").position + playerCamera.transform.forward * 2.0f, Quaternion.identity);
                         prefab4.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 2400f);
                         // skill3Cooldown = skill3Speed;
                     } else
                     {
+                        m_animator.SetBool("attack", true);
                         prefab4 = PhotonNetwork.Instantiate(ItemPrefab[item].name, prefabPosition, Quaternion.identity);
                         prefab4.GetComponent<Rigidbody>().AddForce(transform.forward * 2400);
                         // skill3Cooldown = skill3Speed;
