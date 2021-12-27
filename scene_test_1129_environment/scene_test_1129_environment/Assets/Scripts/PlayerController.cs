@@ -107,10 +107,12 @@ public class PlayerController : MonoBehaviourPun
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 m_animator.SetBool("rush", true);
+                gameObject.GetComponent<SkillController>().sprint = true;
                 speed = 10;
             }else if (Input.GetKeyUp(KeyCode.LeftShift))
             {
                 m_animator.SetBool("rush", false);
+                gameObject.GetComponent<SkillController>().sprint = false;
                 speed = 5;
             }
         }
