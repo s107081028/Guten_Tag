@@ -15,6 +15,7 @@ namespace PhotonTutorial
         [SerializeField] private GameObject Teleport1 = null;
         [SerializeField] private GameObject Teleport2 = null;
         [SerializeField] private GameObject WinLoseCanvas = null;
+        [SerializeField] private GameObject GhostGPS = null;
 
 
         //Character List
@@ -23,6 +24,10 @@ namespace PhotonTutorial
 
         //Identify ghost player actor number
         private int ghostActorNum = 0;
+
+        //Player GameObjects
+        private GameObject player1;
+        private GameObject player2;
 
 
         //ui data
@@ -59,6 +64,7 @@ namespace PhotonTutorial
 
             setMissionText();
 
+
             //var player = PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(-20f, 10f), 1f, Random.Range(5f, 10f)), Quaternion.identity);
             if (PhotonNetwork.LocalPlayer.IsMasterClient) {
 
@@ -67,10 +73,12 @@ namespace PhotonTutorial
             }else{
                 spawnPlayerByCharacterNum((int)PhotonNetwork.LocalPlayer.CustomProperties["CharacterNum"], spawnPoint2.position);
             }
+
+            Invoke(nameof(setGhostGPS), 2);
+
             
-            
-            
-            
+
+
             //playerCamera = GameObject.Find("Main Camera");
             //playerCamera.GetComponent<Transform>().position = new Vector3(player.transform.position.x, 6.5f, player.transform.position.z) 
             //- player.transform.forward*10f;
@@ -190,11 +198,11 @@ namespace PhotonTutorial
 
 
 
-        void spawnPlayerByCharacterNum(int num, Vector3 pos) {
+        GameObject spawnPlayerByCharacterNum(int num, Vector3 pos) {
 
             GameObject selectCharacter = characterList[num];
-            PhotonNetwork.Instantiate(selectCharacter.name,pos, Quaternion.identity);
-
+            return PhotonNetwork.Instantiate(selectCharacter.name,pos, Quaternion.identity);
+            
         }
 
 
@@ -251,6 +259,29 @@ namespace PhotonTutorial
             }
             else {
                 missionText.text = "Don't get caught!";
+            }
+        }
+
+        void setGhostGPS()
+        {
+            //set human can see ghost gps
+            if (PhotonNetwork.LocalPlayer.ActorNumber != ghostActorNum)
+            {
+                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                foreach (GameObject player in players) {
+                    if (player.GetComponent<PhotonView>().IsMine)
+                    {
+                        print(player.name);
+                        GhostGPS.GetComponent<TestScreenPoint>().player = player.transform;
+                    }
+                    else {
+                        print(player.name);
+                        GhostGPS.GetComponent<TestScreenPoint>().target = player.transform;
+                    }
+                }
+               
+
+                GhostGPS.SetActive(true);
             }
         }
     }

@@ -61,6 +61,7 @@ public class PlayerNameTag : MonoBehaviourPun
         // everyone see itself white outline
         if (photonView.IsMine) {
             outline.turnOnOutline(Color.white);
+           // GetComponent<Outline>().OutlineMode = Outline.Mode.OutlineAll
         }
     }
 
