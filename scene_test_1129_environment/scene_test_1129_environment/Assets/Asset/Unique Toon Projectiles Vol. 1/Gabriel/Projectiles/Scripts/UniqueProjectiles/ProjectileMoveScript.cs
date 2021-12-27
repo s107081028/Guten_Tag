@@ -7,8 +7,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class ProjectileMoveScript : MonoBehaviour {
+using Photon.Pun;
+public class ProjectileMoveScript : MonoBehaviourPun {
 
     public bool bounce = false;
     public float bounceForce = 10;

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -1367186384348320835}
   m_Layer: 0
   m_Name: vfx_ToonProjectile_WaterBall01
-  m_TagString: Untagged
+  m_TagString: Skill1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,6 +127,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 2370218824861439609}
+  - {fileID: -1367186384348320835}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

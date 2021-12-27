@@ -222,7 +222,7 @@ public class SkillController : MonoBehaviourPun
 
             if(punishing){
                 playerController.speedFactor = 0f;  
-            } else playerController.speedFactor = 1.0f;
+            } else if(!m_animator.GetBool("Dizzy")) playerController.speedFactor = 1.0f;
 
             if(bulletNum == 0) item = -1;
         }
