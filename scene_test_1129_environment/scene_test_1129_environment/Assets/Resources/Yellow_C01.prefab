@@ -9657,7 +9657,9 @@ MonoBehaviour:
   dizzyprefab: {fileID: 0}
   bullet: {fileID: 4888407158879785820, guid: f31aeaa01acdb334ca6c77a3cddbaf98, type: 3}
   bullet2: {fileID: 5811727931541511605, guid: 8e2705bebbae54841a9c258736038cbb, type: 3}
-  bullet3: {fileID: 224861255754747268, guid: 5e167d4de13544d4f973cb2e80a2e4df, type: 3}
+  skill3: {fileID: 7716459759493018807, guid: e443b0de82552a54885c8e6170c95051, type: 3}
+  skill4: {fileID: 6787935344076587114, guid: 494a22ad37f676044a744319c5a09bed, type: 3}
+  chaoseffect: {fileID: 100002, guid: db50ab1c866680e4bb870bf5eb72dd3d, type: 3}
   playerController: {fileID: 0}
 --- !u!114 &-1063234817628992491
 MonoBehaviour:

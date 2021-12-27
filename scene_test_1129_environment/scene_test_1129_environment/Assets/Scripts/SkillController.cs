@@ -33,12 +33,16 @@ public class SkillController : MonoBehaviourPun
     GameObject prefab;
     GameObject prefab2;
     GameObject prefab3;
+    GameObject prefab4;
     public GameObject dizzyprefab;
+    GameObject chaosprefab;
 
     private bool debuff;
     public GameObject bullet;
     public GameObject bullet2;
-    public GameObject bullet3;    
+    public GameObject skill3;
+    public GameObject skill4;
+    public GameObject chaoseffect;
 
     Vector3 prefabPosition;
     //public GameObject GFX;
@@ -100,11 +104,12 @@ public class SkillController : MonoBehaviourPun
 
 
 
-        // CALCULATE SKILL COOL DOWN
+        
         //prefabPosition = transform.Find("target").position;
         prefabPosition = transform.position + transform.up * 0.5f + transform.forward * 1.0f;
         // prefabPosition = transform.position + controller.center + transform.forward * 1f;
 
+        // CALCULATE SKILL COOL DOWN
         skill1Cooldown -= Time.deltaTime;
         skill2Cooldown -= Time.deltaTime;
         skill3Cooldown -= Time.deltaTime;
@@ -122,6 +127,13 @@ public class SkillController : MonoBehaviourPun
             sprintPower += (3.0f) * Time.deltaTime;      // RECOVER 10 SECONDS
         }
         sprintPower = Mathf.Clamp(sprintPower, 0f, sprintMaxPower);
+
+
+        if (chaosprefab != null) {
+            if (photonView.IsMine) {
+                chaosprefab.transform.position = transform.position + transform.up;
+            }
+        }
     }
 
     void FixedUpdate()
@@ -165,19 +177,32 @@ public class SkillController : MonoBehaviourPun
 
             // SKILL3 : CHAOS
             if (Input.GetKey(KeyCode.T) && skill3Cooldown <= 0f) {
-                if (playerController.aiming)
-                {
-                    prefab3 = PhotonNetwork.Instantiate(bullet3.name, transform.Find("target").position, Quaternion.identity);
-                    prefab3.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 800f);
-                    skill3Cooldown = skill3Speed;
-                } else
-                {
-                    prefab3 = PhotonNetwork.Instantiate(bullet3.name, prefabPosition, Quaternion.identity);
-                    prefab3.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
-                    skill3Cooldown = skill3Speed;
-                }
+                // if (playerController.aiming)
+                // {
+                //     prefab3 = PhotonNetwork.Instantiate(bullet3.name, transform.Find("target").position, Quaternion.identity);
+                //     prefab3.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 800f);
+                //     skill3Cooldown = skill3Speed;
+                // } else
+                // {
+                //     prefab3 = PhotonNetwork.Instantiate(bullet3.name, prefabPosition, Quaternion.identity);
+                //     prefab3.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
+                //     skill3Cooldown = skill3Speed;
+                // }
+                prefab3 = PhotonNetwork.Instantiate(skill3.name, new Vector3(transform.position.x, 0, transform.position.z) + transform.forward * -5f, Quaternion.identity);
+                skill3Cooldown = skill3Speed;  
             }
+
+            // SKILL4 : ZONE
+            if (Input.GetKey(KeyCode.Y) && skill4Cooldown <= 0f) {
+                prefab4 = PhotonNetwork.Instantiate(skill4.name, new Vector3(transform.position.x, 0, transform.position.z), Quaternion.identity);
+                skill4Cooldown = skill4Speed;                
+            }
+
+                            
         }
+
+
+
 
         // // SKILL4 : STEALTH
         // if (Input.GetKey(KeyCode.Y) && skill4Cooldown <= 0f) {
@@ -213,15 +238,28 @@ public class SkillController : MonoBehaviourPun
         if (col.gameObject.tag == "Skill2") {
             if(!debuff){
                 Skill2();
-                print("Skill2");
+                // print("Skill2");
             }
         }
 
+
+    }
+
+    void OnTriggerEnter(Collider col) {
         if (col.gameObject.tag == "Skill3") {
             if(!debuff) Skill3();
         }
+
+        if (col.gameObject.tag == "Skill4") {
+            Skill4_Buff();
+        }
     }
     
+    void OnTriggerExit(Collider col) {
+        if (col.gameObject.tag == "Skill4") {
+            Skill4_Buff_Recover();
+        }
+    }
     // HIT BY SKILL1 : SLOW
     public void Skill1()
     {
@@ -259,15 +297,53 @@ public class SkillController : MonoBehaviourPun
     // HIT BY SKILL3 : CHAOS
     public void Skill3()
     {
-        playerController.directionFactor = -1;
+        playerController.directionFactor = -1f;
         debuff = true;
+        chaosprefab = PhotonNetwork.Instantiate(chaoseffect.name, transform.position + transform.up, Quaternion.identity);
+        chaosprefab.GetComponent<ParticleSystem>().Play();
         StartCoroutine(DoResetSkill3Factor(skill3Delay));
     }
 
     IEnumerator DoResetSkill3Factor(float delay)
     {
         yield return new WaitForSeconds(delay);
-        playerController.directionFactor = 1;
+        playerController.directionFactor = 1f;
+        debuff = false;
+        // if (photonView.IsMine) PhotonNetwork.Destroy(chaosprefab);
+    }
+
+    // HIT BY SKILL4 : ZONE
+    // public void Skill4_Debuff()
+    // {
+    //     playerController.speedFactor = 0.3f;
+    //     debuff = true;
+    // }
+    // public void Skill4_Debuff_Recover()
+    // {
+    //     StartCoroutine(DoResetSkill4DebuffFactor(skill4Delay));
+    // }
+
+    // IEnumerator DoResetSkill4DebuffFactor(float delay)
+    // {
+    //     yield return new WaitForSeconds(delay);
+    //     playerController.speedFactor = 1f;
+    //     debuff = false;
+    // }
+
+    public void Skill4_Buff()
+    {
+        playerController.speedFactor = 1.3f;
+    }
+
+    public void Skill4_Buff_Recover()
+    {
+        StartCoroutine(DoResetSkill4BuffFactor(skill4Delay));
+    }
+
+    IEnumerator DoResetSkill4BuffFactor(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        playerController.speedFactor = 1f;
     }
 
     // SKILL4 : STEALTH
