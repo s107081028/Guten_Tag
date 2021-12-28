@@ -169,13 +169,13 @@ public class SkillController : MonoBehaviourPun
                 {
                     //prefab = PhotonNetwork.Instantiate(bullet.name, transform.Find("target").position, Quaternion.identity);
                     //prefab.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 800f);
-                    skill1Cooldown = skill1Speed;
+                    //skill1Cooldown = skill1Speed;
                 }
                 else
                 {
                     //prefab = PhotonNetwork.Instantiate(bullet.name, prefabPosition, Quaternion.identity);
                     //prefab.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
-                    skill1Cooldown = skill1Speed;
+                    //skill1Cooldown = skill1Speed;
                 }
 
             //     // SKILL ANIMAITON

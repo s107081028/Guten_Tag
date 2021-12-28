@@ -10441,8 +10441,8 @@ MonoBehaviour:
   skill2Cooldown: 0
   skill3Cooldown: 0
   skill4Cooldown: 0
-  skill1Speed: 1
-  skill2Speed: 3
+  skill1Speed: 10
+  skill2Speed: 0
   skill3Speed: 10
   skill4Speed: 10
   skill1Delay: 5
