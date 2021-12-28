@@ -12,7 +12,7 @@ public class DestroyBullet : MonoBehaviourPun
     void OnCollisionEnter(Collision col)
     {
         if(!photonView.IsMine) return;
-        print("bullethit");
+        print("bullethit" + col.gameObject.name);
         PhotonNetwork.Destroy(gameObject);
     }
 }
