@@ -17,9 +17,9 @@ public class Skill_Zone : MonoBehaviourPun
     {
         if (photonView.IsMine) {
             // SKILL4 : ZONE
-            if (Input.GetKey(KeyCode.E) && skillController.skill4Cooldown <= 0f) {
+            if (Input.GetKey(KeyCode.E) && skillController.skill1Cooldown <= 0f) {
                 prefab5 = PhotonNetwork.Instantiate(skill4_zone.name, new Vector3(transform.position.x, 0f, transform.position.z), Quaternion.identity);
-                skillController.skill4Cooldown = skillController.skill4Speed;
+                skillController.skill1Cooldown = skillController.skill1Speed;
             }
         }
     }

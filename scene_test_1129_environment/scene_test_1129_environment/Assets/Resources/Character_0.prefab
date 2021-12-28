@@ -10199,6 +10199,7 @@ GameObject:
   - component: {fileID: 3464765570777473199}
   - component: {fileID: 1885171501539367152}
   - component: {fileID: 769742287387868726}
+  - component: {fileID: -2479710956001524964}
   m_Layer: 0
   m_Name: Character_0
   m_TagString: Player
@@ -10649,6 +10650,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprintBar: {fileID: 220899581971369004}
   syncTimeDiff: 0.5
+--- !u!114 &-2479710956001524964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6349257400965536255}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19fdc2891725c564e93dc36436b5880e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dash_speed: 0
+  cnt_end: 0
 --- !u!1 &6362891003032111198
 GameObject:
   m_ObjectHideFlags: 0
