@@ -55,8 +55,8 @@ public class ProjectileMoveScript : MonoBehaviourPun {
 			}
 		}
 			
-		if (muzzlePrefab != null) {
-			var muzzleVFX = Instantiate (muzzlePrefab, transform.position, Quaternion.identity);
+		if (muzzlePrefab != null && photonView.IsMine) {
+			var muzzleVFX = PhotonNetwork.Instantiate (muzzlePrefab.name, transform.position, Quaternion.identity);
 			muzzleVFX.transform.forward = gameObject.transform.forward + offset;
 			var ps = muzzleVFX.GetComponent<ParticleSystem>();
 			if (ps != null)
@@ -112,9 +112,9 @@ public class ProjectileMoveScript : MonoBehaviourPun {
                 Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
                 Vector3 pos = contact.point;
 
-                if (hitPrefab != null)
+                if (hitPrefab != null && photonView.IsMine)
                 {
-                    var hitVFX = Instantiate(hitPrefab, pos, rot) as GameObject;
+                    var hitVFX = PhotonNetwork.Instantiate(hitPrefab.name, pos, rot) as GameObject;
 
                     var ps = hitVFX.GetComponent<ParticleSystem>();
                     if (ps == null)
