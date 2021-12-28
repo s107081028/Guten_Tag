@@ -10446,11 +10446,11 @@ MonoBehaviour:
   bullet3: {fileID: 224861255754747268, guid: 5e167d4de13544d4f973cb2e80a2e4df, type: 3}
   playerController: {fileID: 0}
   ItemPrefab:
-  - {fileID: 1312591640859010, guid: 57073eed22326fd489c9cfeb9a76b7b9, type: 3}
-  - {fileID: 1312591640859010, guid: ba7ba54e0ea76594c8748942d4d05b1f, type: 3}
-  - {fileID: 1685389879088366, guid: 0e9da2b2f5876e744862a7a57dc0c898, type: 3}
-  - {fileID: 1617182999080564, guid: 00f1d7fc271b4e34bb4cc52fba90129a, type: 3}
-  - {fileID: 1117804056975720, guid: 118a754c0d3d1b842bce8ff4892b0ef9, type: 3}
+  - {fileID: 1979048356021752, guid: d82846700d83cc34eb745126e8de58a6, type: 3}
+  - {fileID: 1183884577445174, guid: 20808be4addbd9c4e9cc9d468a0e9a48, type: 3}
+  - {fileID: 1568711714316788, guid: 2cdcb95f8ec1fd04cb092193585c854a, type: 3}
+  - {fileID: 1881642356963322, guid: dad690fa5057bab4b82c827aef8e9cdf, type: 3}
+  - {fileID: 1117804056975720, guid: 970b2f24913cd9a4290015f589a85723, type: 3}
   punishing: 0
   punishing_end: 0
 --- !u!114 &-1063234817628992491
