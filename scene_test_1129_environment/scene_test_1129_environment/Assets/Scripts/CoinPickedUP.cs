@@ -23,7 +23,7 @@ public class CoinPickedUP : MonoBehaviour
         {
             Debug.Log("i eat coin!!!!!");
             int i = UnityEngine.Random.Range(0, 4);
-            CollisionObject.gameObject.GetComponent<SkillController>().PickUpCoin(i);
+            CollisionObject.gameObject.GetComponent<SkillController>().PickUpCoin(1);
             Destroy(gameObject);
         }
     }

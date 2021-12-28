@@ -12,10 +12,12 @@ public class PlayerNameTag : MonoBehaviourPun
     private TestOutline outline;
 
     private GhostCatch catchComponent;
+    private HumanDash dashComponent;
     // Set Name and set ghost grab
     void Start()
     {
         catchComponent = GetComponent<GhostCatch>();
+        dashComponent = GetComponent<HumanDash>();
         outline = GetComponent<TestOutline>();
         //if (photonView.IsMine) return;
         SetName();
@@ -32,6 +34,9 @@ public class PlayerNameTag : MonoBehaviourPun
         {
             if (photonView.Owner.IsMasterClient) {
                 TurnOfGhostObject();
+            } 
+            if (!photonView.Owner.IsMasterClient) {
+                TurnOfHumanObject();
             }
             
         }
@@ -39,7 +44,9 @@ public class PlayerNameTag : MonoBehaviourPun
             if (!photonView.Owner.IsMasterClient) {
                 TurnOfGhostObject();
             }
-            
+            if (photonView.Owner.IsMasterClient) {
+                TurnOfHumanObject();
+            }
         }
     }
 
@@ -55,6 +62,10 @@ public class PlayerNameTag : MonoBehaviourPun
         outline.turnOnOutline(Color.red);
         
 
+    }
+
+    private void TurnOfHumanObject() {
+        dashComponent.enabled = true;
     }
 
     private void SetSelfOutline() {

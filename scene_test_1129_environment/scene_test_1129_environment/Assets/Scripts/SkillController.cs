@@ -203,7 +203,7 @@ public class SkillController : MonoBehaviourPun
                     {
                         m_animator.SetBool("Attack", true);                        
                         prefab4 = PhotonNetwork.Instantiate(ItemPrefab[item].name, prefabPosition + transform.forward * 6.0f, Quaternion.identity);
-                        prefab4.GetComponent<Rigidbody>().AddForce(transform.forward * 1500);
+                        prefab4.GetComponent<Rigidbody>().AddForce(transform.forward * 1500f);
                         // skill3Cooldown = skill3Speed;
                     }
                     bulletNum -= 1;
@@ -289,7 +289,7 @@ public class SkillController : MonoBehaviourPun
     {
         playerController.speedFactor = 0f;
         debuff = true;
-        if(photonView.IsMine) dizzyprefab = Instantiate(dizzyeffect, transform.position + transform.up * 1.5f, new Quaternion(0, 90, 90, 0));
+        if(photonView.IsMine) dizzyprefab = PhotonNetwork.Instantiate(dizzyeffect.name, transform.position + transform.up * 1.5f, new Quaternion(0, 90, 90, 0));
         m_animator.SetBool("dizzy", true);
         StartCoroutine(DoResetSkill2Factor(skill2Delay));
     }
@@ -300,7 +300,7 @@ public class SkillController : MonoBehaviourPun
         playerController.speedFactor = 1f;
         debuff = false;
         m_animator.SetBool("dizzy", false);
-        if(photonView.IsMine) Destroy(dizzyprefab);
+        if(photonView.IsMine) PhotonNetwork.Destroy(dizzyprefab);
     }
 
     // HIT BY SKILL3 : CHAOS
