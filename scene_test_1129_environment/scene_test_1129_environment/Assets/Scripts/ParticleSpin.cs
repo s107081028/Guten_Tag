@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class ParticleSpin : MonoBehaviour
+using Photon.Pun;
+public class ParticleSpin : MonoBehaviourPun
 {
     [SerializeField] Vector3 speed;
 

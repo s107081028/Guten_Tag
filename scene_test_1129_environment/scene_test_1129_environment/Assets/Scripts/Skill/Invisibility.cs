@@ -118,9 +118,9 @@ public class Invisibility : MonoBehaviourPun
     void Update()
     {
         if (!photonView.IsMine) return;
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            photonView.RPC(nameof(startInvisible), RpcTarget.All, 10f);
+            photonView.RPC(nameof(startInvisible), RpcTarget.All, 3f);
             //photonView.RPC(nameof(hideNameTag), RpcTarget.Others, 10f);
             //startInvisible(10);
         }

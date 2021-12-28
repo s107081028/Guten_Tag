@@ -2126,10 +2126,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillTextList:
   - Invisible for a while so that enemy can't see you!
-  - Create an ice ball to freeze you opponent!
+  - Create a magic zone with a special effect on player's speed!
+  - Drop a present box and enemy will have a surprise while opening it!
   spriteList:
   - {fileID: 21300000, guid: e825b4d35eb289442aa5bdf5b83ba3ec, type: 3}
-  - {fileID: 21300000, guid: 82a2d845885f94441aee554d470c8c89, type: 3}
+  - {fileID: 21300000, guid: 1206eadff5a0b5c488f80eb5a36850d7, type: 3}
+  - {fileID: 21300000, guid: 5acca2cbcdbdb2c448ac4a5e05173aa7, type: 3}
 --- !u!114 &645426762
 MonoBehaviour:
   m_ObjectHideFlags: 0

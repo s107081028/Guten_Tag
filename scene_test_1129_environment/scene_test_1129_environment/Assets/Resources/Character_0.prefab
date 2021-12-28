@@ -10264,7 +10264,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!136 &3036720987594092795
 CapsuleCollider:
@@ -10427,11 +10427,11 @@ MonoBehaviour:
   skill2Cooldown: 0
   skill3Cooldown: 0
   skill4Cooldown: 0
-  skill1Speed: 1
+  skill1Speed: 3
   skill2Speed: 3
   skill3Speed: 10
   skill4Speed: 10
-  skill1Delay: 5
+  skill1Delay: 3
   skill2Delay: 5
   skill3Delay: 5
   skill4Delay: 5
@@ -10444,15 +10444,16 @@ MonoBehaviour:
   bullet: {fileID: 4888407158879785820, guid: f31aeaa01acdb334ca6c77a3cddbaf98, type: 3}
   bullet2: {fileID: 5811727931541511605, guid: 8e2705bebbae54841a9c258736038cbb, type: 3}
   bullet3: {fileID: 224861255754747268, guid: 5e167d4de13544d4f973cb2e80a2e4df, type: 3}
+  chaoseffect: {fileID: 151972973806981599, guid: 0ba2b74a5e962d84484a28c83080a8c7,
+    type: 3}
   playerController: {fileID: 0}
   ItemPrefab:
-  - {fileID: 1312591640859010, guid: 57073eed22326fd489c9cfeb9a76b7b9, type: 3}
-  - {fileID: 1312591640859010, guid: ba7ba54e0ea76594c8748942d4d05b1f, type: 3}
-  - {fileID: 1685389879088366, guid: 0e9da2b2f5876e744862a7a57dc0c898, type: 3}
-  - {fileID: 1617182999080564, guid: 00f1d7fc271b4e34bb4cc52fba90129a, type: 3}
-  - {fileID: 1117804056975720, guid: 118a754c0d3d1b842bce8ff4892b0ef9, type: 3}
+  - {fileID: 4182019602381482260, guid: 4fa4c272b36759a4f8367363c3a6ecc2, type: 3}
+  - {fileID: 1981425960833871234, guid: d1f590c0a75993c4b93b68787cd2904b, type: 3}
+  - {fileID: 7156138181527321171, guid: 99dd62b5352ac2f46b7d4633a2fa2867, type: 3}
   punishing: 0
   punishing_end: 0
+  IsOnZone: 0
 --- !u!114 &-1063234817628992491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10467,6 +10468,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charactor_skill_sprite: {fileID: 21300000, guid: e825b4d35eb289442aa5bdf5b83ba3ec,
     type: 3}
+  pickup_skill_sprite:
+  - {fileID: 21300000, guid: a3fad44fa288757418b2959a7126ac68, type: 3}
+  - {fileID: 21300000, guid: 9a2306126ceaa5b44ad858f9813b914b, type: 3}
+  - {fileID: 21300000, guid: 5d62a4b57a24a814b94893d678f83939, type: 3}
+  - {fileID: 21300000, guid: 09d4b5f9b7ba940468012420352249ee, type: 3}
+  - {fileID: 21300000, guid: a3fad44fa288757418b2959a7126ac68, type: 3}
+  - {fileID: 21300000, guid: a3fad44fa288757418b2959a7126ac68, type: 3}
   bulletPicked:
   - {fileID: 0}
   - {fileID: 0}
