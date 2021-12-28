@@ -2125,10 +2125,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillTextList:
-  - Shoot a margic ball! Hit your opponent  will make them feel dizzy!
+  - Invisible for a while so that enemy can't see you!
   - Create an ice ball to freeze you opponent!
   spriteList:
-  - {fileID: 21300000, guid: 880bb5ad8bd543c4aa4a0b95c63fda79, type: 3}
+  - {fileID: 21300000, guid: e825b4d35eb289442aa5bdf5b83ba3ec, type: 3}
   - {fileID: 21300000, guid: 82a2d845885f94441aee554d470c8c89, type: 3}
 --- !u!114 &645426762
 MonoBehaviour:

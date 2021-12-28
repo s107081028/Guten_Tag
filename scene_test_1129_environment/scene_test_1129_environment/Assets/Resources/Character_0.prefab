@@ -10465,6 +10465,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0169e25fad6de734a86e2a2ee976f32e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charactor_skill_sprite: {fileID: 21300000, guid: e825b4d35eb289442aa5bdf5b83ba3ec,
+    type: 3}
   bulletPicked:
   - {fileID: 0}
   - {fileID: 0}
@@ -10638,6 +10640,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprintBar: {fileID: 220899581971369004}
+  syncTimeDiff: 0.5
 --- !u!1 &6362891003032111198
 GameObject:
   m_ObjectHideFlags: 0
