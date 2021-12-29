@@ -38,7 +38,7 @@ public class Dance : MonoBehaviourPun
     [PunRPC]
     void DanceSelf()
     {
-        if (!photonView.IsMine) return;
+        
         if (dancing)
         {
             m_animator.SetTrigger("UnDance");
