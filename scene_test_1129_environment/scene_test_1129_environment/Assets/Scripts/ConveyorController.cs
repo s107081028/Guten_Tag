@@ -29,7 +29,7 @@ public class ConveyorController : MonoBehaviour
         {
             velocity = -1 * velocity;
         }
-        gameObject.GetComponent<Rigidbody>().velocity = (speed * velocity);
-
+        // gameObject.GetComponent<Rigidbody>().velocity = (speed * velocity);
+        gameObject.transform.position += speed * velocity;
     }
 }
