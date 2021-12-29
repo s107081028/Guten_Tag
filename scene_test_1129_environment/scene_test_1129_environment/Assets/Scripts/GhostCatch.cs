@@ -24,9 +24,9 @@ public class GhostCatch : MonoBehaviourPun
         m_animator = gameObject.GetComponent<Animator>();
         tagging = false;
         can_dash = true;
+        dash_speed = 0.15f;
         cnt = 0;
         cnt_end = 50;
-        dash_speed = 0.15f;
     }
 
     // Update is called once per frame

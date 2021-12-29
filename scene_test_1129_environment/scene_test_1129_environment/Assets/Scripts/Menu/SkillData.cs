@@ -49,6 +49,7 @@ public class SkillData : MonoBehaviour
     public void setSkinList() {
         skinList.Add(new List<int>() { 2, 2, 2, 2, 2, 0, 2 });
         skinList.Add(new List<int>() { 5, 1, 1, 3, 1, 1, 1 });
+        skinList.Add(new List<int>() { 1, 0, 2, 0, 0, 2, 1 });
     }
 
     public int getSkillCount() {

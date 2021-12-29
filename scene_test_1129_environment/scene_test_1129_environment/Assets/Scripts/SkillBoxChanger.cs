@@ -77,6 +77,9 @@ public class SkillBoxChanger : MonoBehaviour
         //skinChanger.setAllSkinPartByIndex(targetCharacter, skillData.getSkinSeq(curSkillNum));
 
     }
+
+
+
     [PunRPC]
     void updateSkinRPC(int num) {
         Debug.Log("UPDATE SKIN RPC: "+num.ToString());

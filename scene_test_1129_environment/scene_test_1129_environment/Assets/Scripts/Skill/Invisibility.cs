@@ -35,20 +35,18 @@ public class Invisibility : MonoBehaviourPun
 
     public List<GameObject> inviisibleTargets;
     bool isInvisible;
+    private SkillController skillController;
     // Start is called before the first frame update
     void Start()
     {
         isInvisible = false;
+        skillController = gameObject.GetComponent<SkillController>();
     }
 
 
 
     [PunRPC]
     public void startInvisible(float duration) {
-        if (isInvisible)
-        {
-            return;
-        }
 
         if (photonView.IsMine)
         {
@@ -118,9 +116,10 @@ public class Invisibility : MonoBehaviourPun
     void Update()
     {
         if (!photonView.IsMine) return;
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.E) && (!isInvisible) && (skillController.skill1Cooldown<=0f))
         {
-            photonView.RPC(nameof(startInvisible), RpcTarget.All, 10f);
+            skillController.skill1Cooldown = skillController.skill1Speed;
+            photonView.RPC(nameof(startInvisible), RpcTarget.All, 3f);
             //photonView.RPC(nameof(hideNameTag), RpcTarget.Others, 10f);
             //startInvisible(10);
         }
