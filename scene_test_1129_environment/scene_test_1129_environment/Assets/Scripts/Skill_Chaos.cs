@@ -20,9 +20,9 @@ public class Skill_Chaos : MonoBehaviourPun
     {
         if (photonView.IsMine) {
             // SKILL3 : CHAOS
-            if (Input.GetKey(KeyCode.E) && skillController.skill3Cooldown <= 0f) {
+            if (Input.GetKey(KeyCode.E) && skillController.skill1Cooldown <= 0f) {
                 prefab3 = PhotonNetwork.Instantiate(skill3_present_box.name, new Vector3(transform.position.x, 0f, transform.position.z) + transform.forward * -5f, Quaternion.identity);
-                skillController.skill3Cooldown = skillController.skill3Speed;
+                skillController.skill1Cooldown = skillController.skill1Speed;
             }
         }
     }

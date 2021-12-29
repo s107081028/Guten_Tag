@@ -125,14 +125,14 @@ public class SkillController : MonoBehaviourPun
         prefabPosition = transform.position + transform.up * 0.5f + transform.forward * 1.0f;
         // prefabPosition = transform.position + controller.center + transform.forward * 1f;
 
-        // skill1Cooldown -= Time.deltaTime;
-        // skill2Cooldown -= Time.deltaTime;
-        skill3Cooldown -= Time.deltaTime;
-        skill4Cooldown -= Time.deltaTime;
-        // skill1Cooldown = Mathf.Clamp(skill1Cooldown, 0f, skill1Speed);
-        // skill2Cooldown = Mathf.Clamp(skill2Cooldown, 0f, skill2Speed);
-        skill3Cooldown = Mathf.Clamp(skill3Cooldown, 0f, skill3Speed);
-        skill4Cooldown = Mathf.Clamp(skill4Cooldown, 0f, skill4Speed);
+         skill1Cooldown -= Time.deltaTime;
+         skill2Cooldown -= Time.deltaTime;
+        //skill3Cooldown -= Time.deltaTime;
+        //skill4Cooldown -= Time.deltaTime;
+         skill1Cooldown = Mathf.Clamp(skill1Cooldown, 0f, skill1Speed);
+         skill2Cooldown = Mathf.Clamp(skill2Cooldown, 0f, skill2Speed);
+        //skill3Cooldown = Mathf.Clamp(skill3Cooldown, 0f, skill3Speed);
+        //skill4Cooldown = Mathf.Clamp(skill4Cooldown, 0f, skill4Speed);
 
         // SPRINT POWER CALCULATION
         if (sprint) {
@@ -164,23 +164,23 @@ public class SkillController : MonoBehaviourPun
         if(photonView.IsMine){
             GameObject playerCamera = GameObject.Find("Main Camera");
             // SKILL1 : SLOW
-            if (Input.GetKey(KeyCode.E) && skill1Cooldown <= 0f) {
-                if (playerController.aiming)
-                {
-                    //prefab = PhotonNetwork.Instantiate(bullet.name, transform.Find("target").position, Quaternion.identity);
-                    //prefab.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 800f);
-                    skill1Cooldown = skill1Speed;
-                }
-                else
-                {
-                    //prefab = PhotonNetwork.Instantiate(bullet.name, prefabPosition, Quaternion.identity);
-                    //prefab.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
-                    skill1Cooldown = skill1Speed;
-                }
+            // if (Input.GetKey(KeyCode.E) && skill1Cooldown <= 0f) {
+            //     if (playerController.aiming)
+            //     {
+            //         //prefab = PhotonNetwork.Instantiate(bullet.name, transform.Find("target").position, Quaternion.identity);
+            //         //prefab.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 800f);
+            //         skill1Cooldown = skill1Speed;
+            //     }
+            //     else
+            //     {
+            //         //prefab = PhotonNetwork.Instantiate(bullet.name, prefabPosition, Quaternion.identity);
+            //         //prefab.GetComponent<Rigidbody>().AddForce(transform.forward * 800f);
+            //         skill1Cooldown = skill1Speed;
+            //     }
 
-            //     // SKILL ANIMAITON
-            //     // p_animator.SetTrigger("Attack1");
-             }
+            // //     // SKILL ANIMAITON
+            // //     // p_animator.SetTrigger("Attack1");
+            //  }
 
             // // SKILL2 : FREEZE
             // if (Input.GetKey(KeyCode.R) && skill2Cooldown <= 0f) {
@@ -214,7 +214,7 @@ public class SkillController : MonoBehaviourPun
             // }
 
             m_animator.SetBool("Attack", false);
-            if (Input.GetKeyDown(KeyCode.Q)) {
+            if (Input.GetKeyDown(KeyCode.R)) {
                 print(item);
                 if(item != -1 && bulletNum > 0){
                     if (playerController.aiming)
@@ -237,6 +237,9 @@ public class SkillController : MonoBehaviourPun
             // Too Exhausted 
             m_animator.SetBool("exhausted", false);
             if(sprintPower >= 15.0f){
+                if(punishing ==true){
+                    playerController.speedFactor = 1.0f;
+                }
                 punishing = false;
             } else if( sprintPower == 0f){
                 punishing = true;
@@ -245,16 +248,16 @@ public class SkillController : MonoBehaviourPun
 
             if(punishing){
                 playerController.speedFactor = 0f;  
-            } else if(!m_animator.GetBool("dizzy")) playerController.speedFactor = 1.0f;
+            } //else if(!m_animator.GetBool("dizzy")) playerController.speedFactor = 1.0f;
 
             if(bulletNum == 0) item = -1;
         }
 
-        // // SKILL4 : STEALTH
-        // if (Input.GetKey(KeyCode.Y) && skill4Cooldown <= 0f) {
-        //     SKILL4();
-        //     skill4Cooldown = skill4Speed;
-        // }
+         // SKILL4 : STEALTH
+         //if (Input.GetKey(KeyCode.Y) && skill4Cooldown <= 0f) {
+         //    SKILL4();
+         //    skill4Cooldown = skill4Speed;
+         //}
 
         // SPRINT
         /*

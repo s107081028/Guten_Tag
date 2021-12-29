@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37909612, g: 0.58718264, b: 0.8416973, a: 1}
+  m_IndirectSpecularColor: {r: 0.3630405, g: 0.5662482, b: 0.8437047, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -24414,11 +24414,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 464848, guid: f82429eae662f5d4cb83cadb3417f66d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.14
+      value: 8.37
       objectReference: {fileID: 0}
     - target: {fileID: 464848, guid: f82429eae662f5d4cb83cadb3417f66d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.3
+      value: 0.24
       objectReference: {fileID: 0}
     - target: {fileID: 464848, guid: f82429eae662f5d4cb83cadb3417f66d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -24458,15 +24458,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 464848, guid: f82429eae662f5d4cb83cadb3417f66d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 464848, guid: f82429eae662f5d4cb83cadb3417f66d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 464848, guid: f82429eae662f5d4cb83cadb3417f66d, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 2314036, guid: f82429eae662f5d4cb83cadb3417f66d, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -67982,6 +67982,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1777212671068892253, guid: 18edd81af03585846b6db1fed4073368,
+        type: 3}
+      propertyPath: x1
+      value: -38.32
+      objectReference: {fileID: 0}
     - target: {fileID: 1777913434518774512, guid: 18edd81af03585846b6db1fed4073368,
         type: 3}
       propertyPath: m_Name
@@ -90689,6 +90694,11 @@ PrefabInstance:
     - target: {fileID: 1610583947238485473, guid: f704b4d57182b044fbdbd3749d92a51f,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1611293378066522957, guid: f704b4d57182b044fbdbd3749d92a51f,
+        type: 3}
+      propertyPath: m_IsKinematic
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5084234557990279047, guid: f704b4d57182b044fbdbd3749d92a51f,

@@ -7,8 +7,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class ProjectileMoveScript : MonoBehaviour {
+using Photon.Pun;
+public class ProjectileMoveScript : MonoBehaviourPun {
 
     public bool bounce = false;
     public float bounceForce = 10;
@@ -55,8 +55,8 @@ public class ProjectileMoveScript : MonoBehaviour {
 			}
 		}
 			
-		if (muzzlePrefab != null) {
-			var muzzleVFX = Instantiate (muzzlePrefab, transform.position, Quaternion.identity);
+		if (muzzlePrefab != null && photonView.IsMine) {
+			var muzzleVFX = PhotonNetwork.Instantiate (muzzlePrefab.name, transform.position, Quaternion.identity);
 			muzzleVFX.transform.forward = gameObject.transform.forward + offset;
 			var ps = muzzleVFX.GetComponent<ParticleSystem>();
 			if (ps != null)
@@ -72,12 +72,12 @@ public class ProjectileMoveScript : MonoBehaviour {
 		}
 	}
 
-	void FixedUpdate () {
-        if (target != null)
-            rotateToMouse.RotateToMouse (gameObject, target.transform.position);
-        if (speed != 0 && rb != null)
-			rb.position += (transform.forward + offset) * (speed * Time.deltaTime);        
-    }
+	// void FixedUpdate () {
+    //     if (target != null)
+    //         rotateToMouse.RotateToMouse (gameObject, target.transform.position);
+    //     if (speed != 0 && rb != null)
+	// 		rb.position += (transform.forward + offset) * (speed * Time.deltaTime);        
+    // }
 
 	void OnCollisionEnter (Collision co) {
         if (!bounce)
@@ -112,9 +112,9 @@ public class ProjectileMoveScript : MonoBehaviour {
                 Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
                 Vector3 pos = contact.point;
 
-                if (hitPrefab != null)
+                if (hitPrefab != null && photonView.IsMine)
                 {
-                    var hitVFX = Instantiate(hitPrefab, pos, rot) as GameObject;
+                    var hitVFX = PhotonNetwork.Instantiate(hitPrefab.name, pos, rot) as GameObject;
 
                     var ps = hitVFX.GetComponent<ParticleSystem>();
                     if (ps == null)
