@@ -13,9 +13,19 @@ public class DestroySkill3 : MonoBehaviourPun
     void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.tag == "Player") {
-            if(!photonView.IsMine) return;
-            PhotonNetwork.Destroy(gameObject);
+            if (photonView.IsMine)
+                PhotonNetwork.Destroy(gameObject);
+            else
+                photonView.RPC(nameof(Distroy), photonView.Owner);
         }
         
     }
+
+    [PunRPC]
+    void Distroy()
+    {
+        if (photonView.IsMine)
+            PhotonNetwork.Destroy(gameObject);
+    }
+
 }
