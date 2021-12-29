@@ -133,7 +133,7 @@ MonoBehaviour:
   x2: -24.66
   y2: 3.47
   z2: -10
-  speed: 0.001
+  speed: 0.003
 --- !u!64 &8548420955206759361
 MeshCollider:
   m_ObjectHideFlags: 0
