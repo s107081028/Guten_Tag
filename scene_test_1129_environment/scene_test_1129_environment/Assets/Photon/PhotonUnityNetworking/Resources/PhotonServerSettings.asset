@@ -50,7 +50,7 @@ MonoBehaviour:
   - showNameTag
   - syncOpponentEnergyValue
   - updateSprintValue
-  - Distroy
+  - DestroyPresentBox
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

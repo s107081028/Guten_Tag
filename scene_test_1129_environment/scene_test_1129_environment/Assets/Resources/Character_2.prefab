@@ -10781,7 +10781,8 @@ GameObject:
   - component: {fileID: 7338513047269863274}
   - component: {fileID: 806929556899800533}
   - component: {fileID: 1737474356429550240}
-  - component: {fileID: 8283461468371446369}
+  - component: {fileID: -5625651290228286257}
+  - component: {fileID: 5887398904424768110}
   m_Layer: 0
   m_Name: Character_2
   m_TagString: Player
@@ -10934,6 +10935,7 @@ MonoBehaviour:
   - {fileID: 1164935713399679509}
   - {fileID: 5252606296479415951}
   - {fileID: 3572469015225370238}
+  - {fileID: 5887398904424768110}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -10944,7 +10946,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7553545724590758481}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
   m_Name: 
@@ -11011,7 +11013,7 @@ MonoBehaviour:
   skill3Cooldown: 0
   skill4Cooldown: 0
   skill1Speed: 10
-  skill2Speed: 0
+  skill2Speed: 3
   skill3Speed: 10
   skill4Speed: 10
   skill1Delay: 5
@@ -11159,7 +11161,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skill3_present_box: {fileID: 5726774838822299077, guid: 53c82694ebc164b4d883ee5fc0aac02a,
     type: 3}
---- !u!114 &8283461468371446369
+--- !u!114 &-5625651290228286257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7553545724590758481}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19fdc2891725c564e93dc36436b5880e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dash_speed: 0
+  cnt_end: 0
+--- !u!114 &5887398904424768110
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11168,11 +11184,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 7553545724590758481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19fdc2891725c564e93dc36436b5880e, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dash_speed: 0
-  cnt_end: 0
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters: []
+  m_SynchronizeLayers: []
 --- !u!1 &7649972419408874842
 GameObject:
   m_ObjectHideFlags: 0

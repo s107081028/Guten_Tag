@@ -13,7 +13,19 @@ public class DestroySkillPresentBox : MonoBehaviourPun
 
     void OnCollisionEnter(Collision col)
     {
-        if(!photonView.IsMine) return;
-        PhotonNetwork.Destroy(gameObject);
+        if (col.gameObject.tag == "Player") {
+            if (photonView.IsMine == col.gameObject.GetComponent<PhotonView>().IsMine) {
+                PhotonNetwork.Destroy(photonView.gameObject);
+            }
+            else {
+                photonView.RPC(nameof(DestroyPresentBox), RpcTarget.Others);
+            }
+        }
+    }
+
+    [PunRPC]
+    public void DestroyPresentBox()
+    {
+        PhotonNetwork.Destroy(gameObject);         
     }
 }
