@@ -58,6 +58,12 @@ public class PlayerController : MonoBehaviourPun
             m_animator = gameObject.GetComponent<Animator>();
             rb = GetComponent<Rigidbody>();
 
+            if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+                SetMask(10);                // CAN NOT SEE LAYER 10
+            }
+            else if (!PhotonNetwork.LocalPlayer.IsMasterClient) {
+                SetMask(9);                 // CAN NOT SEE LAYER 9
+            }
         }
     }
 
@@ -244,5 +250,10 @@ public class PlayerController : MonoBehaviourPun
         
         Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
 
+    }
+
+    void SetMask(int n)
+    {
+        playerCamera.GetComponent<Camera>().cullingMask = playerCamera.GetComponent<Camera>().cullingMask ^ (1 << n);
     }
 }

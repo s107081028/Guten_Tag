@@ -168,7 +168,10 @@ public class MenuStart : MonoBehaviourPunCallbacks
             rightSkillBox.SetActive(true);
             rightButtons.SetActive(true);
             switchButton.interactable = true;
-            
+
+
+            // Fix bug
+            //leftSkillBox.GetComponent<SkillBoxChanger>().callTheOtherPlayerSkin();
         }
         waitingStatusPanel.SetActive(false);
 
@@ -189,6 +192,7 @@ public class MenuStart : MonoBehaviourPunCallbacks
             switchButton.interactable = true;
 
 
+            leftSkillBox.GetComponent<SkillBoxChanger>().updateSkin();
         }
         
     }

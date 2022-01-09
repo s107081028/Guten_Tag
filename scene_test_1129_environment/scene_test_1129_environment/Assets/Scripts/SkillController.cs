@@ -5,6 +5,7 @@ using Photon.Pun;
 
 public class SkillController : MonoBehaviourPun
 {
+    GameObject playerCamera;
     // FACTOR
     public float speedFactor = 1f;
     public int directionFactor = 1;
@@ -34,7 +35,7 @@ public class SkillController : MonoBehaviourPun
     GameObject prefab2;
     GameObject prefab3;
     GameObject prefab4;
-    public GameObject dizzyprefab;
+    GameObject dizzyprefab;
 
     private bool debuff;
     public GameObject bullet;
@@ -42,6 +43,16 @@ public class SkillController : MonoBehaviourPun
     public GameObject bullet3;
     public GameObject chaoseffect;
     private GameObject chaosprefab;
+
+
+    public GameObject Eggeffect;
+    public GameObject Egg3D;
+    public GameObject Snoweffect;
+    public GameObject EggCrackeffect;
+    GameObject Snoweffectprefab;
+    GameObject Eggprefab;
+    GameObject EggprefabONFace;
+    GameObject EggCrackprefab;
 
     Vector3 prefabPosition;
     //public GameObject GFX;
@@ -61,10 +72,13 @@ public class SkillController : MonoBehaviourPun
 
     private FillAmountController fillAmountController;
     public bool IsOnZone;
+    public GameObject PresentBox_ParticleEffect;
+    private GameObject PresentBox_ParticleEffect_prefab;
 
 
     void Start()
     {
+        playerCamera = Camera.main.gameObject; //GameObject.Find("Main Camera");
         playerController = GetComponent<PlayerController>();
         m_animator = gameObject.GetComponent<Animator>();
         debuff = false;
@@ -146,11 +160,29 @@ public class SkillController : MonoBehaviourPun
         // CW
         // SKILL3 : CHAOS EFFECT TRACE PLAYER
         if (chaosprefab != null) {
-            if (photonView.IsMine) {
-                chaosprefab.transform.position = transform.position + transform.up;
-            }
+            chaosprefab.transform.position = transform.position + transform.up;
+       
         }
 
+        if (Eggprefab != null)
+        {
+            Eggprefab.transform.position = transform.position + transform.up * 1.5f;
+        }
+
+        if (EggprefabONFace != null)
+        {
+            Vector3 temp = playerCamera.transform.position + playerCamera.transform.forward * 1.7f;
+            temp.x = Mathf.Lerp(EggprefabONFace.transform.position.x, temp.x, 3f);
+            temp.y = Mathf.Lerp(EggprefabONFace.transform.position.y, temp.y, 3f);
+            temp.z = Mathf.Lerp(EggprefabONFace.transform.position.z, temp.z, 3f);
+            EggprefabONFace.transform.position = temp;
+        }
+
+        if (Snoweffectprefab != null)
+        {
+            Snoweffectprefab.transform.position = transform.position + transform.up * 2.3f;
+        }
+        
         // SKILL4 : ZONE DETERMINE RECOVER TIMING
         if (IsOnZone && GameObject.FindGameObjectWithTag("Skill4") == null) {
             playerController.speedFactor = 1f;
@@ -280,6 +312,7 @@ public class SkillController : MonoBehaviourPun
 
     void OnCollisionEnter(Collision col)
     {
+        if (!photonView.IsMine) return;
         if (col.gameObject.tag == "Skill1") {
             if(!debuff) Skill1();
         }
@@ -292,7 +325,19 @@ public class SkillController : MonoBehaviourPun
         }
 
         if (col.gameObject.tag == "Skill3") {
-            if(!debuff) Skill3();
+            // ONLY ENEMY'S SKILL IS TRIGGER
+            if (!col.gameObject.GetComponent<PhotonView>().IsMine) {
+                if(!debuff) Skill3();
+                if(photonView.IsMine) {
+                    PresentBox_ParticleEffect_prefab = PhotonNetwork.Instantiate(PresentBox_ParticleEffect.name, col.gameObject.transform.position + transform.up * 0.6f, Quaternion.identity);
+                    PresentBox_ParticleEffect_prefab.GetComponent<ParticleSystem>().Play();
+                }
+            }
+        }
+
+        if (col.gameObject.tag == "Skill4")
+        {
+            if (!debuff) Skill4();
         }
     }
 
@@ -301,6 +346,7 @@ public class SkillController : MonoBehaviourPun
     {
         playerController.speedFactor = 0.5f;
         debuff = true;
+        Snoweffectprefab = PhotonNetwork.Instantiate(Snoweffect.name, transform.position + transform.up * 2.3f, Quaternion.identity);
         StartCoroutine(DoResetSkill1Factor(skill1Delay));
     }
 
@@ -309,6 +355,7 @@ public class SkillController : MonoBehaviourPun
         yield return new WaitForSeconds(delay);
         playerController.speedFactor = 1f;
         debuff = false;
+        PhotonNetwork.Destroy(Snoweffectprefab);
     }
 
     // HIT BT SKILL2 : FREEZE    
@@ -346,6 +393,32 @@ public class SkillController : MonoBehaviourPun
     {
         yield return new WaitForSeconds(delay);
         playerController.directionFactor = 1f;
+        debuff = false;
+    }
+
+
+    // Hit By Egg
+    public void Skill4()
+    {
+        debuff = true;
+        if (photonView.IsMine)
+        {
+            EggCrackprefab = PhotonNetwork.Instantiate(EggCrackeffect.name, transform.position + transform.up, Quaternion.identity);
+            Eggprefab = PhotonNetwork.Instantiate(Eggeffect.name, transform.position + transform.up *1.5f, Quaternion.identity);
+            EggprefabONFace = Instantiate(Eggeffect, playerCamera.transform.position + playerCamera.transform.forward*2f, Quaternion.identity);
+        }
+        StartCoroutine(DoResetSkill4Factor(skill4Delay));
+    }
+
+    IEnumerator DoResetSkill4Factor(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (photonView.IsMine)
+        {
+            Destroy(EggprefabONFace);
+            PhotonNetwork.Destroy(Eggprefab);
+            //PhotonNetwork.Destroy(EggCrackprefab);
+        }
         debuff = false;
     }
 

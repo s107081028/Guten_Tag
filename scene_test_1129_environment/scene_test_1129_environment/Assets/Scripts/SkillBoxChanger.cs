@@ -59,9 +59,12 @@ public class SkillBoxChanger : MonoBehaviour
     }
 
 
+    public void callTheOtherPlayerSkin()
+    {
+        photonView.RPC("updateSkin", RpcTarget.Others);
+    }
 
-
-
+    [PunRPC]
     /*if skill realted to skin, example*/
     public void updateSkin() {
         Debug.Log("UPDATE SKIN");
