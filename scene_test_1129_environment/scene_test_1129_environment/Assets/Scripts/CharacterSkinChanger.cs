@@ -19,6 +19,7 @@ public class CharacterSkinChanger : MonoBehaviour
     
 
     public List<string> partNames = new List<string>(){"Bodies", "Bodyparts" ,"Eyes","Gloves", "Headparts","MouthandNoses","Tails" };
+    private GameObject headPart;
 
     public bool changeSkinOfThis = false;
     public List<int> changeSkinList = new List<int>();
@@ -29,12 +30,13 @@ public class CharacterSkinChanger : MonoBehaviour
         if (changeSkinOfThis)
             setAllSkinPartByIndex(gameObject, changeSkinList);
         //setAllSkinPartByIndex(defaultCharacter,new List<int> { 2, 2, 2, 3, 3, 4, 2 });
-        
-    }
+           }
 
 
 
     public void setAllSkinPartByIndex( GameObject character, List<int> showSkinPartIndexList) {
+
+        headPart = character.transform.Find("root/pelvis/spine_01/spine_02/spine_03/neck_01/head").gameObject;
 
         /*Disable all first*/
         foreach (string parentName in partNames) {
@@ -50,9 +52,26 @@ public class CharacterSkinChanger : MonoBehaviour
 
 
 
+
+
         for (int i = 0; i < 7; i++) {
+            if (showSkinPartIndexList[i] == -1) continue;
             GameObject findSkinPart = character.transform.Find(partNames[i]).transform.GetChild(showSkinPartIndexList[i]).gameObject;
             if (findSkinPart != null) findSkinPart.SetActive(true);
+        }
+
+
+
+        if (headPart != null && showSkinPartIndexList.Count>7) {
+
+
+            foreach (Transform obj in headPart.transform)
+            {
+                obj.gameObject.SetActive(false);
+            }
+
+            GameObject headObject = headPart.transform.GetChild(showSkinPartIndexList[7]).gameObject;
+            headObject.SetActive(true);
         }
 
     }

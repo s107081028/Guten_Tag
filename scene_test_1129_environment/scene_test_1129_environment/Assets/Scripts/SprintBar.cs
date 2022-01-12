@@ -13,7 +13,7 @@ public class SprintBar : MonoBehaviourPun
     private bool isTimeToSync = true;
     public float syncTimeDiff = 0.3f;
 
-    private float currentSprintValue = 1f;
+    public float currentSprintValue = 1f;
     void Start()
     {
         skillController = GetComponent<SkillController>();

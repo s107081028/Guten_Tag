@@ -31,6 +31,7 @@ public class MenuStart : MonoBehaviourPunCallbacks
 
     //Custom properites of per room
     private string ghostKey = "Ghost";
+    private string mapKey = "Map";
 
     //Custom properites of player
     private string playerCharacterSelectNum = "CharacterNum";
@@ -44,6 +45,21 @@ public class MenuStart : MonoBehaviourPunCallbacks
     private Button startButton;
     private Button switchButton;
 
+
+
+    //Map data
+    private int currentMapNum = 0;
+
+
+    //Map UI
+
+    [Header("Map")]
+
+    public Image mapImg;
+    public TextMeshProUGUI mapText;
+    public List<Button> MapButtons;
+    public List<Sprite> mapImgList;
+    public List<string> mapNameList;
 
     private void Awake() => PhotonNetwork.AutomaticallySyncScene = true;
 
@@ -140,6 +156,8 @@ public class MenuStart : MonoBehaviourPunCallbacks
         leftSkillBox.SetActive(true);
         leftName.gameObject.SetActive(true);
 
+        UpdateMapUI();
+
         int playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
 
         if (playerCount != MaxPlayersPerRoom)
@@ -168,10 +186,7 @@ public class MenuStart : MonoBehaviourPunCallbacks
             rightSkillBox.SetActive(true);
             rightButtons.SetActive(true);
             switchButton.interactable = true;
-
-
-            // Fix bug
-            //leftSkillBox.GetComponent<SkillBoxChanger>().callTheOtherPlayerSkin();
+            
         }
         waitingStatusPanel.SetActive(false);
 
@@ -192,6 +207,8 @@ public class MenuStart : MonoBehaviourPunCallbacks
             switchButton.interactable = true;
 
 
+
+            // Fix bug
             leftSkillBox.GetComponent<SkillBoxChanger>().updateSkin();
         }
         
@@ -204,8 +221,12 @@ public class MenuStart : MonoBehaviourPunCallbacks
     {
         startButton.interactable = false;
         Invoke(nameof(EnableStartButton), 1);
-        PhotonNetwork.LoadLevel("Environment");
 
+        if (currentMapNum == 0)
+            PhotonNetwork.LoadLevel("Environment");
+        else {
+            PhotonNetwork.LoadLevel("Environment(map2)"); //change this
+        }
     }
 
     private void EnableStartButton() {
@@ -223,6 +244,52 @@ public class MenuStart : MonoBehaviourPunCallbacks
 
         //bool leftIsGhost = (bool)PhotonNetwork.CurrentRoom.CustomProperties["Ghost"];
         //room.SetCustomProperties()
+    }
+
+
+    public void ChangeMap(int mapNumber)
+    {
+
+        Room room = PhotonNetwork.CurrentRoom;
+        Hashtable roomProperties = room.CustomProperties;
+        roomProperties[mapKey] = mapNumber;
+        room.SetCustomProperties(roomProperties);
+        Debug.Log("ChangeMap : " + (int)roomProperties[mapKey]);
+
+        UpdateMapUI();
+
+    }
+
+
+    [PunRPC]
+    private void ChangeNextMap()
+    {
+        currentMapNum++;
+        currentMapNum %= mapImgList.Count;
+
+        ChangeMap(currentMapNum);
+    }
+
+    [PunRPC]
+    private void ChangePreMap() {
+        currentMapNum--;
+        currentMapNum += mapImgList.Count;
+        currentMapNum %= mapImgList.Count;
+        ChangeMap(currentMapNum);
+    }
+
+    public void ChangeNextMapRPC() {
+        photonView.RPC(nameof(ChangeNextMap),RpcTarget.All);
+    }
+
+    public void ChangePreMapRPC()
+    {
+        photonView.RPC(nameof(ChangePreMap), RpcTarget.All);
+    }
+
+    private void UpdateMapUI() {
+        mapImg.sprite = mapImgList[currentMapNum];
+        mapText.text = mapNameList[currentMapNum];
     }
 
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
@@ -269,6 +336,9 @@ public class MenuStart : MonoBehaviourPunCallbacks
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
             return;
         startButton.interactable = false;
+        foreach (Button button in MapButtons) {
+            button.interactable = false;
+        }
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)

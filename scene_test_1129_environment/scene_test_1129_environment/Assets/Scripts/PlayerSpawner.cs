@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PhotonTutorial
 {
@@ -28,6 +29,7 @@ namespace PhotonTutorial
         //Player GameObjects
         private GameObject player1;
         private GameObject player2;
+        public List<GameObject> playerGameObjects;
 
 
         //ui data
@@ -36,29 +38,37 @@ namespace PhotonTutorial
 
         //Game play ui
         private TextMeshProUGUI missionText;
-        
+
         //win lose diaply ui
         private GameObject winUI;
         private GameObject loseUI;
 
 
+        //timer
+        public TimerCtrl timer;
+        public List<GameObject> hideAfterWinLoseUI;
+
+        private Button restartButton;
 
 
         public Transform spawnPoint1;
         public Transform spawnPoint2;
 
         bool masterIsGhost = false;
-        
+
+
+
 
 
         private void Start()
         {
 
-            
+
 
             loseUI = WinLoseCanvas.transform.Find("Panel_LOSE").gameObject;
             winUI = WinLoseCanvas.transform.Find("Panel_WIN").gameObject;
             missionText = GameObject.Find("Mission_text").GetComponent<TextMeshProUGUI>();
+            restartButton = WinLoseCanvas.transform.Find("Button").gameObject.GetComponent<Button>();
 
             setGhostAndHuman();
 
@@ -66,17 +76,22 @@ namespace PhotonTutorial
 
 
             //var player = PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(-20f, 10f), 1f, Random.Range(5f, 10f)), Quaternion.identity);
-            if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
 
-                spawnPlayerByCharacterNum((int)PhotonNetwork.LocalPlayer.CustomProperties["CharacterNum"],spawnPoint1.position);
+                player1 = spawnPlayerByCharacterNum((int)PhotonNetwork.LocalPlayer.CustomProperties["CharacterNum"], spawnPoint1.position);
                 //var player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint1.position, Quaternion.identity);
-            }else{
-                spawnPlayerByCharacterNum((int)PhotonNetwork.LocalPlayer.CustomProperties["CharacterNum"], spawnPoint2.position);
             }
+            else
+            {
+                player2 = spawnPlayerByCharacterNum((int)PhotonNetwork.LocalPlayer.CustomProperties["CharacterNum"], spawnPoint2.position);
+            }
+
+            playerGameObjects = new List<GameObject>() { player1, player2 };
 
             Invoke(nameof(setGhostGPS), 2);
 
-            
+
 
 
             //playerCamera = GameObject.Find("Main Camera");
@@ -102,8 +117,9 @@ namespace PhotonTutorial
         [PunRPC]
         public void GhostWin()
         {
-
+            timer.enabled = false;
             WinLoseCanvas.SetActive(true);
+            Invoke(nameof(stopPlayerControll), 0.1f);
 
 
             //if this player is ghost
@@ -112,32 +128,16 @@ namespace PhotonTutorial
                 showWinUI();
 
             }
-            else {
+            else
+            {
                 showLoseUI();
             }
 
 
-            /**
-
-            if(PhotonNetwork.LocalPlayer.IsMasterClient && masterIsGhost)
-            {
-                //show win
-                WinLoseCanvas.transform.Find("LOSEText").gameObject.SetActive(false);
-                Debug.Log("show win");
-            }
-            else if((!PhotonNetwork.LocalPlayer.IsMasterClient) && (!masterIsGhost))
-            {
-                //show win
-                WinLoseCanvas.transform.Find("LOSEText").gameObject.SetActive(false);
-            }
-            else
-            {
-                //show lose
-                
-            }*/
         }
 
-        void showWinUI() {
+        void showWinUI()
+        {
             Debug.Log("You win!!!!!");
             loseUI.SetActive(false);
             winUI.SetActive(true);
@@ -150,19 +150,37 @@ namespace PhotonTutorial
             winUI.SetActive(false);
         }
 
+        void stopPlayerControll()
+        {
+            Debug.Log("STOP PLAYER CONTROLL");
+
+            GameObject curPlayer = (player1) ? player1 : player2;
+            curPlayer.GetComponent<Animator>().enabled = false;
+            curPlayer.GetComponent<PlayerController>().enabled = false;
+            curPlayer.GetComponent<SkillController>().enabled = false;
+
+
+            //hide gameplay ui
+
+            hideUI();
+
+        }
+
         [PunRPC]
         public void HumanWin()
         {
-
+            timer.enabled = false;
             WinLoseCanvas.SetActive(true);
+            Invoke(nameof(stopPlayerControll), 0.2f);
 
             if (PhotonNetwork.LocalPlayer.ActorNumber == ghostActorNum)
             {
                 showLoseUI();
-
             }
-            else {
+            else
+            {
                 showWinUI();
+
             }
 
             /*
@@ -186,7 +204,6 @@ namespace PhotonTutorial
 
         public void restart()
         {
-            //
             photonView.RPC("loadNextSync", RpcTarget.All);
         }
 
@@ -198,16 +215,18 @@ namespace PhotonTutorial
 
 
 
-        GameObject spawnPlayerByCharacterNum(int num, Vector3 pos) {
+        GameObject spawnPlayerByCharacterNum(int num, Vector3 pos)
+        {
 
             GameObject selectCharacter = characterList[num];
-            return PhotonNetwork.Instantiate(selectCharacter.name,pos, Quaternion.identity);
-            
+            return PhotonNetwork.Instantiate(selectCharacter.name, pos, Quaternion.identity);
+
         }
 
 
         //set ghost actor number and their nick name
-        void setGhostAndHuman() {
+        void setGhostAndHuman()
+        {
             if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["Ghost"])
             {
 
@@ -222,7 +241,7 @@ namespace PhotonTutorial
                     ghostActorNum = PhotonNetwork.PlayerListOthers[0].ActorNumber;
                 }
 
-                
+
             }
             else
             {
@@ -241,23 +260,27 @@ namespace PhotonTutorial
             }
 
             //set name
-            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
+            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList)
+            {
                 if (player.ActorNumber == ghostActorNum)
                 {
                     ghostName = player.NickName;
                 }
-                else {
+                else
+                {
                     humanName = player.NickName;
                 }
             }
         }
 
-        void setMissionText() {
+        void setMissionText()
+        {
             if (PhotonNetwork.LocalPlayer.ActorNumber == ghostActorNum)
             {
                 missionText.text = "Catch " + humanName + "!";
             }
-            else {
+            else
+            {
                 missionText.text = "Don't get caught!";
             }
         }
@@ -268,22 +291,41 @@ namespace PhotonTutorial
             if (PhotonNetwork.LocalPlayer.ActorNumber != ghostActorNum)
             {
                 GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-                foreach (GameObject player in players) {
+                foreach (GameObject player in players)
+                {
                     if (player.GetComponent<PhotonView>().IsMine)
                     {
                         print(player.name);
                         GhostGPS.GetComponent<TestScreenPoint>().player = player.transform;
                     }
-                    else {
+                    else
+                    {
                         print(player.name);
                         GhostGPS.GetComponent<TestScreenPoint>().target = player.transform;
                     }
                 }
-               
+
 
                 GhostGPS.SetActive(true);
             }
         }
+
+
+
+        void hideUI()
+        {
+            if (!PhotonNetwork.IsMasterClient)
+                restartButton.interactable = false;
+
+            foreach (GameObject obj in hideAfterWinLoseUI)
+            {
+                obj.SetActive(false);
+            }
+
+        }
     }
+
+
+
 
 }

@@ -74,7 +74,8 @@ public class SkillController : MonoBehaviourPun
     public bool IsOnZone;
     public GameObject PresentBox_ParticleEffect;
     private GameObject PresentBox_ParticleEffect_prefab;
-
+    public float fallSpeed;
+    private float preFallSpeed;
 
     void Start()
     {
@@ -89,6 +90,8 @@ public class SkillController : MonoBehaviourPun
         IsOnZone = false;
 
         fillAmountController = gameObject.GetComponent<FillAmountController>();
+        preFallSpeed = 0;
+        fallSpeed = -10;
     }
 
     void Update()
@@ -189,6 +192,7 @@ public class SkillController : MonoBehaviourPun
             // Debug.Log("cw Skill4 : recover");
             IsOnZone = false;
         }
+        preFallSpeed = gameObject.GetComponent<Rigidbody>().velocity.y;
     }
 
     void FixedUpdate()
@@ -338,6 +342,10 @@ public class SkillController : MonoBehaviourPun
         if (col.gameObject.tag == "Skill4")
         {
             if (!debuff) Skill4();
+        }
+        if(preFallSpeed <= fallSpeed) {
+            print("fall");
+            if(!debuff) Skill2();
         }
     }
 

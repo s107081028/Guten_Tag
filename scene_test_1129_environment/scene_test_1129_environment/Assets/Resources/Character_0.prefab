@@ -10424,6 +10424,7 @@ MonoBehaviour:
   IsOnZone: 0
   PresentBox_ParticleEffect: {fileID: 1736048274542510415, guid: ac0808315694f6749aa75d9a49b3b837,
     type: 3}
+  fallSpeed: 0
 --- !u!114 &-1063234817628992491
 MonoBehaviour:
   m_ObjectHideFlags: 0

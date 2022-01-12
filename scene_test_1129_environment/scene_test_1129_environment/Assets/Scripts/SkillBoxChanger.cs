@@ -1,6 +1,5 @@
 ﻿using Photon.Pun;
-
-
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +20,7 @@ public class SkillBoxChanger : MonoBehaviour
 
     private MenuStart menuStart;
     private PhotonView photonView;
+    public List<GameObject> characterObjects = new List<GameObject>();
 
     void Start()
     {
@@ -30,20 +30,23 @@ public class SkillBoxChanger : MonoBehaviour
         //setup defualt skill descriptiona and character skin
         skillImage.sprite = skillData.getSkillSpite(curSkillNum);
         skillText.text = skillData.getSkillText(curSkillNum);
-        skinChanger.setAllSkinPartByIndex(targetCharacter, skillData.getSkinSeq(curSkillNum));
+        setSkinByCharacterIdx(curSkillNum);
+        //skinChanger.setAllSkinPartByIndex(targetCharacter, skillData.getSkinSeq(curSkillNum));
 
     }
 
-    public void addCurSkillNum() {
+    public void addCurSkillNum()
+    {
         curSkillNum++;
         curSkillNum = (curSkillNum) % skillData.getSkillCount();
         updateSkillUI();
-                
+
     }
 
-    public void subCurSkillNum() {
+    public void subCurSkillNum()
+    {
         curSkillNum--;
-        curSkillNum = (curSkillNum+ skillData.getSkillCount()) % skillData.getSkillCount();
+        curSkillNum = (curSkillNum + skillData.getSkillCount()) % skillData.getSkillCount();
         updateSkillUI();
     }
 
@@ -52,21 +55,20 @@ public class SkillBoxChanger : MonoBehaviour
         curSkillNum = num;
 
     }
-    public void updateSkillUI() {
+    public void updateSkillUI()
+    {
 
         updateSkin();
-       
+
     }
 
 
-    public void callTheOtherPlayerSkin()
-    {
-        photonView.RPC("updateSkin", RpcTarget.Others);
-    }
 
-    [PunRPC]
+
+
     /*if skill realted to skin, example*/
-    public void updateSkin() {
+    public void updateSkin()
+    {
         Debug.Log("UPDATE SKIN");
 
 
@@ -84,12 +86,24 @@ public class SkillBoxChanger : MonoBehaviour
 
 
     [PunRPC]
-    void updateSkinRPC(int num) {
-        Debug.Log("UPDATE SKIN RPC: "+num.ToString());
-        skinChanger.setAllSkinPartByIndex(targetCharacter, skillData.getSkinSeq(num));
+    void updateSkinRPC(int num)
+    {
+        Debug.Log("UPDATE SKIN RPC: " + num.ToString());
+
+
+        setSkinByCharacterIdx(num);
         skillImage.sprite = skillData.getSkillSpite(num);
         skillText.text = skillData.getSkillText(num);
     }
 
-   
+    public void setSkinByCharacterIdx(int idx)
+    {
+        for (int i = 0; i < characterObjects.Count; i++)
+        {
+            characterObjects[i].SetActive(false);
+        }
+
+        characterObjects[idx].SetActive(true);
+
+    }
 }
