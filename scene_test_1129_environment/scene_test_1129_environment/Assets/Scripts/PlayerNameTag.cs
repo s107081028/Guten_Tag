@@ -13,6 +13,8 @@ public class PlayerNameTag : MonoBehaviourPun
 
     private GhostCatch catchComponent;
     private HumanDash dashComponent;
+
+    public bool isCloned = false;
     // Set Name and set ghost grab
     void Start()
     {
@@ -52,8 +54,12 @@ public class PlayerNameTag : MonoBehaviourPun
     private void TurnOfGhostObject() {
 
         ghostIcon.SetActive(true);
-        ghostGrab.SetActive(true);
-        catchComponent.enabled = true;
+
+        if (!isCloned) {
+            ghostGrab.SetActive(true);
+            catchComponent.enabled = true;
+        }
+
 
         if (photonView.IsMine) return;
 
@@ -64,7 +70,10 @@ public class PlayerNameTag : MonoBehaviourPun
     }
 
     private void TurnOfHumanObject() {
-        dashComponent.enabled = true;
+        if (!isCloned) {
+            dashComponent.enabled = true;
+        }
+        
     }
 
     private void SetSelfOutline() {

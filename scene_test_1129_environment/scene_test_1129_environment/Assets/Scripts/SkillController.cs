@@ -153,10 +153,10 @@ public class SkillController : MonoBehaviourPun
 
         // SPRINT POWER CALCULATION
         if (sprint) {
-            sprintPower -= (6.0f) * Time.deltaTime;      // RUN 5 SECONDS
+            sprintPower -= (5.0f) * Time.deltaTime;      // RUN 5 SECONDS      //buffed by shaoting
         }
         else {
-            sprintPower += (3.0f) * Time.deltaTime;      // RECOVER 10 SECONDS
+            sprintPower += (5.0f) * Time.deltaTime;      // RECOVER ? SECONDS  //buffed by shaoting
         }
         sprintPower = Mathf.Clamp(sprintPower, 0f, sprintMaxPower);
 
@@ -165,6 +165,11 @@ public class SkillController : MonoBehaviourPun
         if (chaosprefab != null) {
             chaosprefab.transform.position = transform.position + transform.up;
        
+        }
+
+        if (dizzyprefab != null)
+        {
+            dizzyprefab.transform.position = transform.position + transform.up * 1.5f;
         }
 
         if (Eggprefab != null)
@@ -250,7 +255,7 @@ public class SkillController : MonoBehaviourPun
             // }
 
             m_animator.SetBool("Attack", false);
-            if (Input.GetKeyDown(KeyCode.R)) {
+            if (Input.GetKeyDown(KeyCode.R) && playerController.speedFactor!=0) {
                 print(item);
                 if(item != -1 && bulletNum > 0){
                     if (playerController.aiming)

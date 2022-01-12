@@ -38,6 +38,8 @@ public class ConveyorController : MonoBehaviourPun
         if (!photonView.IsMine) return;
         if(CollisionObject.gameObject.tag == "Player")
         {
+            CollisionObject.gameObject.GetComponent<Rigidbody>().velocity =
+                CollisionObject.gameObject.GetComponent<Rigidbody>().velocity / 2;
             CollisionObject.gameObject.transform.position += speed * velocity;
             // CollisionObject.gameObject.GetComponent<Rigidbody>().velocity = CollisionObject.gameObject.GetComponent<Rigidbody>().velocity + speed * velocity;
         }

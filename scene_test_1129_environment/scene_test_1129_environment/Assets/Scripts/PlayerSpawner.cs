@@ -116,6 +116,10 @@ namespace PhotonTutorial
             photonView.RPC("HumanWin", RpcTarget.All);
         }
 
+        void resetCursor() {
+            Cursor.lockState = CursorLockMode.None;
+        }
+
         void setMapNum() {
             Room room = PhotonNetwork.CurrentRoom;
             Hashtable roomProperties = room.CustomProperties;
@@ -129,7 +133,7 @@ namespace PhotonTutorial
             timer.enabled = false;
             WinLoseCanvas.SetActive(true);
             Invoke(nameof(stopPlayerControll), 0.2f);
-
+            resetCursor();
 
             //if this player is ghost
             if (PhotonNetwork.LocalPlayer.ActorNumber == ghostActorNum)
@@ -183,6 +187,7 @@ namespace PhotonTutorial
             timer.enabled = false;
             WinLoseCanvas.SetActive(true);
             Invoke(nameof(stopPlayerControll), 0.2f);
+            resetCursor();
 
             if (PhotonNetwork.LocalPlayer.ActorNumber == ghostActorNum)
             {

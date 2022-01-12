@@ -127,7 +127,7 @@ public class MenuStart : MonoBehaviourPunCallbacks
         Debug.Log("No clients are waiting for an opponent, creating a new room");
 
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 4;
+        roomOptions.MaxPlayers = 2;
         roomOptions.CustomRoomProperties = new Hashtable() { { ghostKey, true } };
         //PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = MaxPlayersPerRoom });
         PhotonNetwork.CreateRoom(null, roomOptions);
@@ -198,6 +198,8 @@ public class MenuStart : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount == MaxPlayersPerRoom)
         {
+
+            
             PhotonNetwork.CurrentRoom.IsOpen = false;
             rightName.gameObject.SetActive(true);
             rightCharacter.SetActive(true);

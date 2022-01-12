@@ -44,6 +44,8 @@ public class Clone : MonoBehaviourPun
         cloneCharacrer.GetComponent<CharacterSkinChanger>().enabled = true;
 
 
+
+
  
     }
 

@@ -24,7 +24,7 @@ public class GhostCatch : MonoBehaviourPun
         m_animator = gameObject.GetComponent<Animator>();
         tagging = false;
         can_dash = true;
-        dash_speed = 0.15f;
+        dash_speed = 7.5f;
         cnt = 0;
         cnt_end = 50;
     }
@@ -37,12 +37,14 @@ public class GhostCatch : MonoBehaviourPun
             return;
         }
 
-        if (Input.GetMouseButtonDown(0) && (!tagging) && gameObject.GetComponent<SkillController>().sprintPower > 10)
+        if (Input.GetMouseButtonDown(0) && (!tagging) && gameObject.GetComponent<SkillController>().sprintPower > 10 
+            && gameObject.GetComponent<PlayerController>().speedFactor!=0)
         {
             tagging = true;
             can_dash = false;
             gameObject.GetComponent<SkillController>().sprintPower -= 10;
             m_animator.SetBool("dash", true);
+            GetComponent<Rigidbody>().AddForce(transform.forward * dash_speed, ForceMode.VelocityChange);
         }
     }
 
@@ -55,16 +57,16 @@ public class GhostCatch : MonoBehaviourPun
 
         if (tagging)
         {
-            if (cnt <= 100) // signal last (and cool down) for 10 frame
+            if (cnt <= 1) // signal last (and cool down) for frame
             {
-                cnt++;
-                if(cnt < cnt_end){
-                    m_animator.SetBool("dash", false);
-                    gameObject.transform.position += transform.forward * dash_speed;
-                }
+                cnt += Time.deltaTime;
+                //GetComponent<Rigidbody>().AddForce(transform.forward * dash_speed ,ForceMode.VelocityChange);
+                //gameObject.transform.position += transform.forward * dash_speed;
             }
             else
             {
+                m_animator.SetBool("dash", false);
+                //m_animator.SetBool("dash", false);
                 cnt = 0;
                 tagging = false;
                 can_dash = true;

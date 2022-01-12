@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviourPun
 {
     private Rigidbody rb;
     public float speed;
-    public float jumpSpeed = 5f;
+    public float jumpSpeed = 7f;
     public bool TeleportAvailable;
     //public GameObject canva;
 
@@ -81,8 +81,8 @@ public class PlayerController : MonoBehaviourPun
         float x = Input.GetAxis("Horizontal") * directionFactor;
         float z = Input.GetAxis("Vertical") * directionFactor;
 
-        //
-        if (Input.GetMouseButtonDown(1))
+        //  aim input
+        if (Input.GetMouseButtonDown(1) && speedFactor!=0)
         {
             Cursor.lockState = CursorLockMode.Locked;
             //SetCusor();
@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviourPun
             cine2.SetActive(true);
             cine1.SetActive(false);
         }
-        else if (Input.GetMouseButtonUp(1))
+        else if (Input.GetMouseButtonUp(1) || speedFactor==0)
         {
             Cursor.lockState = CursorLockMode.None;
 
@@ -118,43 +118,48 @@ public class PlayerController : MonoBehaviourPun
              //   Time.fixedDeltaTime*5);
         }
 
-        //and transform turn
 
-        //
-        if (can_jump)
+        // run input
+        if (!m_animator.GetBool("dash") && can_jump)
         {
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 m_animator.SetBool("rush", true);
                 gameObject.GetComponent<SkillController>().sprint = true;
-                speed = 10;
-            }else if (Input.GetKeyUp(KeyCode.LeftShift))
-            {
-                m_animator.SetBool("rush", false);
-                gameObject.GetComponent<SkillController>().sprint = false;
-                speed = 5;
+                speed = 11;
             }
         }
-        
-        if( x != 0 || z != 0)
+        if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            rb.velocity = new Vector3(playerCamera.transform.forward.x*z + playerCamera.transform.right.x*x
-            , 0f, playerCamera.transform.forward.z*z+playerCamera.transform.right.z*x).normalized * speed
-            + Vector3.up * rb.velocity.y;
-            //rb.velocity *= speedFactor;
-            rb.velocity = new Vector3(rb.velocity.x * speedFactor, rb.velocity.y, rb.velocity.z * speedFactor);
+            m_animator.SetBool("rush", false);
+            gameObject.GetComponent<SkillController>().sprint = false;
+            speed = 7;
         }
-        if((Mathf.Abs(x) > 0.1 || Mathf.Abs(z) > 0.1) && (!aiming))
+
+        // move input
+        Vector3 rbv = rb.velocity;
+        if (!m_animator.GetBool("dash") && (x != 0 || z != 0))
+        {
+            rbv = new Vector3(playerCamera.transform.forward.x*z + playerCamera.transform.right.x*x
+            , 0f, playerCamera.transform.forward.z*z+playerCamera.transform.right.z*x).normalized * speed
+            + Vector3.up * rbv.y;
+            //rb.velocity *= speedFactor;
+            rbv = new Vector3(rbv.x * speedFactor, rbv.y, rbv.z * speedFactor);
+            rb.velocity = new Vector3(Mathf.Lerp(rb.velocity.x, rbv.x, 0.3f),
+                                      rbv.y,
+                                      Mathf.Lerp(rb.velocity.z, rbv.z, 0.3f));
+        }
+        if((Mathf.Abs(rb.velocity.x) > 0.1 || Mathf.Abs(rb.velocity.z) > 0.1) && (!aiming))
         {
             this.transform.eulerAngles = new Vector3(0, Mathf.Rad2Deg * Mathf.Atan2(rb.velocity.x , rb.velocity.z),0);
         }
 
-        Vector3 rbv = rb.velocity;
-        if(Input.GetKey(KeyCode.Space) && can_jump){
+        // jump input
+        if((speedFactor!=0) && Input.GetKey(KeyCode.Space) && can_jump){
+            m_animator.SetBool("jump", true);
             rbv.y = jumpSpeed;
             rb.velocity = rbv;
             can_jump = false;
-            m_animator.SetBool("jump", true);
         }else{
             // if(can_jump){
             //     rbvy = -6;
@@ -165,7 +170,7 @@ public class PlayerController : MonoBehaviourPun
         }
 
 
-        
+        // walk animate
         if (Mathf.Abs(rb.velocity.x)<=1f && Mathf.Abs(rb.velocity.z) <= 1f)
         {           
             m_animator.SetFloat("Speed", 0.0f);

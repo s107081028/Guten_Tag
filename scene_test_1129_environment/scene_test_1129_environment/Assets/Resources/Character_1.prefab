@@ -10290,11 +10290,11 @@ CapsuleCollider:
   m_GameObject: {fileID: 6349257400965536255}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.6193762
-  m_Height: 2
+  m_Enabled: 1
+  m_Radius: 0.5714234
+  m_Height: 2.0526745
   m_Direction: 1
-  m_Center: {x: -0.11937618, y: 1, z: 0}
+  m_Center: {x: 0.019722342, y: 0.97366273, z: 0}
 --- !u!65 &3036720987594092794
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10303,8 +10303,8 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6349257400965536255}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
+  m_IsTrigger: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1.7, z: 1}
   m_Center: {x: 0, y: 0.9, z: 0}
@@ -10320,8 +10320,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81dbf74da96a08d48838ad66c78fa014, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  jumpSpeed: 3
+  speed: 7
+  jumpSpeed: 7
   TeleportAvailable: 0
   playerCamera: {fileID: 0}
   speedFactor: 1
@@ -10504,6 +10504,7 @@ MonoBehaviour:
   nameText: {fileID: 4749528771813964642}
   ghostIcon: {fileID: 6549548074443984628}
   ghostGrab: {fileID: 5942461846376371723}
+  isCloned: 0
 --- !u!114 &9167577083538347619
 MonoBehaviour:
   m_ObjectHideFlags: 0

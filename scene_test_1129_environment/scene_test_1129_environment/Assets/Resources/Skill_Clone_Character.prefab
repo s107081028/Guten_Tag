@@ -10204,11 +10204,9 @@ GameObject:
   - component: {fileID: 98366174473749968}
   - component: {fileID: -6048456273659376676}
   - component: {fileID: 167382932116065822}
-  - component: {fileID: 9167577083538347619}
   - component: {fileID: 6131968221137595588}
   - component: {fileID: 4322408974133732987}
   - component: {fileID: 5066171629973857475}
-  - component: {fileID: -2896643952043628183}
   - component: {fileID: 3667642875059030464}
   - component: {fileID: 7064478148389488835}
   m_Layer: 0
@@ -10400,21 +10398,7 @@ MonoBehaviour:
   nameText: {fileID: 4749528771813964642}
   ghostIcon: {fileID: 6549548074443984628}
   ghostGrab: {fileID: 5942461846376371723}
---- !u!114 &9167577083538347619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6349257400965536255}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa6b0015693e2744e8953828edbfea35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerspawner: {fileID: 0}
-  dash_speed: 0
-  cnt_end: 0
+  isCloned: 1
 --- !u!114 &6131968221137595588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10457,20 +10441,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skill4_zone: {fileID: 1381091969882274586, guid: 81d275cafcfb6f9499b03dedfc3c6538,
     type: 3}
---- !u!114 &-2896643952043628183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6349257400965536255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19fdc2891725c564e93dc36436b5880e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dash_speed: 0
-  cnt_end: 0
 --- !u!114 &3667642875059030464
 MonoBehaviour:
   m_ObjectHideFlags: 0
