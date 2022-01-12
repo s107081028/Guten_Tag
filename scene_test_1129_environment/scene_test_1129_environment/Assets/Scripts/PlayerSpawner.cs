@@ -1,4 +1,6 @@
-﻿using Photon.Pun;
+﻿using ExitGames.Client.Photon;
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -57,13 +59,13 @@ namespace PhotonTutorial
         bool masterIsGhost = false;
 
 
-
+        private int currentMapNum;
 
 
         private void Start()
         {
 
-
+            setMapNum();
 
             loseUI = WinLoseCanvas.transform.Find("Panel_LOSE").gameObject;
             winUI = WinLoseCanvas.transform.Find("Panel_WIN").gameObject;
@@ -114,12 +116,19 @@ namespace PhotonTutorial
             photonView.RPC("HumanWin", RpcTarget.All);
         }
 
+        void setMapNum() {
+            Room room = PhotonNetwork.CurrentRoom;
+            Hashtable roomProperties = room.CustomProperties;
+
+            currentMapNum = (int)roomProperties["Map"];
+        }
+
         [PunRPC]
         public void GhostWin()
         {
             timer.enabled = false;
             WinLoseCanvas.SetActive(true);
-            Invoke(nameof(stopPlayerControll), 0.1f);
+            Invoke(nameof(stopPlayerControll), 0.2f);
 
 
             //if this player is ghost
@@ -158,6 +167,8 @@ namespace PhotonTutorial
             curPlayer.GetComponent<Animator>().enabled = false;
             curPlayer.GetComponent<PlayerController>().enabled = false;
             curPlayer.GetComponent<SkillController>().enabled = false;
+            curPlayer.GetComponent<GhostCatch>().enabled = false;
+            curPlayer.GetComponent<HumanDash>().enabled = false;
 
 
             //hide gameplay ui
@@ -182,24 +193,6 @@ namespace PhotonTutorial
                 showWinUI();
 
             }
-
-            /*
-
-            if (PhotonNetwork.LocalPlayer.IsMasterClient && masterIsGhost)
-            {
-                //show lose
-                WinLoseCanvas.transform.Find("WINText").gameObject.SetActive(false);
-            }
-            else if ((!PhotonNetwork.LocalPlayer.IsMasterClient) && (!masterIsGhost))
-            {
-                //show lose
-                WinLoseCanvas.transform.Find("WINText").gameObject.SetActive(false);
-            }
-            else
-            {
-                //show win
-                WinLoseCanvas.transform.Find("LOSEText").gameObject.SetActive(false);
-            }*/
         }
 
         public void restart()
@@ -210,7 +203,13 @@ namespace PhotonTutorial
         [PunRPC]
         void loadNextSync()
         {
-            PhotonNetwork.LoadLevel("Environment");
+            if (currentMapNum == 0)
+                PhotonNetwork.LoadLevel("Environment");
+            else
+            {
+                PhotonNetwork.LoadLevel("Environment(map2)"); //change this
+            }
+            
         }
 
 

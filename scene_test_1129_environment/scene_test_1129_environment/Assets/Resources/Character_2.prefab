@@ -11115,6 +11115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprintBar: {fileID: 2465750445057565295}
   syncTimeDiff: 0.3
+  currentSprintValue: 1
 --- !u!114 &1737474356429550240
 MonoBehaviour:
   m_ObjectHideFlags: 0

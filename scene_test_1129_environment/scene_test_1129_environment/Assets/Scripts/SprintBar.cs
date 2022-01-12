@@ -1,6 +1,4 @@
 ﻿using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,35 +21,40 @@ public class SprintBar : MonoBehaviourPun
     void Update()
     {
 
-        
+
         sprintBar.value = Mathf.Lerp(sprintBar.value, currentSprintValue, Time.deltaTime); ;
 
 
         if (!photonView.IsMine)
             return;
 
-        currentSprintValue = (1.0f) * skillController.sprintPower / skillController.sprintMaxPower;
-       
+        if (skillController)
+            currentSprintValue = (1.0f) * skillController.sprintPower / skillController.sprintMaxPower;
 
 
-        if (isTimeToSync) {
+
+        if (isTimeToSync)
+        {
             isTimeToSync = false;
             CallOtherUpdateSprintBarValueRPC();
-            Invoke(nameof(resetIsTimeToSync),syncTimeDiff);
+            Invoke(nameof(resetIsTimeToSync), syncTimeDiff);
         }
     }
 
 
-    void resetIsTimeToSync() {
+    void resetIsTimeToSync()
+    {
         isTimeToSync = true;
     }
 
-    void CallOtherUpdateSprintBarValueRPC() {
-        photonView.RPC(nameof(updateSprintValue), RpcTarget.Others,sprintBar.value);
+    void CallOtherUpdateSprintBarValueRPC()
+    {
+        photonView.RPC(nameof(updateSprintValue), RpcTarget.Others, sprintBar.value);
     }
 
     [PunRPC]
-    void updateSprintValue(float val) {
+    void updateSprintValue(float val)
+    {
         currentSprintValue = val;
     }
 }

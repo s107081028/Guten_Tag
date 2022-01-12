@@ -156,6 +156,8 @@ public class MenuStart : MonoBehaviourPunCallbacks
         leftSkillBox.SetActive(true);
         leftName.gameObject.SetActive(true);
 
+        setupMap(); 
+
         UpdateMapUI();
 
         int playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
@@ -246,6 +248,13 @@ public class MenuStart : MonoBehaviourPunCallbacks
         //room.SetCustomProperties()
     }
 
+
+    void setupMap() {
+        Room room = PhotonNetwork.CurrentRoom;
+        Hashtable roomProperties = room.CustomProperties;
+        roomProperties[mapKey] = 0;
+        room.SetCustomProperties(roomProperties);
+    }
 
     public void ChangeMap(int mapNumber)
     {
