@@ -58,6 +58,12 @@ public class PlayerController : MonoBehaviourPun
             m_animator = gameObject.GetComponent<Animator>();
             rb = GetComponent<Rigidbody>();
 
+            if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+                SetMask(10);                // CAN NOT SEE LAYER 10
+            }
+            else if (!PhotonNetwork.LocalPlayer.IsMasterClient) {
+                SetMask(9);                 // CAN NOT SEE LAYER 9
+            }
         }
     }
 
@@ -91,12 +97,25 @@ public class PlayerController : MonoBehaviourPun
             aiming = false;
             cine1.SetActive(true);
             cine2.SetActive(false);
+            
         }
 
         if (aiming)
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, (playerCamera.transform.rotation), 
-                Time.fixedDeltaTime * 2);
+
+
+            //transform.forward = playerCamera.transform.forward;
+
+            Quaternion curRotation = transform.rotation;
+            curRotation.y = playerCamera.transform.rotation.y;
+            transform.rotation = curRotation;
+            
+            
+            
+            //transform.rotation = curRotation;
+            //transform.rotation = playerCamera.transform.rotation;
+            //transform.rotation = Quaternion.Lerp(transform.rotation, (playerCamera.transform.rotation), 
+             //   Time.fixedDeltaTime*5);
         }
 
         //and transform turn
@@ -107,10 +126,12 @@ public class PlayerController : MonoBehaviourPun
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 m_animator.SetBool("rush", true);
+                gameObject.GetComponent<SkillController>().sprint = true;
                 speed = 10;
             }else if (Input.GetKeyUp(KeyCode.LeftShift))
             {
                 m_animator.SetBool("rush", false);
+                gameObject.GetComponent<SkillController>().sprint = false;
                 speed = 5;
             }
         }
@@ -120,9 +141,10 @@ public class PlayerController : MonoBehaviourPun
             rb.velocity = new Vector3(playerCamera.transform.forward.x*z + playerCamera.transform.right.x*x
             , 0f, playerCamera.transform.forward.z*z+playerCamera.transform.right.z*x).normalized * speed
             + Vector3.up * rb.velocity.y;
-            rb.velocity *= speedFactor;
+            //rb.velocity *= speedFactor;
+            rb.velocity = new Vector3(rb.velocity.x * speedFactor, rb.velocity.y, rb.velocity.z * speedFactor);
         }
-        if((Mathf.Abs(x) > 0.1 || Mathf.Abs(z) > 0.1) && !aiming)
+        if((Mathf.Abs(x) > 0.1 || Mathf.Abs(z) > 0.1) && (!aiming))
         {
             this.transform.eulerAngles = new Vector3(0, Mathf.Rad2Deg * Mathf.Atan2(rb.velocity.x , rb.velocity.z),0);
         }
@@ -228,5 +250,10 @@ public class PlayerController : MonoBehaviourPun
         
         Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
 
+    }
+
+    void SetMask(int n)
+    {
+        playerCamera.GetComponent<Camera>().cullingMask = playerCamera.GetComponent<Camera>().cullingMask ^ (1 << n);
     }
 }

@@ -12,6 +12,7 @@ public class TeleportController : MonoBehaviour
     void Start()
     {
         lastEnterTime = Time.time;
+        coolTime = 5.0f;
     }
 
     // Update is called once per frame

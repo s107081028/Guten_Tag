@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class ConveyorController : MonoBehaviour
+using Photon.Pun;
+public class ConveyorController : MonoBehaviourPun
 {
     public float x1, y1, z1 ,x2, y2, z2;
     private float max, min;
@@ -29,7 +29,18 @@ public class ConveyorController : MonoBehaviour
         {
             velocity = -1 * velocity;
         }
-        gameObject.GetComponent<Rigidbody>().velocity = (speed * velocity);
-
+        // gameObject.GetComponent<Rigidbody>().velocity = (speed * velocity);
+        gameObject.transform.position += speed * velocity;
     }
+    
+    void OnCollisionStay(Collision CollisionObject)
+    {
+        if (!photonView.IsMine) return;
+        if(CollisionObject.gameObject.tag == "Player")
+        {
+            CollisionObject.gameObject.transform.position += speed * velocity;
+            // CollisionObject.gameObject.GetComponent<Rigidbody>().velocity = CollisionObject.gameObject.GetComponent<Rigidbody>().velocity + speed * velocity;
+        }
+    }
+
 }

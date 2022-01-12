@@ -13,6 +13,10 @@ public class TimerCtrl : MonoBehaviourPun
     public Text timeText;
     PhotonView PV;
     public PlayerSpawner playerspawner = null;
+
+
+    private List<GameObject> energyBars;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +24,9 @@ public class TimerCtrl : MonoBehaviourPun
         PV = GetComponent<PhotonView>();
         timeText = GetComponent<Text>();
         time_int = Mathf.FloorToInt(timecntdown);
+
+
+
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
             PV.RPC("showText", RpcTarget.All, timecntdown);
@@ -71,4 +78,6 @@ public class TimerCtrl : MonoBehaviourPun
 
         timeText.text = string.Format("{0:00}:{1:00}", min, sec);
     }
+
+
 }
