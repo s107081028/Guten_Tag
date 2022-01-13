@@ -82,7 +82,14 @@ public class MenuStart : MonoBehaviourPunCallbacks
         //Default Left(Master if ghost)
         rightNameGhost.SetActive(false);
 
-        FindOpponent();
+        if (PhotonNetwork.InRoom)
+        {
+            UpdateCurrentState();
+        }
+        else
+        {
+            FindOpponent();
+        }
     }
 
     public void FindOpponent()
@@ -95,6 +102,7 @@ public class MenuStart : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsConnected)
         {
+            PhotonNetwork.AutomaticallySyncScene = true;
             PhotonNetwork.JoinRandomRoom();
         }
         else
@@ -178,8 +186,12 @@ public class MenuStart : MonoBehaviourPunCallbacks
             DisableButtonForMaster();
             waitingStatusText.text = "Opponent Found";
             Debug.Log("Match is ready to begin");
-            
-            
+            Room room = PhotonNetwork.CurrentRoom;
+            Hashtable roomProperties = room.CustomProperties;
+            currentMapNum = (int)roomProperties[mapKey];
+            UpdateMapUI();
+
+
             rightName.gameObject.SetActive(true);
             rightName.text = PhotonNetwork.NickName;
             leftName.text = PhotonNetwork.MasterClient.NickName;
@@ -213,7 +225,8 @@ public class MenuStart : MonoBehaviourPunCallbacks
 
 
             // Fix bug
-            leftSkillBox.GetComponent<SkillBoxChanger>().updateSkin();
+            //leftSkillBox.GetComponent<SkillBoxChanger>().updateSkin();
+            leftSkillBox.GetComponent<PhotonView>().RPC("updateSkinRPC", RpcTarget.All, leftSkillBox.GetComponent<SkillBoxChanger>().curSkillNum);
         }
         
     }
@@ -356,6 +369,112 @@ public class MenuStart : MonoBehaviourPunCallbacks
     {
         base.OnPlayerLeftRoom(otherPlayer);
         //todo show other player gone on UI
+    }
+
+
+
+    // shaoting
+
+
+
+    public void UpdateCurrentState()
+    {
+        //Hashtable playerProp = PhotonNetwork.LocalPlayer.CustomProperties;
+        //playerProp.Add(playerCharacterSelectNum, 0);
+        //PhotonNetwork.LocalPlayer.SetCustomProperties(playerProp);
+
+
+        leftCharacter.SetActive(true);
+        leftSkillBox.SetActive(true);
+        leftName.gameObject.SetActive(true);
+
+        //      setupMap();
+        Room room = PhotonNetwork.CurrentRoom;
+        Hashtable roomProperties = room.CustomProperties;
+        currentMapNum = (int)roomProperties[mapKey];
+
+        UpdateMapUI();
+
+        int playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
+
+        if (playerCount != MaxPlayersPerRoom)
+        {
+
+            //waitingStatusText.text = "Waiting For Opponent";
+            //Debug.Log("Client is waiting for an opponent");
+
+
+            leftName.text = PhotonNetwork.NickName;
+
+            leftButtons.SetActive(true);
+            leftSkillBox.GetComponent<SkillBoxChanger>().updateSkin();
+        }
+        else
+        {
+            DisableButtonForMaster();
+            rightName.gameObject.SetActive(true);
+            rightCharacter.SetActive(true);
+            rightSkillBox.SetActive(true);
+            switchButton.interactable = true;
+
+
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                Player otherPlayer = null;
+                foreach (Player player in PhotonNetwork.PlayerList) {
+                    if (player.UserId != PhotonNetwork.LocalPlayer.UserId)
+                    {
+                        otherPlayer = player;
+                        break;
+                    }
+                }
+
+
+                rightName.text = otherPlayer.NickName;
+                leftName.text = PhotonNetwork.MasterClient.NickName;
+                
+
+                leftButtons.SetActive(true);
+
+
+                //Invoke(nameof(UpdateSkinForOther), 4);
+                //leftSkillBox.GetComponent<SkillBoxChanger>().updateSkin();
+                leftSkillBox.GetComponent<PhotonView>().RPC("updateSkinRPC", RpcTarget.All, (int)PhotonNetwork.LocalPlayer.CustomProperties["CharacterNum"]);
+
+
+            }
+            else
+            {
+                leftName.text = PhotonNetwork.MasterClient.NickName;
+                rightName.text = PhotonNetwork.LocalPlayer.NickName;
+
+
+                rightButtons.SetActive(true);
+
+
+                //Invoke(nameof(UpdateSkinForOther), 4);
+                //rightSkillBox.GetComponent<SkillBoxChanger>().updateSkin();
+                //rightSkillBox.GetComponent<PhotonView>().RPC("updateSkinRPC", RpcTarget.All, rightSkillBox.GetComponent<SkillBoxChanger>().curSkillNum);
+                rightSkillBox.GetComponent<PhotonView>().RPC("updateSkinRPC", RpcTarget.All, (int)PhotonNetwork.LocalPlayer.CustomProperties["CharacterNum"]);
+
+            }
+
+        }
+        waitingStatusPanel.SetActive(false);
+
+
+    }
+
+    private void UpdateSkinForOther()
+    {
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            leftSkillBox.GetComponent<SkillBoxChanger>().updateSkin();
+        }
+        else
+        {
+            rightSkillBox.GetComponent<SkillBoxChanger>().updateSkin();
+        }
     }
 
 

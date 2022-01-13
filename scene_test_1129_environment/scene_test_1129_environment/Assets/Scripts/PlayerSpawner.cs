@@ -202,19 +202,25 @@ namespace PhotonTutorial
 
         public void restart()
         {
-            photonView.RPC("loadNextSync", RpcTarget.All);
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                loadNextSync();
+            }
+            //photonView.RPC("loadNextSync", RpcTarget.All);
         }
 
         [PunRPC]
         void loadNextSync()
         {
+            PhotonNetwork.LoadLevel("RoomScene");
+            /*
             if (currentMapNum == 0)
                 PhotonNetwork.LoadLevel("Environment");
             else
             {
                 PhotonNetwork.LoadLevel("Environment(map2)"); //change this
             }
-            
+            */
         }
 
 

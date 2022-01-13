@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using ExitGames.Client.Photon;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -18,16 +19,29 @@ public class SkillBoxChanger : MonoBehaviour
     public GameObject targetCharacter;
     public CharacterSkinChanger skinChanger;
 
-    private MenuStart menuStart;
+    public MenuStart menuStart;
     private PhotonView photonView;
     public List<GameObject> characterObjects = new List<GameObject>();
 
+    private string playerCharacterSelectNum = "CharacterNum";
+
+
     void Start()
     {
-        menuStart = GameObject.Find("RoomManager").GetComponent<MenuStart>();
+        menuStart = skinChanger.gameObject.GetComponent<MenuStart>();
         photonView = gameObject.GetComponent<PhotonView>();
 
         //setup defualt skill descriptiona and character skin
+        /*
+        Hashtable playerProp = PhotonNetwork.LocalPlayer.CustomProperties;
+        if (playerProp[playerCharacterSelectNum] != null)
+        {
+            //curSkillNum = (int)playerProp[playerCharacterSelectNum];
+        }
+        else
+        {
+            curSkillNum = 0;
+        }*/
         skillImage.sprite = skillData.getSkillSpite(curSkillNum);
         skillText.text = skillData.getSkillText(curSkillNum);
         setSkinByCharacterIdx(curSkillNum);

@@ -33,10 +33,10 @@ public class Skill_Chaos : MonoBehaviourPun
                 }
                 if (n < maximum_present_box_number) {
                     if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-                        prefab3 = PhotonNetwork.Instantiate(skill3_present_box_master.name, new Vector3(transform.position.x, 0f, transform.position.z) + transform.forward * -5f, Quaternion.identity);
+                        prefab3 = PhotonNetwork.Instantiate(skill3_present_box_master.name, new Vector3(transform.position.x, transform.position.y, transform.position.z) + transform.forward * -3f, Quaternion.identity);
                     }
                     else {
-                        prefab3 = PhotonNetwork.Instantiate(skill3_present_box_client.name, new Vector3(transform.position.x, 0f, transform.position.z) + transform.forward * -5f, Quaternion.identity);
+                        prefab3 = PhotonNetwork.Instantiate(skill3_present_box_client.name, new Vector3(transform.position.x, transform.position.y, transform.position.z) + transform.forward * -3f, Quaternion.identity);
                     }
                     skillController.skill1Cooldown = skillController.skill1Speed;
                 }
