@@ -87,7 +87,8 @@ public class SkillBoxChanger : MonoBehaviour
 
 
         //Update player properity
-        menuStart.UpdatePlayerCharacter(curSkillNum);
+        if(menuStart)
+            menuStart.UpdatePlayerCharacter(curSkillNum);
 
 
         //Notify other player 
@@ -100,7 +101,7 @@ public class SkillBoxChanger : MonoBehaviour
 
 
     [PunRPC]
-    void updateSkinRPC(int num)
+    public void updateSkinRPC(int num)
     {
         Debug.Log("UPDATE SKIN RPC: " + num.ToString());
 

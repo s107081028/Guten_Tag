@@ -7,6 +7,7 @@ public class DestroySkillPresentBox : MonoBehaviourPun
 {
     // public GameObject PresentBox_ParticleEffect;
     // private GameObject PresentBox_ParticleEffect_prefab;
+//public AudioClip PresentBox_Hit;
     
     void Start()
     {
@@ -16,16 +17,27 @@ public class DestroySkillPresentBox : MonoBehaviourPun
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == "Player") {
-            if (photonView.IsMine == col.gameObject.GetComponent<PhotonView>().IsMine) {
+            
+            PhotonView colPhotonView = col.gameObject.GetComponent<PhotonView>();
+            if (colPhotonView == null) return;
+            if (photonView.IsMine == colPhotonView.IsMine) {
                 // NOTHING HAPPENS
             }
             else {
+                /*if(GetComponent<AudioSource>()) 
+                    GetComponent<AudioSource>().PlayOneShot(PresentBox_Hit);*/
+
                 // if(photonView.IsMine) {
                 //     PresentBox_ParticleEffect_prefab = PhotonNetwork.Instantiate(PresentBox_ParticleEffect.name, transform.position + transform.up * 0.6f, Quaternion.identity);
                 //     PresentBox_ParticleEffect_prefab.GetComponent<ParticleSystem>().Play();
                 // }
                 // StartCoroutine(DoDestroyPresentBox(1.5f));
-                photonView.RPC(nameof(DestroyPresentBox), RpcTarget.Others);
+
+                //photonView.RPC(nameof(DestroyPresentBox), RpcTarget.Others);
+                if (photonView.IsMine)
+                {
+                    DestroyPresentBox();
+                }
             }
         }
     }

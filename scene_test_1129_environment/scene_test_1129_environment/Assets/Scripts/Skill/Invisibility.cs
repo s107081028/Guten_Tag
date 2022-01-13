@@ -123,6 +123,7 @@ public class Invisibility : MonoBehaviourPun
         {
             skillController.skill1Cooldown = skillController.skill1Speed;
             photonView.RPC(nameof(startInvisible), RpcTarget.All, 3f);
+            skillController.SkillSound();
             //photonView.RPC(nameof(hideNameTag), RpcTarget.Others, 10f);
             //startInvisible(10);
         }

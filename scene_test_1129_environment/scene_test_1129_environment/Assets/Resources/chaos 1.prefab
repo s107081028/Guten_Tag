@@ -24098,7 +24098,7 @@ MonoBehaviour:
   muzzlePrefab: {fileID: 1205056747994678, guid: 738eabbe0d556e6469153f1ceec1cdcf,
     type: 3}
   hitPrefab: {fileID: 1685389879088366, guid: 5a1206c9ee2a228459dd302316894ecb, type: 3}
-  shotSFX: {fileID: 8300000, guid: 88b1b4d349319204f829be270c72d3be, type: 3}
+  shotSFX: {fileID: 8300000, guid: a245ee5d75348c84a89ffb7992f1dc82, type: 3}
   hitSFX: {fileID: 0}
   trails:
   - {fileID: 7155264294997216259}

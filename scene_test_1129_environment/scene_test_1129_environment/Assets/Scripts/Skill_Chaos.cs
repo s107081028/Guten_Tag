@@ -25,6 +25,7 @@ public class Skill_Chaos : MonoBehaviourPun
             // SKILL3 : CHAOS
             if (Input.GetKey(KeyCode.E) && skillController.skill1Cooldown <= 0f) {
                 present_box_array = GameObject.FindGameObjectsWithTag("Skill3");        // CAN CHANGE TAG
+                skillController.SkillSound();
                 n = 0;
                 foreach (GameObject present_box in present_box_array) {
                     if (present_box.GetComponent<PhotonView>().IsMine) {

@@ -77,6 +77,13 @@ public class SkillController : MonoBehaviourPun
     public float fallSpeed;
     private float preFallSpeed;
 
+    
+    public AudioClip Skill_sound;
+    public AudioClip Hit_sound;
+    public AudioClip Coin_Sound;
+    public AudioClip Stunned_Sound;
+
+    public AudioClip PresentBox_Hit;
     void Start()
     {
         playerCamera = Camera.main.gameObject; //GameObject.Find("Main Camera");
@@ -340,8 +347,23 @@ public class SkillController : MonoBehaviourPun
                 if(photonView.IsMine) {
                     PresentBox_ParticleEffect_prefab = PhotonNetwork.Instantiate(PresentBox_ParticleEffect.name, col.gameObject.transform.position + transform.up * 0.6f, Quaternion.identity);
                     PresentBox_ParticleEffect_prefab.GetComponent<ParticleSystem>().Play();
+
+                    if(GetComponent<AudioSource>()) 
+                        GetComponent<AudioSource>().PlayOneShot(PresentBox_Hit);
                 }
             }
+        }
+
+        if (col.gameObject.tag == "Skill5") {
+            // ONLY ENEMY'S SKILL IS TRIGGER
+            if(!debuff) Skill3();
+            if(photonView.IsMine) {
+                    PresentBox_ParticleEffect_prefab = PhotonNetwork.Instantiate(PresentBox_ParticleEffect.name, col.gameObject.transform.position + transform.up * 0.6f, Quaternion.identity);
+                    PresentBox_ParticleEffect_prefab.GetComponent<ParticleSystem>().Play();
+            }
+
+            if(GetComponent<AudioSource>()) 
+                GetComponent<AudioSource>().PlayOneShot(Hit_sound);  
         }
 
         if (col.gameObject.tag == "Skill4")
@@ -357,6 +379,8 @@ public class SkillController : MonoBehaviourPun
     // HIT BY SKILL1 : SLOW
     public void Skill1()
     {
+        if(GetComponent<AudioSource>()) 
+            GetComponent<AudioSource>().PlayOneShot (Hit_sound);
         playerController.speedFactor = 0.5f;
         debuff = true;
         Snoweffectprefab = PhotonNetwork.Instantiate(Snoweffect.name, transform.position + transform.up * 2.3f, Quaternion.identity);
@@ -374,6 +398,8 @@ public class SkillController : MonoBehaviourPun
     // HIT BT SKILL2 : FREEZE    
     public void Skill2()
     {
+        if(GetComponent<AudioSource>()) 
+            GetComponent<AudioSource>().PlayOneShot(Stunned_Sound);
         playerController.speedFactor = 0f;
         debuff = true;
         if(photonView.IsMine) dizzyprefab = PhotonNetwork.Instantiate(dizzyeffect.name, transform.position + transform.up * 1.5f, new Quaternion(0, 90, 90, 0));
@@ -413,6 +439,7 @@ public class SkillController : MonoBehaviourPun
     // Hit By Egg
     public void Skill4()
     {
+        GetComponent<AudioSource>().PlayOneShot(Hit_sound);
         debuff = true;
         if (photonView.IsMine)
         {
@@ -463,13 +490,20 @@ public class SkillController : MonoBehaviourPun
     }
 
     public void PickUpCoin(int i)
-    {
+    {   
+        if(Coin_Sound != null && GetComponent<AudioSource>()) 
+            GetComponent<AudioSource>().PlayOneShot (Coin_Sound);
         item = i;
         bulletNum = 5;
         fillAmountController.PickUpSkill(item);
         fillAmountController.RefreshBulletNum(bulletNum);
     }
 
+    public void SkillSound()
+    {
+        if(Skill_sound != null && GetComponent<AudioSource>()) 
+            GetComponent<AudioSource>().PlayOneShot(Skill_sound);
+    }
     // SKILL4 : STEALTH
     // public void SKILL4()
     // {

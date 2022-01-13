@@ -136,7 +136,7 @@ public class MenuStart : MonoBehaviourPunCallbacks
 
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 2;
-        roomOptions.CustomRoomProperties = new Hashtable() { { ghostKey, true } };
+        roomOptions.CustomRoomProperties = new Hashtable() { { ghostKey, true },{ mapKey,0} };
         //PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = MaxPlayersPerRoom });
         PhotonNetwork.CreateRoom(null, roomOptions);
     }
@@ -146,6 +146,7 @@ public class MenuStart : MonoBehaviourPunCallbacks
 
         Debug.Log("Created A Room");
         leftName.text = PhotonNetwork.NickName;
+        setupMap();
     }
 
     public override void OnJoinedRoom()
@@ -164,7 +165,6 @@ public class MenuStart : MonoBehaviourPunCallbacks
         leftSkillBox.SetActive(true);
         leftName.gameObject.SetActive(true);
 
-        setupMap(); 
 
         UpdateMapUI();
 
@@ -312,6 +312,7 @@ public class MenuStart : MonoBehaviourPunCallbacks
     }
 
     private void UpdateMapUI() {
+        Debug.Log("update map ui" + currentMapNum);
         mapImg.sprite = mapImgList[currentMapNum];
         mapText.text = mapNameList[currentMapNum];
     }
@@ -436,12 +437,10 @@ public class MenuStart : MonoBehaviourPunCallbacks
 
                 leftButtons.SetActive(true);
 
-
+                rightSkillBox.GetComponent<SkillBoxChanger>().updateSkinRPC((int)otherPlayer.CustomProperties["CharacterNum"]);
                 //Invoke(nameof(UpdateSkinForOther), 4);
                 //leftSkillBox.GetComponent<SkillBoxChanger>().updateSkin();
-                leftSkillBox.GetComponent<PhotonView>().RPC("updateSkinRPC", RpcTarget.All, (int)PhotonNetwork.LocalPlayer.CustomProperties["CharacterNum"]);
-
-
+                //leftSkillBox.GetComponent<PhotonView>().RPC("updateSkinRPC", RpcTarget.All, (int)PhotonNetwork.LocalPlayer.CustomProperties["CharacterNum"]);
             }
             else
             {
@@ -455,9 +454,12 @@ public class MenuStart : MonoBehaviourPunCallbacks
                 //Invoke(nameof(UpdateSkinForOther), 4);
                 //rightSkillBox.GetComponent<SkillBoxChanger>().updateSkin();
                 //rightSkillBox.GetComponent<PhotonView>().RPC("updateSkinRPC", RpcTarget.All, rightSkillBox.GetComponent<SkillBoxChanger>().curSkillNum);
-                rightSkillBox.GetComponent<PhotonView>().RPC("updateSkinRPC", RpcTarget.All, (int)PhotonNetwork.LocalPlayer.CustomProperties["CharacterNum"]);
+                //rightSkillBox.GetComponent<PhotonView>().RPC("updateSkinRPC", RpcTarget.All, (int)PhotonNetwork.LocalPlayer.CustomProperties["CharacterNum"]);
+                rightSkillBox.GetComponent<SkillBoxChanger>().updateSkinRPC((int)PhotonNetwork.LocalPlayer.CustomProperties["CharacterNum"]);
 
             }
+
+            leftSkillBox.GetComponent<SkillBoxChanger>().updateSkinRPC((int)PhotonNetwork.MasterClient.CustomProperties["CharacterNum"]);
 
         }
         waitingStatusPanel.SetActive(false);

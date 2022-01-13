@@ -149,7 +149,7 @@ public class PlayerController : MonoBehaviourPun
                                       rbv.y,
                                       Mathf.Lerp(rb.velocity.z, rbv.z, 0.3f));
         }
-        if((Mathf.Abs(rb.velocity.x) > 0.1 || Mathf.Abs(rb.velocity.z) > 0.1) && (!aiming))
+        if((Mathf.Abs(x) > 0.1 || Mathf.Abs(z) > 0.1) && (!aiming) && speedFactor!=0)
         {
             this.transform.eulerAngles = new Vector3(0, Mathf.Rad2Deg * Mathf.Atan2(rb.velocity.x , rb.velocity.z),0);
         }
