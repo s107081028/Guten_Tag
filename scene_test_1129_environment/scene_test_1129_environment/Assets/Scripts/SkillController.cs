@@ -11,8 +11,8 @@ public class SkillController : MonoBehaviourPun
     public int directionFactor = 1;
     public float skill1Cooldown = 0f;
     public float skill2Cooldown = 0f;
-    public float skill3Cooldown = 0f; 
-    public float skill4Cooldown = 0f; 
+    public float skill3Cooldown = 0f;
+    public float skill4Cooldown = 0f;
 
     public float skill1Speed = 1f;
     public float skill2Speed = 3f;
@@ -71,13 +71,14 @@ public class SkillController : MonoBehaviourPun
     public float punishing_end;
 
     private FillAmountController fillAmountController;
-    public bool IsOnZone;
+    public bool IsOnZoneBuff;
+    public bool IsOnZoneDebuff;
     public GameObject PresentBox_ParticleEffect;
     private GameObject PresentBox_ParticleEffect_prefab;
     public float fallSpeed;
     private float preFallSpeed;
 
-    
+
     public AudioClip Skill_sound;
     public AudioClip Hit_sound;
     public AudioClip Coin_Sound;
@@ -94,7 +95,8 @@ public class SkillController : MonoBehaviourPun
         bulletNum = 0;
         punishing = false;
         punishing_end = 15;
-        IsOnZone = false;
+        IsOnZoneBuff = false;
+        IsOnZoneDebuff = false;
 
         fillAmountController = gameObject.GetComponent<FillAmountController>();
         preFallSpeed = 0;
@@ -104,7 +106,7 @@ public class SkillController : MonoBehaviourPun
     void Update()
     {
 
-        
+
         // TRASH
 
         // isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -124,7 +126,7 @@ public class SkillController : MonoBehaviourPun
         // v = move.magnitude;
         // p_animator.SetFloat("Speed", v);
 
-        
+
         // // JUMP
         // if (Input.GetButtonDown("Jump") && isGrounded) {
         //     velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
@@ -138,7 +140,8 @@ public class SkillController : MonoBehaviourPun
         // }
 
 
-        if(!photonView.IsMine){
+        if (!photonView.IsMine)
+        {
             return;
         }
 
@@ -149,29 +152,32 @@ public class SkillController : MonoBehaviourPun
         prefabPosition = transform.position + transform.up * 0.5f + transform.forward * 1.0f;
         // prefabPosition = transform.position + controller.center + transform.forward * 1f;
 
-         skill1Cooldown -= Time.deltaTime;
-         skill2Cooldown -= Time.deltaTime;
+        skill1Cooldown -= Time.deltaTime;
+        skill2Cooldown -= Time.deltaTime;
         //skill3Cooldown -= Time.deltaTime;
         //skill4Cooldown -= Time.deltaTime;
-         skill1Cooldown = Mathf.Clamp(skill1Cooldown, 0f, skill1Speed);
-         skill2Cooldown = Mathf.Clamp(skill2Cooldown, 0f, skill2Speed);
+        skill1Cooldown = Mathf.Clamp(skill1Cooldown, 0f, skill1Speed);
+        skill2Cooldown = Mathf.Clamp(skill2Cooldown, 0f, skill2Speed);
         //skill3Cooldown = Mathf.Clamp(skill3Cooldown, 0f, skill3Speed);
         //skill4Cooldown = Mathf.Clamp(skill4Cooldown, 0f, skill4Speed);
 
         // SPRINT POWER CALCULATION
-        if (sprint) {
+        if (sprint)
+        {
             sprintPower -= (5.0f) * Time.deltaTime;      // RUN 5 SECONDS      //buffed by shaoting
         }
-        else {
+        else
+        {
             sprintPower += (5.0f) * Time.deltaTime;      // RECOVER ? SECONDS  //buffed by shaoting
         }
         sprintPower = Mathf.Clamp(sprintPower, 0f, sprintMaxPower);
 
         // CW
         // SKILL3 : CHAOS EFFECT TRACE PLAYER
-        if (chaosprefab != null) {
+        if (chaosprefab != null)
+        {
             chaosprefab.transform.position = transform.position + transform.up;
-       
+
         }
 
         if (dizzyprefab != null)
@@ -197,19 +203,55 @@ public class SkillController : MonoBehaviourPun
         {
             Snoweffectprefab.transform.position = transform.position + transform.up * 2.3f;
         }
-        
+
         // SKILL4 : ZONE DETERMINE RECOVER TIMING
-        if (IsOnZone && GameObject.FindGameObjectWithTag("Skill4") == null) {
-            playerController.speedFactor = 1f;
+        if (IsOnZoneBuff && GameObject.FindGameObjectWithTag("Skill4") == null)
+        {
+            // playerController.speedFactor = 1f;
             // Debug.Log("cw Skill4 : recover");
-            IsOnZone = false;
+            playerController.speedFactor /= 1.5f;
+            IsOnZoneBuff = false;
+        }
+        if (IsOnZoneDebuff && GameObject.FindGameObjectWithTag("Skill4") == null)
+        {
+            // playerController.speedFactor = 1f;
+            // Debug.Log("cw Skill4 : recover");
+            // Invoke("stopzonedebuff", 5);
+            playerController.speedFactor /= 0.5f;
+            IsOnZoneDebuff = false;
         }
         preFallSpeed = gameObject.GetComponent<Rigidbody>().velocity.y;
+
+        m_animator.SetBool("Attack", false);
+        if (Input.GetKeyDown(KeyCode.R) && playerController.speedFactor != 0)
+        {
+            print(item);
+            if (item != -1 && bulletNum > 0)
+            {
+                if (playerController.aiming)
+                {
+                    m_animator.SetBool("Attack", true);
+                    prefab4 = PhotonNetwork.Instantiate(ItemPrefab[item].name, transform.Find("target").position + playerCamera.transform.forward * 6.0f, Quaternion.identity);
+                    prefab4.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 1500f);
+                    // skill3Cooldown = skill3Speed;
+                }
+                else
+                {
+                    m_animator.SetBool("Attack", true);
+                    prefab4 = PhotonNetwork.Instantiate(ItemPrefab[item].name, prefabPosition + transform.forward * 6.0f, Quaternion.identity);
+                    prefab4.GetComponent<Rigidbody>().AddForce(transform.forward * 1500);
+                    // skill3Cooldown = skill3Speed;
+                }
+                bulletNum -= 1;
+                gameObject.GetComponent<FillAmountController>().RefreshBulletNum(bulletNum);
+            }
+        }
     }
 
     void FixedUpdate()
     {
-        if(photonView.IsMine){
+        if (photonView.IsMine)
+        {
             GameObject playerCamera = GameObject.Find("Main Camera");
             // SKILL1 : SLOW
             // if (Input.GetKey(KeyCode.E) && skill1Cooldown <= 0f) {
@@ -261,51 +303,36 @@ public class SkillController : MonoBehaviourPun
             //     }
             // }
 
-            m_animator.SetBool("Attack", false);
-            if (Input.GetKeyDown(KeyCode.R) && playerController.speedFactor!=0) {
-                print(item);
-                if(item != -1 && bulletNum > 0){
-                    if (playerController.aiming)
-                    {
-                        m_animator.SetBool("Attack", true);
-                        prefab4 = PhotonNetwork.Instantiate(ItemPrefab[item].name, transform.Find("target").position + playerCamera.transform.forward * 6.0f, Quaternion.identity);
-                        prefab4.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * 1500f);
-                        // skill3Cooldown = skill3Speed;
-                    } else
-                    {
-                        m_animator.SetBool("Attack", true);                        
-                        prefab4 = PhotonNetwork.Instantiate(ItemPrefab[item].name, prefabPosition + transform.forward * 6.0f, Quaternion.identity);
-                        prefab4.GetComponent<Rigidbody>().AddForce(transform.forward * 1500);
-                        // skill3Cooldown = skill3Speed;
-                    }
-                    bulletNum -= 1;
-                    gameObject.GetComponent<FillAmountController>().RefreshBulletNum(bulletNum);
-                }
-            }
+           
             // Too Exhausted 
             m_animator.SetBool("exhausted", false);
-            if(sprintPower >= 15.0f){
-                if(punishing ==true){
+            if (sprintPower >= 15.0f)
+            {
+                if (punishing == true)
+                {
                     playerController.speedFactor = 1.0f;
                 }
                 punishing = false;
-            } else if( sprintPower == 0f){
+            }
+            else if (sprintPower == 0f)
+            {
                 punishing = true;
                 m_animator.SetBool("exhausted", true);
             }
 
-            if(punishing){
-                playerController.speedFactor = 0f;  
+            if (punishing)
+            {
+                playerController.speedFactor = 0f;
             } //else if(!m_animator.GetBool("dizzy")) playerController.speedFactor = 1.0f;
 
-            if(bulletNum == 0) item = -1;
+            if (bulletNum == 0) item = -1;
         }
 
-         // SKILL4 : STEALTH
-         //if (Input.GetKey(KeyCode.Y) && skill4Cooldown <= 0f) {
-         //    SKILL4();
-         //    skill4Cooldown = skill4Speed;
-         //}
+        // SKILL4 : STEALTH
+        //if (Input.GetKey(KeyCode.Y) && skill4Cooldown <= 0f) {
+        //    SKILL4();
+        //    skill4Cooldown = skill4Speed;
+        //}
 
         // SPRINT
         /*
@@ -322,63 +349,71 @@ public class SkillController : MonoBehaviourPun
     }
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// SKILL BEGIN
-///////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    // SKILL BEGIN
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     void OnCollisionEnter(Collision col)
     {
         if (!photonView.IsMine) return;
-        if (col.gameObject.tag == "Skill1") {
-            if(!debuff) Skill1();
+        if (col.gameObject.tag == "Skill1")
+        {
+            if (!debuff) Skill1();
         }
 
-        if (col.gameObject.tag == "Skill2") {
-            if(!debuff){
+        if (col.gameObject.tag == "Skill2")
+        {
+            if (!debuff)
+            {
                 Skill2();
                 print("Skill2");
             }
         }
 
-        if (col.gameObject.tag == "Skill3") {
+        if (col.gameObject.tag == "Skill3")
+        {
             // ONLY ENEMY'S SKILL IS TRIGGER
-            if (!col.gameObject.GetComponent<PhotonView>().IsMine) {
-                if(!debuff) Skill3();
-                if(photonView.IsMine) {
+            if (!col.gameObject.GetComponent<PhotonView>().IsMine)
+            {
+                if (!debuff) Skill3();
+                if (photonView.IsMine)
+                {
                     PresentBox_ParticleEffect_prefab = PhotonNetwork.Instantiate(PresentBox_ParticleEffect.name, col.gameObject.transform.position + transform.up * 0.6f, Quaternion.identity);
                     PresentBox_ParticleEffect_prefab.GetComponent<ParticleSystem>().Play();
 
-                    if(GetComponent<AudioSource>()) 
+                    if (GetComponent<AudioSource>())
                         GetComponent<AudioSource>().PlayOneShot(PresentBox_Hit);
                 }
             }
         }
 
-        if (col.gameObject.tag == "Skill5") {
+        if (col.gameObject.tag == "Skill5")
+        {
             // ONLY ENEMY'S SKILL IS TRIGGER
-            if(!debuff) Skill3();
+            if (!debuff) Skill3();
 
-            if(GetComponent<AudioSource>()) 
-                GetComponent<AudioSource>().PlayOneShot(Hit_sound);  
+            if (GetComponent<AudioSource>())
+                GetComponent<AudioSource>().PlayOneShot(Hit_sound);
         }
 
         if (col.gameObject.tag == "Skill4")
         {
             if (!debuff) Skill4();
         }
-        if(preFallSpeed <= fallSpeed) {
+        if (preFallSpeed <= fallSpeed)
+        {
             print("fall");
-            if(!debuff) Skill2();
+            if (!debuff) Skill2();
         }
     }
 
     // HIT BY SKILL1 : SLOW
     public void Skill1()
     {
-        if(GetComponent<AudioSource>()) 
-            GetComponent<AudioSource>().PlayOneShot (Hit_sound);
+        if (GetComponent<AudioSource>())
+            GetComponent<AudioSource>().PlayOneShot(Hit_sound);
 
-        playerController.speedFactor = 0.5f;
+        playerController.speedFactor *= 0.5f;
         debuff = true;
         Snoweffectprefab = PhotonNetwork.Instantiate(Snoweffect.name, transform.position + transform.up * 2.3f, Quaternion.identity);
         StartCoroutine(DoResetSkill1Factor(skill1Delay));
@@ -387,7 +422,7 @@ public class SkillController : MonoBehaviourPun
     IEnumerator DoResetSkill1Factor(float delay)
     {
         yield return new WaitForSeconds(delay);
-        playerController.speedFactor = 1f;
+        playerController.speedFactor /= 0.5f;
         debuff = false;
         PhotonNetwork.Destroy(Snoweffectprefab);
     }
@@ -395,11 +430,11 @@ public class SkillController : MonoBehaviourPun
     // HIT BT SKILL2 : FREEZE    
     public void Skill2()
     {
-        if(GetComponent<AudioSource>()) 
+        if (GetComponent<AudioSource>())
             GetComponent<AudioSource>().PlayOneShot(Stunned_Sound);
         playerController.speedFactor = 0f;
         debuff = true;
-        if(photonView.IsMine) dizzyprefab = PhotonNetwork.Instantiate(dizzyeffect.name, transform.position + transform.up * 1.5f, new Quaternion(0, 90, 90, 0));
+        if (photonView.IsMine) dizzyprefab = PhotonNetwork.Instantiate(dizzyeffect.name, transform.position + transform.up * 1.5f, new Quaternion(0, 90, 90, 0));
         m_animator.SetBool("dizzy", true);
         StartCoroutine(DoResetSkill2Factor(skill2Delay));
     }
@@ -410,7 +445,7 @@ public class SkillController : MonoBehaviourPun
         playerController.speedFactor = 1f;
         debuff = false;
         m_animator.SetBool("dizzy", false);
-        if(photonView.IsMine) PhotonNetwork.Destroy(dizzyprefab);
+        if (photonView.IsMine) PhotonNetwork.Destroy(dizzyprefab);
     }
 
     // HIT BY SKILL3 : CHAOS
@@ -418,7 +453,8 @@ public class SkillController : MonoBehaviourPun
     {
         playerController.directionFactor = -1f;
         debuff = true;
-        if(photonView.IsMine) {
+        if (photonView.IsMine)
+        {
             chaosprefab = PhotonNetwork.Instantiate(chaoseffect.name, transform.position + transform.up, Quaternion.identity);
             chaosprefab.GetComponent<ParticleSystem>().Play();
         }
@@ -441,8 +477,8 @@ public class SkillController : MonoBehaviourPun
         if (photonView.IsMine)
         {
             EggCrackprefab = PhotonNetwork.Instantiate(EggCrackeffect.name, transform.position + transform.up, Quaternion.identity);
-            Eggprefab = PhotonNetwork.Instantiate(Eggeffect.name, transform.position + transform.up *1.5f, Quaternion.identity);
-            EggprefabONFace = Instantiate(Eggeffect, playerCamera.transform.position + playerCamera.transform.forward*2f, Quaternion.identity);
+            Eggprefab = PhotonNetwork.Instantiate(Eggeffect.name, transform.position + transform.up * 1.5f, Quaternion.identity);
+            EggprefabONFace = Instantiate(Eggeffect, playerCamera.transform.position + playerCamera.transform.forward * 2f, Quaternion.identity);
         }
         StartCoroutine(DoResetSkill4Factor(skill4Delay));
     }
@@ -463,14 +499,25 @@ public class SkillController : MonoBehaviourPun
     // TRIGGER SKILL4 : ZONE
     void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.tag == "Skill4") {
-            if (photonView.IsMine) {
-                IsOnZone = true;
-                if (col.gameObject.GetComponent<PhotonView>().IsMine) {
-                    playerController.speedFactor = 1.5f;
+        if (col.gameObject.tag == "Skill4")
+        {
+            if (photonView.IsMine)
+            {
+                if (col.gameObject.GetComponent<PhotonView>().IsMine)
+                {
+                    if (!IsOnZoneBuff)
+                    {
+                        playerController.speedFactor *= 1.5f;
+                        IsOnZoneBuff = true;
+                    }
                 }
-                else {
-                    playerController.speedFactor = 0.7f;
+                else
+                {
+                    if (!IsOnZoneDebuff)
+                    {
+                        playerController.speedFactor *= 0.5f;
+                        IsOnZoneDebuff = true;
+                    }
                 }
             }
         }
@@ -478,18 +525,40 @@ public class SkillController : MonoBehaviourPun
 
     void OnTriggerExit(Collider col)
     {
-        if (col.gameObject.tag == "Skill4") {
-            if (photonView.IsMine) {
-                IsOnZone = false;
-                playerController.speedFactor = 1f;
+        if (col.gameObject.tag == "Skill4")
+        {
+            if (photonView.IsMine)
+            {
+                if (col.gameObject.GetComponent<PhotonView>().IsMine && IsOnZoneBuff)
+                {
+                    playerController.speedFactor /= 1.5f;
+                    IsOnZoneBuff = false;
+                }
+                else if (!col.gameObject.GetComponent<PhotonView>().IsMine && IsOnZoneDebuff)
+                {
+                    playerController.speedFactor /= 0.5f;
+                    IsOnZoneDebuff = false;
+                }
+                // playerController.speedFactor = 1f;
             }
         }
     }
 
+    void stopzonebuff()
+    {
+        IsOnZoneBuff = false;
+        if (!debuff) playerController.speedFactor = 1f;
+    }
+    void stopzonedebuff()
+    {
+        IsOnZoneDebuff = false;
+        if (!debuff) playerController.speedFactor = 1f;
+    }
+
     public void PickUpCoin(int i)
-    {   
-        if(Coin_Sound != null && GetComponent<AudioSource>()) 
-            GetComponent<AudioSource>().PlayOneShot (Coin_Sound);
+    {
+        if (Coin_Sound != null && GetComponent<AudioSource>())
+            GetComponent<AudioSource>().PlayOneShot(Coin_Sound);
         item = i;
         bulletNum = 5;
         fillAmountController.PickUpSkill(item);
@@ -498,7 +567,7 @@ public class SkillController : MonoBehaviourPun
 
     public void SkillSound()
     {
-        if(Skill_sound != null && GetComponent<AudioSource>()) 
+        if (Skill_sound != null && GetComponent<AudioSource>())
             GetComponent<AudioSource>().PlayOneShot(Skill_sound);
     }
     // SKILL4 : STEALTH
@@ -509,7 +578,7 @@ public class SkillController : MonoBehaviourPun
     //     foreach (SkinnedMeshRenderer renderer in renderers) {
     //         renderer.enabled = false;
     //     }
-        
+
     //     StartCoroutine(DoSetActive(skill4Delay));
     // }
 
@@ -520,12 +589,12 @@ public class SkillController : MonoBehaviourPun
     //     foreach (SkinnedMeshRenderer renderer in renderers) {
     //         renderer.enabled = true;
     //     }
-        
+
     //     GFX.SetActive(true);
     // }
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// SKILL END
-///////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    // SKILL END
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
 }

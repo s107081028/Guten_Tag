@@ -45,6 +45,7 @@ public class GhostCatch : MonoBehaviourPun
             gameObject.GetComponent<SkillController>().sprintPower -= 10;
             m_animator.SetBool("dash", true);
             GetComponent<Rigidbody>().AddForce(transform.forward * dash_speed, ForceMode.VelocityChange);
+            GetComponent<PlayerController>().speedFactor *= 1.75f;
         }
     }
 
@@ -70,6 +71,7 @@ public class GhostCatch : MonoBehaviourPun
                 cnt = 0;
                 tagging = false;
                 can_dash = true;
+                GetComponent<PlayerController>().speedFactor /= 1.75f;
             }
         }
     }

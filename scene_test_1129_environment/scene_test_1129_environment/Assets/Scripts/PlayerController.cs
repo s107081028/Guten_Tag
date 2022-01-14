@@ -88,8 +88,8 @@ public class PlayerController : MonoBehaviourPun
             //SetCusor();
             aiming = true;
             cine2.SetActive(true);
-            cine2.transform.rotation = transform.rotation;
             cine1.SetActive(false);
+            cine1.transform.rotation = transform.rotation;
         }
         else if (Input.GetMouseButtonUp(1) || speedFactor==0)
         {
@@ -97,8 +97,8 @@ public class PlayerController : MonoBehaviourPun
 
             aiming = false;
             cine1.SetActive(true);
-            cine1.transform.rotation = transform.rotation;
             cine2.SetActive(false);
+            cine2.transform.rotation = transform.rotation;
         }
 
         if (aiming)
@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviourPun
 
 
         // run input
-        if (!m_animator.GetBool("dash") && can_jump)
+        if (can_jump)
         {
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
@@ -145,7 +145,7 @@ public class PlayerController : MonoBehaviourPun
 
         // move input
         Vector3 rbv = rb.velocity;
-        if (!m_animator.GetBool("dash") && (x != 0 || z != 0))
+        if ((x != 0 || z != 0))//!m_animator.GetBool("dash") && 
         {
             rbv = new Vector3(playerCamera.transform.forward.x*z + playerCamera.transform.right.x*x
             , 0f, playerCamera.transform.forward.z*z+playerCamera.transform.right.z*x).normalized * speed

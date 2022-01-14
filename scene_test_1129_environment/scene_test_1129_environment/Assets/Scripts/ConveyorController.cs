@@ -35,7 +35,7 @@ public class ConveyorController : MonoBehaviourPun
     
     void OnCollisionStay(Collision CollisionObject)
     {
-        if (!photonView.IsMine) return;
+        //if (!photonView.IsMine) return;
         if(CollisionObject.gameObject.tag == "Player")
         {
             CollisionObject.gameObject.GetComponent<Rigidbody>().velocity =

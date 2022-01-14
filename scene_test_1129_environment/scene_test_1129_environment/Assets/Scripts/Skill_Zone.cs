@@ -19,7 +19,7 @@ public class Skill_Zone : MonoBehaviourPun
             // SKILL4 : ZONE
             if (Input.GetKey(KeyCode.E) && skillController.skill1Cooldown <= 0f) {
                 skillController.SkillSound();
-                prefab5 = PhotonNetwork.Instantiate(skill4_zone.name, new Vector3(transform.position.x, 0f, transform.position.z), Quaternion.identity);
+                prefab5 = PhotonNetwork.Instantiate(skill4_zone.name, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
                 skillController.skill1Cooldown = skillController.skill1Speed;
             }
         }

@@ -238,6 +238,7 @@ public class MenuStart : MonoBehaviourPunCallbacks
 
     public void StartGame()
     {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
         startButton.interactable = false;
         Invoke(nameof(EnableStartButton), 1);
 
@@ -464,8 +465,8 @@ public class MenuStart : MonoBehaviourPunCallbacks
             //leftSkillBox.GetComponent<SkillBoxChanger>().updateSkinRPC((int)PhotonNetwork.MasterClient.CustomProperties["CharacterNum"]);
 
         }
-        //Invoke(nameof(UpdateSkinForOther), 1);
-        UpdateSkinForOther();
+        Invoke(nameof(UpdateSkinForOther), 0.1f);
+        //UpdateSkinForOther();
         waitingStatusPanel.SetActive(false);
 
 

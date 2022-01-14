@@ -34,9 +34,9 @@ public class DestroySkillPresentBox : MonoBehaviourPun
                 // StartCoroutine(DoDestroyPresentBox(1.5f));
 
                 //photonView.RPC(nameof(DestroyPresentBox), RpcTarget.Others);
-                if (photonView.IsMine)
+                if (!photonView.IsMine)
                 {
-                    DestroyPresentBox();
+                    photonView.RPC(nameof(DestroyPresentBox), RpcTarget.Others);
                 }
             }
         }
