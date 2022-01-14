@@ -11012,6 +11012,7 @@ MonoBehaviour:
   Hit_sound: {fileID: 8300000, guid: d97cabe0ce9432f4089b901eaede430d, type: 3}
   Coin_Sound: {fileID: 8300000, guid: bdd87c0404c5ecb44b01d71a37981d7c, type: 3}
   Stunned_Sound: {fileID: 8300000, guid: 44351f585d6031045af8831a34d34e16, type: 3}
+  PresentBox_Hit: {fileID: 0}
 --- !u!114 &4751336873724514235
 MonoBehaviour:
   m_ObjectHideFlags: 0

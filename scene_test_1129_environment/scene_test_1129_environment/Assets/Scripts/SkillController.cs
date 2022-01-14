@@ -98,7 +98,7 @@ public class SkillController : MonoBehaviourPun
 
         fillAmountController = gameObject.GetComponent<FillAmountController>();
         preFallSpeed = 0;
-        fallSpeed = -10;
+        fallSpeed = -13;
     }
 
     void Update()
@@ -357,10 +357,6 @@ public class SkillController : MonoBehaviourPun
         if (col.gameObject.tag == "Skill5") {
             // ONLY ENEMY'S SKILL IS TRIGGER
             if(!debuff) Skill3();
-            if(photonView.IsMine) {
-                    PresentBox_ParticleEffect_prefab = PhotonNetwork.Instantiate(PresentBox_ParticleEffect.name, col.gameObject.transform.position + transform.up * 0.6f, Quaternion.identity);
-                    PresentBox_ParticleEffect_prefab.GetComponent<ParticleSystem>().Play();
-            }
 
             if(GetComponent<AudioSource>()) 
                 GetComponent<AudioSource>().PlayOneShot(Hit_sound);  

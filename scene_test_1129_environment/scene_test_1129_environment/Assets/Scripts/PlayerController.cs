@@ -88,6 +88,7 @@ public class PlayerController : MonoBehaviourPun
             //SetCusor();
             aiming = true;
             cine2.SetActive(true);
+            cine2.transform.rotation = transform.rotation;
             cine1.SetActive(false);
         }
         else if (Input.GetMouseButtonUp(1) || speedFactor==0)
@@ -96,8 +97,8 @@ public class PlayerController : MonoBehaviourPun
 
             aiming = false;
             cine1.SetActive(true);
+            cine1.transform.rotation = transform.rotation;
             cine2.SetActive(false);
-            
         }
 
         if (aiming)
@@ -106,16 +107,22 @@ public class PlayerController : MonoBehaviourPun
 
             //transform.forward = playerCamera.transform.forward;
 
-            Quaternion curRotation = transform.rotation;
-            curRotation.y = playerCamera.transform.rotation.y;
-            transform.rotation = curRotation;
-            
-            
-            
+            Vector3 curRotation;// = transform.rotation;
+            curRotation = playerCamera.transform.rotation.eulerAngles;
+            curRotation.x = 0;
+
+            transform.rotation = Quaternion.Euler(curRotation);// curRotation;
+
+
             //transform.rotation = curRotation;
             //transform.rotation = playerCamera.transform.rotation;
             //transform.rotation = Quaternion.Lerp(transform.rotation, (playerCamera.transform.rotation), 
-             //   Time.fixedDeltaTime*5);
+            //   Time.fixedDeltaTime*5);
+            //cine1.transform.rotation = transform.rotation;
+        }
+        else
+        {
+            //cine2.transform.rotation = transform.rotation;
         }
 
 

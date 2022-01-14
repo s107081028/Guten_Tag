@@ -2037,7 +2037,7 @@ MonoBehaviour:
   - {fileID: 6301862952116566166}
   mapImgList:
   - {fileID: 21300000, guid: c2f13b90c7d462c4c84b2d5ec3a7fbb5, type: 3}
-  - {fileID: 21300000, guid: 9cb3b395710d85a40973aa8f46a3c73d, type: 3}
+  - {fileID: 21300000, guid: 18edc7bf939d3b944ae60bb04b74bbcd, type: 3}
   mapNameList:
   - Map1
   - Map2
@@ -2446,7 +2446,7 @@ MonoBehaviour:
   _pixelateDownscale: 0
   _antialiasStrength: 5
   _antialiasDepthThreshold: 0.001
-  isDirty: 0
+  isDirty: 1
   bMat: {fileID: 0}
 --- !u!82 &691195441
 AudioSource:
