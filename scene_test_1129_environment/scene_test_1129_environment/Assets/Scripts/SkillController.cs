@@ -377,6 +377,7 @@ public class SkillController : MonoBehaviourPun
     {
         if(GetComponent<AudioSource>()) 
             GetComponent<AudioSource>().PlayOneShot (Hit_sound);
+
         playerController.speedFactor = 0.5f;
         debuff = true;
         Snoweffectprefab = PhotonNetwork.Instantiate(Snoweffect.name, transform.position + transform.up * 2.3f, Quaternion.identity);

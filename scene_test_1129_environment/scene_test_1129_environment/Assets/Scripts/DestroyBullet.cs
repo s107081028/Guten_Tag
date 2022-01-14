@@ -9,8 +9,14 @@ public class DestroyBullet : MonoBehaviourPun
         //Destroy(gameObject, 5);
         Invoke(nameof(Destroy), 5);
     }
+    /*
+    private void OnDestroy()
+    {
+        photonView.RPC(nameof(DestroyRPC), RpcTarget.All);
+    }
 
-    void Destroy()
+    [PunRPC]*/
+    public void Destroy()
     {
         if (!photonView.IsMine) return;
         PhotonNetwork.Destroy(gameObject);

@@ -10408,7 +10408,7 @@ MonoBehaviour:
   skill2Speed: 3
   skill3Speed: 10
   skill4Speed: 10
-  skill1Delay: 0
+  skill1Delay: 5
   skill2Delay: 5
   skill3Delay: 5
   skill4Delay: 5
