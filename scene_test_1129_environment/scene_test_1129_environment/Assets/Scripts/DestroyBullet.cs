@@ -6,7 +6,14 @@ public class DestroyBullet : MonoBehaviourPun
 {
     void Start()
     {
-        Destroy(gameObject, 5);
+        //Destroy(gameObject, 5);
+        Invoke(nameof(Destroy), 5);
+    }
+
+    void Destroy()
+    {
+        if (!photonView.IsMine) return;
+        PhotonNetwork.Destroy(gameObject);
     }
 
     void OnCollisionEnter(Collision col)

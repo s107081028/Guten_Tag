@@ -11001,16 +11001,18 @@ MonoBehaviour:
   - {fileID: 4182019602381482260, guid: 4fa4c272b36759a4f8367363c3a6ecc2, type: 3}
   - {fileID: 1981425960833871234, guid: d1f590c0a75993c4b93b68787cd2904b, type: 3}
   - {fileID: 7156138181527321171, guid: 99dd62b5352ac2f46b7d4633a2fa2867, type: 3}
+  - {fileID: 6238536245919240419, guid: c25ea375ee3bdfb429f1924b417ed724, type: 3}
   punishing: 0
   punishing_end: 0
   IsOnZone: 0
-  PresentBox_ParticleEffect: {fileID: 0}
+  PresentBox_ParticleEffect: {fileID: 1736048274542510415, guid: ac0808315694f6749aa75d9a49b3b837,
+    type: 3}
   fallSpeed: 0
   Skill_sound: {fileID: 0}
   Hit_sound: {fileID: 8300000, guid: d97cabe0ce9432f4089b901eaede430d, type: 3}
   Coin_Sound: {fileID: 8300000, guid: bdd87c0404c5ecb44b01d71a37981d7c, type: 3}
   Stunned_Sound: {fileID: 8300000, guid: 44351f585d6031045af8831a34d34e16, type: 3}
-  PresentBox_Hit: {fileID: 0}
+  PresentBox_Hit: {fileID: 8300000, guid: 930920c8e777eee458359153fda3170b, type: 3}
 --- !u!114 &4751336873724514235
 MonoBehaviour:
   m_ObjectHideFlags: 0

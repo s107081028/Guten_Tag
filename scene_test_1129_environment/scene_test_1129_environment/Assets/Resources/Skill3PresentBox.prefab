@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99e8e86b8c9a0cd42b61cbd21587bf87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PresentBox_ParticleEffect: {fileID: 0}
 --- !u!114 &128105153312246876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,6 +125,10 @@ PrefabInstance:
     - target: {fileID: 442428, guid: 70c5432535f63da449237048e8a3ba7d, type: 3}
       propertyPath: m_LocalScale.z
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6477306, guid: 70c5432535f63da449237048e8a3ba7d, type: 3}
+      propertyPath: m_Convex
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70c5432535f63da449237048e8a3ba7d, type: 3}
