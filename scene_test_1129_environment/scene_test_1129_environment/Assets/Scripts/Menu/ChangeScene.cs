@@ -22,4 +22,8 @@ public class ChangeScene : MonoBehaviour
     public void LoadScene() {
         SceneManager.LoadScene(targetScene);
     }
+
+    public void CloseGame() {
+        Application.Quit();
+    }
 }

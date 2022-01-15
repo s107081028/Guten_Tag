@@ -10422,7 +10422,8 @@ MonoBehaviour:
   - {fileID: 6238536245919240419, guid: c25ea375ee3bdfb429f1924b417ed724, type: 3}
   punishing: 0
   punishing_end: 0
-  IsOnZone: 0
+  IsOnZoneBuff: 0
+  IsOnZoneDebuff: 0
   PresentBox_ParticleEffect: {fileID: 1736048274542510415, guid: ac0808315694f6749aa75d9a49b3b837,
     type: 3}
   fallSpeed: 0
