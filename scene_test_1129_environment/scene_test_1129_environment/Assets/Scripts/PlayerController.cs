@@ -54,6 +54,10 @@ public class PlayerController : MonoBehaviourPun
             cine1.GetComponent<CinemachineFreeLook>().LookAt = transform;
             cine2.GetComponent<CinemachineFreeLook>().Follow = transform.Find("target");
             cine2.GetComponent<CinemachineFreeLook>().LookAt = transform.Find("target");
+            cine1.SetActive(false);
+           
+            cine1.transform.position = transform.position - (transform.forward * cine1.GetComponent<CinemachineFreeLook>().m_Orbits[1].m_Radius) + (cine1.GetComponent<CinemachineFreeLook>().m_Orbits[1].m_Height * Vector3.up);
+            cine1.SetActive(true);
             cine2.SetActive(false);
             m_animator = gameObject.GetComponent<Animator>();
             rb = GetComponent<Rigidbody>();
@@ -89,7 +93,7 @@ public class PlayerController : MonoBehaviourPun
             aiming = true;
             cine2.SetActive(true);
             cine1.SetActive(false);
-            cine1.transform.rotation = transform.rotation;
+            cine1.transform.rotation = playerCamera.transform.rotation;
         }
         else if (Input.GetMouseButtonUp(1) || speedFactor==0)
         {
@@ -98,8 +102,9 @@ public class PlayerController : MonoBehaviourPun
             aiming = false;
             cine1.SetActive(true);
             cine2.SetActive(false);
-            cine2.transform.rotation = transform.rotation;
+            cine2.transform.rotation = playerCamera.transform.rotation;
         }
+
 
         if (aiming)
         {
