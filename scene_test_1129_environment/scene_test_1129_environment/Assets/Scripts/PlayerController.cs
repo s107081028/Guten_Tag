@@ -52,13 +52,16 @@ public class PlayerController : MonoBehaviourPun
             cine2 = GameObject.Find("CM FreeLook2");
             cine1.GetComponent<CinemachineFreeLook>().Follow = transform;
             cine1.GetComponent<CinemachineFreeLook>().LookAt = transform;
+            //cine2.GetComponent<CinemachineFreeLook>().Follow = transform;
+            //cine2.GetComponent<CinemachineFreeLook>().LookAt = transform;
             cine2.GetComponent<CinemachineFreeLook>().Follow = transform.Find("target");
             cine2.GetComponent<CinemachineFreeLook>().LookAt = transform.Find("target");
             cine1.SetActive(false);
+            cine2.SetActive(false);
            
             cine1.transform.position = transform.position - (transform.forward * cine1.GetComponent<CinemachineFreeLook>().m_Orbits[1].m_Radius) + (cine1.GetComponent<CinemachineFreeLook>().m_Orbits[1].m_Height * Vector3.up);
+            cine2.transform.position = transform.Find("target").position - (transform.forward * cine2.GetComponent<CinemachineFreeLook>().m_Orbits[1].m_Radius) + (cine2.GetComponent<CinemachineFreeLook>().m_Orbits[1].m_Height * Vector3.up);
             cine1.SetActive(true);
-            cine2.SetActive(false);
             m_animator = gameObject.GetComponent<Animator>();
             rb = GetComponent<Rigidbody>();
 
@@ -89,11 +92,11 @@ public class PlayerController : MonoBehaviourPun
         if (Input.GetMouseButtonDown(1) && speedFactor!=0)
         {
             Cursor.lockState = CursorLockMode.Locked;
-            //SetCusor();
+            SetCusor();
             aiming = true;
             cine2.SetActive(true);
             cine1.SetActive(false);
-            cine1.transform.rotation = playerCamera.transform.rotation;
+            //cine1.transform.rotation = playerCamera.transform.rotation;
         }
         else if (Input.GetMouseButtonUp(1) || speedFactor==0)
         {
@@ -102,7 +105,7 @@ public class PlayerController : MonoBehaviourPun
             aiming = false;
             cine1.SetActive(true);
             cine2.SetActive(false);
-            cine2.transform.rotation = playerCamera.transform.rotation;
+            //cine2.transform.rotation = playerCamera.transform.rotation;
         }
 
 
@@ -116,17 +119,14 @@ public class PlayerController : MonoBehaviourPun
             curRotation = playerCamera.transform.rotation.eulerAngles;
             curRotation.x = 0;
 
-            transform.rotation = Quaternion.Euler(curRotation);// curRotation;
+            transform.rotation = Quaternion.Lerp( Quaternion.Euler(curRotation), transform.rotation, 0.1f);// curRotation;
+            //transform.rotation = transform.rotation * Quaternion.AngleAxis(Input.GetAxis("Mouse X") * 5f , Vector3.up);
 
-
-            //transform.rotation = curRotation;
-            //transform.rotation = playerCamera.transform.rotation;
-            //transform.rotation = Quaternion.Lerp(transform.rotation, (playerCamera.transform.rotation), 
-            //   Time.fixedDeltaTime*5);
             //cine1.transform.rotation = transform.rotation;
         }
         else
         {
+            cine2.transform.position = transform.Find("target").position - (transform.forward * cine2.GetComponent<CinemachineFreeLook>().m_Orbits[1].m_Radius) + (cine2.GetComponent<CinemachineFreeLook>().m_Orbits[1].m_Height * Vector3.up);
             //cine2.transform.rotation = transform.rotation;
         }
 
