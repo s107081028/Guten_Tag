@@ -18331,6 +18331,7 @@ MonoBehaviour:
   lastEnterTime: 0
   coolTime: 5
   teleportEffect: {fileID: 0}
+  teleportParticalEffect: {fileID: 0}
 --- !u!1 &602305890
 GameObject:
   m_ObjectHideFlags: 0
@@ -54529,6 +54530,7 @@ MonoBehaviour:
   lastEnterTime: 0
   coolTime: 5
   teleportEffect: {fileID: 0}
+  teleportParticalEffect: {fileID: 0}
 --- !u!1 &1869890997
 GameObject:
   m_ObjectHideFlags: 0
@@ -60965,6 +60967,7 @@ MonoBehaviour:
   lastEnterTime: 0
   coolTime: 5
   teleportEffect: {fileID: 2110081769}
+  teleportParticalEffect: {fileID: 0}
 --- !u!65 &2111387127
 BoxCollider:
   m_ObjectHideFlags: 0
