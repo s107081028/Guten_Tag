@@ -398,6 +398,12 @@ public class MenuStart : MonoBehaviourPunCallbacks
         currentMapNum = (int)roomProperties[mapKey];
 
         UpdateMapUI();
+        if (roomProperties.ContainsKey(ghostKey))
+        {
+            leftIsGhost = (bool)roomProperties[ghostKey];
+            //Debug.Log("OnRoomProperitesChanged : ghost" + leftIsGhost);
+            SwtcihGhostUI();
+        }
 
         int playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
 
