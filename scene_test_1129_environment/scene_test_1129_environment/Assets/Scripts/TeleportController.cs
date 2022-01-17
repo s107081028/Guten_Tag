@@ -29,7 +29,7 @@ public class TeleportController : MonoBehaviourPun
             if (!dict.ContainsKey(Collision.gameObject.GetComponent<PhotonView>().Owner.UserId))
             {
                 dict.Add(Collision.gameObject.GetComponent<PhotonView>().Owner.UserId, Time.time);
-                AnotherTeleport.GetComponent<TeleportController>().dict.Add(Collision.gameObject.name, Time.time);
+                AnotherTeleport.GetComponent<TeleportController>().dict.Add(Collision.gameObject.GetComponent<PhotonView>().Owner.UserId, Time.time);
                 Collision.transform.position = AnotherTeleport.transform.position;
             }
             else if (Time.time - dict[Collision.gameObject.GetComponent<PhotonView>().Owner.UserId] >= coolTime)
