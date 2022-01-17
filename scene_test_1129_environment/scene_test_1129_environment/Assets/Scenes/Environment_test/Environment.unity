@@ -32999,7 +32999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 536328cfc5e779e449db239d65649684, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timecntdown: 600
+  timecntdown: 60
   timeText: {fileID: 0}
   playerspawner: {fileID: 0}
 --- !u!1 &1137132347

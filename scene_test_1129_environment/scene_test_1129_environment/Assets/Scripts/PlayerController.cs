@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviourPun
     GameObject cine2;
     public Texture2D cursorTexture;
 
+    OngroundTest OngroundTest;
+
     private Animator m_animator;
     /*
     void Awake(){
@@ -64,6 +66,7 @@ public class PlayerController : MonoBehaviourPun
             cine1.SetActive(true);
             m_animator = gameObject.GetComponent<Animator>();
             rb = GetComponent<Rigidbody>();
+            OngroundTest = transform.Find("OngroundTest").gameObject.GetComponent<OngroundTest>();
 
             if (PhotonNetwork.LocalPlayer.IsMasterClient) {
                 SetMask(10);                // CAN NOT SEE LAYER 10
@@ -209,6 +212,8 @@ public class PlayerController : MonoBehaviourPun
                 can_jump = true;
                 m_animator.SetBool("jump", false);
             }
+            //if(OngroundTest!=null)
+            //    m_animator.SetBool("Grabing", !OngroundTest.Onground);
 
             // if(CollisionObject.collider.gameObject.name=="Sphere" && end==false){
             //     canva.SetActive(true);
@@ -233,6 +238,8 @@ public class PlayerController : MonoBehaviourPun
                 can_jump = true;
                 m_animator.SetBool("jump", false);
             }
+            if (OngroundTest != null)
+                m_animator.SetBool("Grabing", !OngroundTest.Onground);
 
             // if(CollisionObject.collider.gameObject.name=="Sphere" && end==false){
             //     canva.SetActive(true);
@@ -256,6 +263,7 @@ public class PlayerController : MonoBehaviourPun
                 can_jump = false;
                 m_animator.SetBool("jump", false);
             }
+            m_animator.SetBool("Grabing", false);
         }
     }
 

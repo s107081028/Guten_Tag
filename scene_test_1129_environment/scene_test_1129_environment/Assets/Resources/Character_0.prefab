@@ -10231,6 +10231,7 @@ Transform:
   - {fileID: 8761302824282465345}
   - {fileID: 284559140453893046}
   - {fileID: 2802053019862933940}
+  - {fileID: 6703134704980914178}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10685,6 +10686,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: UnDance
+  - Type: 4
+    SynchronizeType: 1
+    Name: Grabing
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -13936,6 +13940,81 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000000007450581, y: -0.25617287, z: 1.2273624}
     m_Extent: {x: 0.11626206, y: 0.054889083, z: 0.087273955}
   m_DirtyAABB: 0
+--- !u!1 &9143267750275596055
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6703134704980914178}
+  - component: {fileID: 3511308977881852494}
+  - component: {fileID: 4735327412206459613}
+  - component: {fileID: 6845241112950193571}
+  m_Layer: 0
+  m_Name: OngroundTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6703134704980914178
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9143267750275596055}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.01}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6005206351073133381}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3511308977881852494
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9143267750275596055}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.06982049, y: 0.073206455, z: 0.06322681}
+  m_Center: {x: 0.027771682, y: -0.095159635, z: 0.029097278}
+--- !u!114 &4735327412206459613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9143267750275596055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b1fa2f0f71bf44b8a31591f9511d8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Onground: 0
+--- !u!54 &6845241112950193571
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9143267750275596055}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &9156402596825349580
 GameObject:
   m_ObjectHideFlags: 0
